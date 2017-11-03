@@ -80,7 +80,7 @@
                 <el-col :span="8">
                     <el-form-item prop="dealer.account_bank.strAddrAreaId">
                         <el-select v-model="ruleForm.dealer.account_bank.strAddrAreaId" filterable placeholder="请选择区县">
-                            <el-option  v-for="item in bankAddr.areas"  :label="item.strAreaName"  :value="item.strAreaId" :key=="item.strAreaId">
+                            <el-option  v-for="item in bankAddr.areas"  :label="item.strAreaName"  :value="item.strAreaId" :key="item.strAreaId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -143,6 +143,7 @@
 <script type="text/javascript">
 	import api from '../../api/api'
 	import util from '../../common/util'
+    import commonData from '../../common/data'
 	export default {
 		data() {
 
@@ -190,16 +191,16 @@
                 dealer:{
                 	provinceChange : false,
                 	cityChange : false,
-                    provinces:'',
+                    provinces:commonData.addrList,
                     citys:'',
                     areas:''
                 },
                 bankAddr:{
                 	provinceChange : false,
                 	cityChange : false,
-                    provinces:'',
-                    citys:'',
-                    areas:'',
+                    provinces:commonData.addrList,
+                    citys:[],
+                    areas:[],
                 },
                 ruleForm:{
                     'dateRange':[],
@@ -323,17 +324,34 @@
                     }
                     this.bankList = res.data.bankList
                 })
-                api.getAddress({}).then(res => {
-                    if (res.ret != '0') {
-                        this.$message(res.retinfo)
-                        return
-                    }
-                    this.dealer.provinces = res.data.address
-                    this.bankAddr.provinces = res.data.address
-                }).then(res => {
-					this.ruleForm.dealer.strAddrProvinceId = this.defaultData.strAddrProvinceId
-					this.ruleForm.dealer.account_bank.strAddrProvinceId = this.defaultData.account_bank.strAddrProvinceId
-                })
+                if(commonData.addrList.length == 0){
+                    api.getAddress({}).then(res => {
+                        if (res.ret != '0') {
+                            this.$layer.alert(res.retinfo)
+                            return
+                        }
+                        commonData.addrList = res.data.address
+                        this.dealer.provinces = res.data.address
+                        this.bankAddr.provinces = res.data.address
+
+                        this.ruleForm.dealer.strAddrProvinceId = this.defaultData.strAddrProvinceId
+                        this.ruleForm.dealer.account_bank.strAddrProvinceId = this.defaultData.account_bank.strAddrProvinceId
+                    })
+                }else{
+                    this.ruleForm.dealer.strAddrProvinceId = this.defaultData.strAddrProvinceId
+                    this.ruleForm.dealer.account_bank.strAddrProvinceId = this.defaultData.account_bank.strAddrProvinceId
+                }
+     //            api.getAddress({}).then(res => {
+     //                if (res.ret != '0') {
+     //                    this.$message(res.retinfo)
+     //                    return
+     //                }
+     //                this.dealer.provinces = res.data.address
+     //                this.bankAddr.provinces = res.data.address
+     //            }).then(res => {
+					// this.ruleForm.dealer.strAddrProvinceId = this.defaultData.strAddrProvinceId
+					// this.ruleForm.dealer.account_bank.strAddrProvinceId = this.defaultData.account_bank.strAddrProvinceId
+     //            })
                 
             },
             getdefaultData : function(strStoreId){
@@ -377,6 +395,7 @@
             cancelnow: function() {
                 this.$router.push({ path: '/Dealer/index' })
             },
+            test(){console.log(this.bankAddr.areas)},
 
             //确定
             submitnow(formName , GoOn) {
@@ -438,7 +457,9 @@
                     var bankCitys = this.bankAddr.citys
                     for (var index in bankCitys) {
                         if (bankCitys[index].strCityId == val) {
+                            console.log(this.bankAddr.areas)
                             this.bankAddr.areas = bankCitys[index].areas
+                            console.log(this.bankAddr.areas)
                             if(!change) this.ruleForm.dealer.account_bank.strAddrAreaId = this.defaultData.account_bank.strAddrAreaId
                         }
                     }

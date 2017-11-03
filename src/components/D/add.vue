@@ -162,8 +162,6 @@
                 this.imageUrl3 = URL.createObjectURL(file.raw)
             },
             beforeAvatarUpload(file) {
-                return util.beforeAvatarUpload1(file)
-
                 const isJpeg = file.type === 'image/jpeg'
                 const isPng = file.type === 'image/png'
                 const isJPG = file.type === 'image/jpg'

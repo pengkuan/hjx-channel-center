@@ -136,7 +136,7 @@
                                 <el-input type="number" v-model="form.strPercent"></el-input>
                             </el-col>
                         </el-form-item>
-                        <br>
+                        <div style="height:16px"></div>
                         <el-form-item label="苹果机型封顶（元）：" prop='strApplyMax' >
                             <el-col :span="4">
                                 <el-input type="number"  v-model="form.strApplyMax"></el-input>
@@ -236,6 +236,7 @@
 <script>
     import api from '../../api/api'
     import util from '../../common/util'
+    import commonData from '../../common/data'
   export default {
     data() {
         
@@ -291,12 +292,12 @@
             },
             channelTemplateList:[],
             partnerList:[],
-            provinces:[],
+            provinces:commonData.addrList,
             citys:[],
             areas:[],
             partnerList:[],
             saleAdds:{
-                provinces:[],
+                provinces:commonData.addrList,
                 citys:[],
                 areas:[]
             },
@@ -406,15 +407,32 @@
             })
         },
         loadInfo: function() {
-            api.getAddress({}).then(res => {
-                if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
-                    return
-                }
-                this.provinces = res.data.address
-                this.saleAdds.provinces = res.data.address
+            // api.getAddress({}).then(res => {
+            //     if (res.ret != '0') {
+            //         this.$layer.alert(res.retinfo)
+            //         return
+            //     }
+            //     this.provinces = res.data.address
+            //     this.saleAdds.provinces = res.data.address
+            //     this.form.strAddr_province_id = this.defaultDate.strAddrProvinceId
+            // }),
+
+            if(commonData.addrList.length == 0){
+                api.getAddress({}).then(res => {
+                    if (res.ret != '0') {
+                        this.$layer.alert(res.retinfo)
+                        return
+                    }
+                    commonData.addrList = res.data.address
+                    this.provinces = res.data.address
+                    this.saleAdds.provinces = res.data.address
+
+                    this.form.strAddr_province_id = this.defaultDate.strAddrProvinceId
+                })
+            }else{
                 this.form.strAddr_province_id = this.defaultDate.strAddrProvinceId
-            }),
+            }
+
             api.getChannelTemplate({}).then(res => {
                 if (res.ret != '0') {
                     this.$layer.alert(res.retinfo)
@@ -423,7 +441,7 @@
                 this.channelTemplateList = res.data.channelTemplateList
                 this.form.strLevelId = this.defaultDate.strLevelId
 
-            }),
+            })
             api.getPartner({}).then(res => {
                 if (res.ret != '0') {
                     this.$layer.alert(res.retinfo)
@@ -432,7 +450,7 @@
                 this.partnerList = res.data.partnerList
                 this.form.strPartner_id = this.defaultDate.strPartnerId
 
-            }),
+            })
             api.getAllS1({}).then(res => {
                 if (res.ret != '0') {
                     this.$layer.alert(res.retinfo)

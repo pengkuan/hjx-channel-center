@@ -164,8 +164,9 @@
 </style>
 
 <script type="text/javascript">
-	import api from '../../api/api';
-	import util from '../../common/util';
+	import api from '../../api/api'
+	import util from '../../common/util'
+    import commonData from '../../common/data'
 	export default {
 		data() {
             
@@ -224,7 +225,7 @@
                 },
                 replaceNodeList:[],
                 replaceNodeAddr:{
-                    provinces:[],
+                    provinces:commonData.addrList,
                     citys:[],
                     areas:[]
                 },
@@ -246,7 +247,7 @@
                 },
                 AddNextList:[],
                 AddNextSaleAddr:{
-                    provinces:[],
+                    provinces:commonData.addrList,
                     citys:[],
                     areas:[]
                 },
@@ -291,14 +292,18 @@
 		},
 		methods:{
             index:function(){
-                api.getAddress({}).then(res => {
-                    if (res.ret != '0') {
-                        this.$message(res.retinfo)
-                        return
-                    }
-                    this.AddNextSaleAddr.provinces = res.data.address
-                    this.replaceNodeAddr.provinces = res.data.address
-                })
+
+                if(commonData.addrList.length == 0){
+                    api.getAddress({}).then(res => {
+                        if (res.ret != '0') {
+                            this.$layer.alert(res.retinfo)
+                            return
+                        }
+                        commonData.addrList = res.data.address
+                        this.AddNextSaleAddr.provinces = res.data.address
+                        this.replaceNodeAddr.provinces = res.data.address
+                    })
+                }
             },
             //刷新D4List
             getD4List(){

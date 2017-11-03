@@ -130,8 +130,9 @@
 </template>
 
 <script type="text/javascript">
-	import api from '../../api/api';
-	import util from '../../common/util';
+	import api from '../../api/api'
+	import util from '../../common/util'
+    import commonData from '../../common/data'
 	export default {
 		data() {
             var validateName = (rule, value, callback) => {
@@ -178,12 +179,12 @@
                 imageUrl1: '',//三证照片
                 imageUrl2: '',
                 dealer:{
-                    provinces:'',
+                    provinces:commonData.addrList,
                     citys:'',
                     areas:''
                 },
                 bankAddr:{
-                    provinces:'',
+                    provinces:commonData.addrList,
                     citys:'',
                     areas:'',
                 },
@@ -316,14 +317,25 @@
                     }
                     this.bankList = res.data.bankList
                 })
-                api.getAddress({}).then(res => {
-                    if (res.ret != '0') {
-                        this.$message(res.retinfo)
-                        return
-                    }
-                    this.dealer.provinces = res.data.address
-                    this.bankAddr.provinces = res.data.address
-                })
+                // api.getAddress({}).then(res => {
+                //     if (res.ret != '0') {
+                //         this.$message(res.retinfo)
+                //         return
+                //     }
+                //     this.dealer.provinces = res.data.address
+                //     this.bankAddr.provinces = res.data.address
+                // })
+                if(commonData.addrList.length == 0){
+                    api.getAddress({}).then(res => {
+                        if (res.ret != '0') {
+                            this.$layer.alert(res.retinfo)
+                            return
+                        }
+                        commonData.addrList = res.data.address
+                        this.dealer.provinces = res.data.address
+                        this.bankAddr.provinces = res.data.address
+                    })
+                }
             },
 			//取消
             cancelnow: function() {

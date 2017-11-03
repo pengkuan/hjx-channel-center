@@ -128,10 +128,11 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
+import commonData from '../../common/data'
 export default {
 	data() {
 	    return {
-	    	searchAddr:{},
+	    	searchAddr:{provinces:commonData.addrList},
 	    	dataList:[],
 	    	pageIndex:'0',
         	pageSize:'10',
@@ -201,13 +202,16 @@ export default {
 			})
 		},
 		searchInfo(){
-			api.getAddress({}).then(res => {
-                if (res.ret != '0') {
-                    this.$message(res.retinfo)
-                    return
-                }
-                this.searchAddr.provinces = res.data.address
-            })
+            if(commonData.addrList.length == 0){
+                api.getAddress({}).then(res => {
+                    if (res.ret != '0') {
+                        this.$layer.alert(res.retinfo)
+                        return
+                    }
+                    commonData.addrList = res.data.address
+                    this.searchAddr.provinces = res.data.address
+                })
+            }
 		},
 		//跳至详情页面
 		detailDealer:function(strDealerId){

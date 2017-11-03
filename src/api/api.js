@@ -3,6 +3,10 @@ import axios from 'axios'
 import router from '../router'
 import util from '../common/util'
 
+
+import {Message} from 'element-ui'
+
+
 // import * as _ from '../util/tool'
 
 // axios 配置
@@ -31,6 +35,7 @@ axios.interceptors.response.use((res) =>{
       switch (error.response.status) {
         case 403:
             router.push({ path: '/login' })
+            Message({message:'登录超时或账号被他人登录！',type:'warning'})
       }
     }
     return Promise.reject(error)
