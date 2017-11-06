@@ -87,119 +87,7 @@ export default {
             sysUserName: '',
             sysUserAvatar: '',
             collapsed: false,
-            muckRes: {
-                "head": {
-                    "interface": "loginuserinfo",
-                    "msgtype": "response",
-                    "remark": "",
-                    "version": "0.01"
-                },
-                "body": {
-                    "data": {
-                        "user_info": { //用户信息
-                            "user_id": "1", //用户ID
-                            "username": "weika", //用户名称
-                            "phone": "13488888888", //手机号
-                            "user_desc": "卡卡大兄弟dd", //用户描述
-                            "real_name": "韦卡", //用户真实姓名
-                            "photo": "", //头像
-                            "email": "ddd@qq.com", //邮箱
-                            "city_id": "1", //所在城市ID
-                            "department_id": "52", //部门ID
-                            "position_id": "57", //职位ID
-                            "department_name": "研发部", //所在部门名称
-                            "position_name": "研发" //职位名称
-                        },
-                        "menu": [{
-                                "authority_id": "58", //菜单ID
-                                "name": "渠道关系管理", //菜单名称
-                                "type": "2", //类型：2-菜单'
-                                "pid": "0", //父级ID
-                                "style": "", //菜单样式
-                                "access_flags": "/", //访问标识
-                                "show_flags": "", //显示标识
-                                "sub_menu": [ //子菜单
-                                    {
-                                        "authority_id": "60",
-                                        "name": "渠道商管理",
-                                        "type": "2",
-                                        "pid": "58",
-                                        "style": "",
-                                        "access_flags": "/System",
-                                        "show_flags": "",
-                                        "sub_menu": []
-                                    },
-                                    {
-                                        "authority_id": "62",
-                                        "name": "工号管理",
-                                        "type": "2",
-                                        "pid": "58",
-                                        "style": "",
-                                        "access_flags": "/RoleManage",
-                                        "show_flags": "",
-                                        "sub_menu": []
-                                    },
-                                    {
-                                        "name": "渠道模板管理"
-                                    }
-                                ]
-                            },
-                            {
-                                "authority_id": "59",
-                                "name": "全部D",
-                                "type": "2",
-                                "pid": "0",
-                                "style": "",
-                                "access_flags": "/ModifyPwd",
-                                "show_flags": "",
-                                "sub_menu": [{
-                                        "authority_id": "60",
-                                        "name": "全部Dealer",
-                                        "type": "2",
-                                        "pid": "58",
-                                        "style": "",
-                                        "access_flags": "/System",
-                                        "show_flags": "",
-                                        "sub_menu": []
-                                    },
-                                    {
-                                        "authority_id": "62",
-                                        "name": "D tree",
-                                        "type": "2",
-                                        "pid": "58",
-                                        "style": "",
-                                        "access_flags": "/RoleManage",
-                                        "show_flags": "",
-                                        "sub_menu": []
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "权限中心",
-                                "sub_menu": [{
-                                        "authority_id": "60",
-                                        "name": "权限管理",
-                                    },
-                                    {
-                                        "authority_id": "60",
-                                        "name": "角色管理",
-                                    }
-                                ]
-                            }
-                        ],
-                        "access_flags": [ //访问标识
-                            "/modifypwd", //具体访问标识
-                            "/system",
-                            "/permissionsmanage",
-                            "/rolemanage"
-                        ],
-                        "show_flags": [] //显示标识（控制系统某模块或者按钮显示)单系统中唯一
-                    },
-                    "ret": "0",
-                    "retcode": "0",
-                    "retinfo": "请求成功"
-                }
-            },
+            
             menuRutes: []
         }
     },
@@ -266,9 +154,7 @@ export default {
             this.menuRutes = this.$router.options.routes
         },
         // 权限到菜单页面
-        getDeepModule() { 
-            let menu = this.muckRes.body.data.menu
-            // console.log(menu)
+        getDeepModule(menu) { 
             let routes = this.$router.options.routes
             // console.log(routes)
 

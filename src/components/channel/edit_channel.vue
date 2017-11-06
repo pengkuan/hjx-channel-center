@@ -276,7 +276,7 @@
               strValuationId: '',
               strPercent: '',
               strApplyMax: '',
-              strShopAwardId: '',
+              strShopAwardId: '0',
 
               strPayMethodId: '',
               selfFunction: [],

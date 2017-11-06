@@ -842,6 +842,7 @@ export default {
             }
             api.addStoreDS(sendData).then(res => {
                 if(res.ret != '0'){
+                    this.$message(res.retinfo)
                     return false
                 }
                 this.addS1Id = []
@@ -890,6 +891,7 @@ export default {
             this.SList.showS2 = true
             api.getAllDS({"strStoreId": this.id, "strPeopleType": "S2", "strLevelCode":"S2"}).then(res => {
                 if(res.ret != '0'){
+                    this.$message(res.retinfo)
                     return
                 }
                 this.choose_s2_list = res.s2list
@@ -954,6 +956,7 @@ export default {
             }
             api.addStoreDS(sendData).then(res => {
                 if(res.ret != '0'){
+                    this.$message(res.retinfo)
                     return false
                 }
                 this.addS2Id = []
@@ -1057,6 +1060,7 @@ export default {
             console.log(sendData)
             api.addStoreDS(sendData).then(res => {
                 if(res.ret != '0'){
+                    this.$message(res.retinfo)
                     return false
                 }
                 this.addD1Id = []
@@ -1159,6 +1163,7 @@ export default {
             console.log(sendData)
             api.addStoreDS(sendData).then(res => {
                 if(res.ret != '0'){
+                    this.$message(res.retinfo)
                     return false
                 }
                 this.addBD1Id = []
