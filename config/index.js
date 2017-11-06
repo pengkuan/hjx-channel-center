@@ -23,13 +23,14 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 80,
+    port: 8881,
     autoOpenBrowser: true,
     assetsSubDirectory: 'other',
     assetsPublicPath: '/',
     proxyTable: {
         '/pengkuan': {
-            target: 'http://10.0.30.11:10103', // 你接口的域名
+            // target: 'http://10.0.30.11:10103', // 你接口的域名
+            target: 'http://10.0.30.11:8001', // 调权限中心
             // target: 'http://10.0.30.51:8002', // 你接口的域名
             // target: 'http://10.0.10.182:8000', // 你接口的域名 周浩
             // target: 'http://10.0.10.222:8000', // 你接口的域名 亮仔

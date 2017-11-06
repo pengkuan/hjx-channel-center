@@ -30,7 +30,10 @@ axios.interceptors.response.use((res) =>{
     if (error.response) {
       switch (error.response.status) {
         case 403:
-            router.push({ path: '/login' })
+            // console.log(403)
+            // router.push({ path: '/login' })
+            let host = encodeURIComponent(util.accessHost)
+            window.location.href = 'http://api-amc.huishoubao.com.cn/login?system_id=23&jump_url=' + host
       }
     }
     return Promise.reject(error)
@@ -120,6 +123,8 @@ export default {
 
     Login(params) {return fetch('loginLogic', params)},// 用户登录
     upload(params) {return fetch('upload', params)},// 
+    get_user_authority(params) {return fetch('get_user_authority', params)},// 获取用户权限列表
+    logout(params) {return fetch('logout', params)},// 退出登录
 
     getAddress(params) {return fetch('get_addressInfo', params)},// 获取地址
     getBank(params) {return fetch('get_bank', params)},// 获取银行
