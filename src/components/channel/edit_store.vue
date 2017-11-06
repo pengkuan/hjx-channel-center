@@ -289,7 +289,7 @@ export default {
             S1Type : '1',
             S2Type : '2',
             channelorgs:[],
-            provinces:[],
+            provinces:commonData.addrList,
             citys:[],
             areas:[],
             ChannelManager:[],
@@ -308,7 +308,7 @@ export default {
                 model_5:''
             },
             saleAdds:{
-                provinces : '',
+                provinces : commonData.addrList,
                 citys : '',
                 areas : ''
             },
@@ -485,27 +485,34 @@ export default {
                 })
             }
             
-            
-            // 获取渠道经理 
-   //          api.getChannelManager({}).then(res => {
-   //              if (res.ret != '0') {
-   //                  this.$message(res.retinfo)
-   //                  return
-   //              }
-			// 	this.ChannelManager = res.data.managers;
-   //              this.strChannelManagerId = this.defaultDate.storeInfo.strChannelManagerId
-			// })
-
-            // 地址
-            api.getAddress({}).then(res => {
+            /*
+            //获取渠道经理 
+            api.getChannelManager({}).then(res => {
                 if (res.ret != '0') {
                     this.$message(res.retinfo)
                     return
                 }
-				this.provinces = res.data.address
-                this.saleAdds.provinces = res.data.address
-                this.strProvinceId = this.defaultDate.storeInfo.strProvinceId
+				this.ChannelManager = res.data.managers;
+                this.strChannelManagerId = this.defaultDate.storeInfo.strChannelManagerId
 			})
+            */
+
+            // 地址
+            if(commonData.addrList.length == 0){
+                api.getAddress({}).then(res => {
+                    if (res.ret != '0') {
+                        this.$layer.alert(res.retinfo)
+                        return
+                    }
+                    commonData.addrList = res.data.address
+                    this.provinces = res.data.address
+                    this.saleAdds.provinces = res.data.address
+
+                    this.strProvinceId = this.defaultDate.storeInfo.strProvinceId
+                })
+            }else{
+                this.strProvinceId = this.defaultDate.storeInfo.strProvinceId
+            }
 
         },
         // 获取默认数据

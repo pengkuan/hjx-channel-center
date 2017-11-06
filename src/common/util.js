@@ -1,3 +1,5 @@
+import {Message} from 'element-ui'
+
 var SIGN_REGEXP = /([yMdhsm])(\1*)/g
 var DEFAULT_PATTERN = 'yyyy-MM-dd'
 
@@ -78,21 +80,6 @@ export default{
         }  
         return res
     },
-    beforeAvatarUpload1(file) {
-        const isJpeg = file.type === 'image/jpeg'
-        const isPng = file.type === 'image/png'
-        const isJPG = file.type === 'image/jpg'
-        const isLt1M = file.size / 1024 / 1024 < 1
-        var flags
-        if ((!isJpeg) && (!isPng) && (!isJPG)) {
-            flags = false
-            alert('只上传头像图片格式为.jpg .png .jpeg!')
-        }
-        if (!isLt1M) {
-          this.$message.error('上传头像图片大小不能超过 1MB!')
-        }
-        return flags && isLt1M
-    },
     combineCell:function(list) {
         for (var field in list[0]) {
             var k = 0
@@ -164,7 +151,7 @@ export default{
     Validate :function(list){
         for(var index in list){
             if(!list[index].val) {
-                alert(list[index].msg) 
+                Message({message:list[index].msg,type:'warning'})
                 return false 
             }
         }

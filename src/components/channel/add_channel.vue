@@ -127,7 +127,7 @@
                         <el-input type="number" v-model="form.strPercent"></el-input>
                     </el-col>
                 </el-form-item>
-                <br>
+                <div style="height:16px"></div>
                 <el-form-item label="苹果机型封顶（元）：" prop='strApplyMax' >
                     <el-col :span="4">
                         <el-input type="number"  v-model="form.strApplyMax"></el-input>
@@ -167,6 +167,7 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
+import commonData from '../../common/data'
 export default {
     data() {
         var validateEmployeeNum = (rule, value, callback) => {
@@ -213,12 +214,12 @@ export default {
 	        },
 	        channelTemplateList:[],
 	        partnerList:[],
-	        provinces:[],
+	        provinces:commonData.addrList,
 	        citys:[],
 	        areas:[],
 	        partnerList:[],
 	        saleAdds:{
-	        	provinces:[],
+	        	provinces:commonData.addrList,
 	        	citys:[],
 	        	areas:[]
 	        },
@@ -310,18 +311,17 @@ export default {
             })
         },
         loadInfo: function() {
-	        api.getAddress({}).then(res => {
-                if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
-                    return
-                }
-                // res.data.address.unshift({strProvinceName:'全部' , strProvinceId:''})
-                let addr = res.data.address
-                this.provinces = addr
-                this.saleAdds.provinces = addr
-                // this.saleAdds.provinces = addr.unshift({strProvinceName:'全部' , strProvinceId:''})
-
-			}),
+            if(commonData.addrList.length == 0){
+                api.getAddress({}).then(res => {
+                    if (res.ret != '0') {
+                        this.$layer.alert(res.retinfo)
+                        return
+                    }
+                    commonData.addrList = res.data.address
+                    this.provinces = res.data.address
+                    this.saleAdds.provinces = res.data.address
+                })
+            }
 			api.getChannelTemplate({}).then(res => {
                 if (res.ret != '0') {
                     this.$layer.alert(res.retinfo)
@@ -335,7 +335,7 @@ export default {
                     return
                 }
 				this.partnerList = res.data.partnerList
-			}),
+			})
 			api.getAllS1({}).then(res => {
                 if (res.ret != '0') {
                     this.$layer.alert(res.retinfo)

@@ -117,8 +117,9 @@
     #Add-store{width: 900px}
 </style>
 <script>
-import api from '../../api/api';
-import util from '../../common/util';
+import api from '../../api/api'
+import util from '../../common/util'
+import commonData from '../../common/data'
 export default {
 	data() {
        
@@ -126,7 +127,7 @@ export default {
             dialogFormVisible:false,
             ruleForm:{},
             channelorgs: [],
-            provinces: [],
+            provinces: commonData.addrList,
             citys: [],
             areas: [],
             ChannelManager: [],
@@ -140,7 +141,7 @@ export default {
                 model_5:''
             },
             saleAdds:{
-                provinces : '',
+                provinces : commonData.addrList,
                 citys : '',
                 areas : ''
             },
@@ -153,7 +154,7 @@ export default {
             },
             // 
             structAid: '',
-            structA: [],
+            structA: commonData.channelList,
             ifValidateNext:false,//是否验证次级渠道
             // 新增次级组名
             getGroupRelationId : '',
@@ -255,14 +256,21 @@ export default {
 	methods:{
 		loadInfo: function() {
             //获取一级渠道商
-            var self = this
-            api.getAllChannels({}).then(res => {
-                if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
-                    return
-                }
-				this.structA = res.data.Relations;
-			})
+            if(commonData.channelList.length == 0){
+                var loading = this.$loading({
+                    text:'获取渠道商列表',
+                    target:'#Add-store'
+                })
+                api.getAllChannels({}).then(res => {
+                    loading.close()
+                    if (res.ret != '0') {
+                        this.$message(res.retinfo)
+                        return
+                    }
+                    commonData.channelList = res.data.Relations
+                    this.structA = res.data.Relations
+                })
+            }
             
             // 获取渠道经理 
             api.getChannelManager({}).then(res => {
@@ -274,14 +282,18 @@ export default {
 			})
 
             // 地址
-            api.getAddress({}).then(res => {
-                if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
-                    return
-                }
-				this.provinces = res.data.address
-                this.saleAdds.provinces = res.data.address
-			})
+            
+            if(commonData.addrList.length == 0){
+                api.getAddress({}).then(res => {
+                    if (res.ret != '0') {
+                        this.$layer.alert(res.retinfo)
+                        return
+                    }
+                    commonData.addrList = res.data.address
+                    this.provinces = res.data.address
+                    this.saleAdds.provinces = res.data.address
+                })
+            }
 
         },
 
@@ -429,9 +441,6 @@ export default {
 
         //确定
         submitnow: function(formName) {
-
-
-
 
         	var self = this
             // 获取销售范围ID列表

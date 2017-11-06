@@ -3,6 +3,10 @@ import axios from 'axios'
 import router from '../router'
 import util from '../common/util'
 
+
+import {Message} from 'element-ui'
+
+
 // import * as _ from '../util/tool'
 
 // axios 配置
@@ -29,11 +33,9 @@ axios.interceptors.response.use((res) =>{
 }, (error) => {
     if (error.response) {
       switch (error.response.status) {
-        case 403:
-            // console.log(403)
-            // router.push({ path: '/login' })
+        case 403: 
             let host = encodeURIComponent(util.accessHost)
-            window.location.href = 'http://api-amc.huishoubao.com.cn/login?system_id=23&jump_url=' + host
+            window.location.href = 'http://api-amc.huishoubao.com.cn/login?system_id=23&jump_url=' + host 
       }
     }
     return Promise.reject(error)
