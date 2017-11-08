@@ -1,5 +1,5 @@
 <template>
-    <el-row class="container">
+    <el-row class="container" ref="container">
         <!--头部-->
         <el-col :span="24" class="topbar-wrap">
             <div class="topbar-logo topbar-btn">
@@ -79,7 +79,7 @@ import api from '../api/api'
 import util from '../common/util'
 export default {
     name: 'home',
-    created() { 
+    created() {
         // this.get_user_menu() 
     },
     data() {
@@ -87,7 +87,7 @@ export default {
             sysUserName: '',
             sysUserAvatar: '',
             collapsed: false,
-            
+
             menuRutes: []
         }
     },
@@ -105,11 +105,11 @@ export default {
             var _this = this;
             this.$confirm('确认退出吗?', '提示', {
                 //type: 'warning'
-            }).then(() => {  
+            }).then(() => {
                 // 这里要请求退出的接口，接口成功后需要删除cookie然后跳转到登陆页面，如果退出登录不成功，那么就提示
-                let userid = util.getCookie('userid') 
-                api.logout({userid:userid}).then((res)=>{
-                    if(res.ret != '0') {
+                let userid = util.getCookie('userid')
+                api.logout({ userid: userid }).then((res) => {
+                    if (res.ret != '0') {
                         this.$message({
                             message: res.retinfo,
                             type: 'warning'
@@ -121,8 +121,8 @@ export default {
                     util.delCookie('username')
                     util.delCookie('last_connection')
                     util.delCookie('useruuid  ')
-                    window.location.href = 'http://api-amc.huishoubao.com.cn/login?system_id=23&jump_url=' + encodeURIComponent(util.accessHost)
-                })   
+                    window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.systemId + '&jump_url=' + encodeURIComponent(util.accessHost)
+                })
             }).catch(() => {})
         },
         showLoginName() {
@@ -134,7 +134,7 @@ export default {
             }
         },
         // 权限到菜单模块
-        getModule(menu) {  
+        getModule(menu) {
             let routes = this.$router.options.routes
             // console.log(routes)
 
@@ -154,7 +154,7 @@ export default {
             this.menuRutes = this.$router.options.routes
         },
         // 权限到菜单页面
-        getDeepModule(menu) { 
+        getDeepModule(menu) {
             let routes = this.$router.options.routes
             // console.log(routes)
 
@@ -173,7 +173,7 @@ export default {
                         }
                     }
                 }
-            } 
+            }
             // console.log(this.$router.options.routes)
             for (let i in menu) {
                 for (let index in routes) {
@@ -199,31 +199,38 @@ export default {
                 userid = util.getCookie('userid'),
                 token = util.getCookie('useruuid'),
                 params = {
-                userid: userid,
-                token: token
-            }
-
+                    userid: userid,
+                    token: token
+                } 
             if (!userid) { 
-                window.location.href = 'http://api-amc.huishoubao.com.cn/login?system_id=23&jump_url=' + host
+                window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.systemId + '&jump_url=' + host
             } else {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '玩命加载中......',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                })
                 api.get_user_authority(params).then((res) => {
                     if (res.ret != '0') {
                         this.$message({
                             message: res.retinfo,
                             type: 'warning'
-                        });
+                        })
+                        loading.close()
                         return
-                    } 
-                    let menu = res.data.menu 
+                    }
+                    loading.close()
+                    this.$refs.container.style.display = 'block'
+                    let menu = res.data.menu
                     this.getModule(menu)
                     this.showLoginName()
                 })
-            }  
+            }
         }
     },
-    mounted() {  
-        this.get_user_menu()
-        
+    mounted() {
+        this.get_user_menu() 
     }
 }
 
@@ -283,6 +290,7 @@ export default {
     top: 0px;
     bottom: 0px;
     width: 100%;
+    display: none;
 
     .topbar-wrap {
         height: 50px;

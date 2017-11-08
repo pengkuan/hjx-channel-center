@@ -9,4 +9,4 @@
 export default {
     name: 'app'
 }
-</script>
+</script> 

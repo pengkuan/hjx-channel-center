@@ -35,7 +35,7 @@ axios.interceptors.response.use((res) =>{
       switch (error.response.status) {
         case 403: 
             let host = encodeURIComponent(util.accessHost)
-            window.location.href = 'http://api-amc.huishoubao.com.cn/login?system_id=23&jump_url=' + host 
+            window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.systemId+'&jump_url=' + host 
       }
     }
     return Promise.reject(error)
