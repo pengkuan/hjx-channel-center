@@ -16,13 +16,13 @@
 	    <el-table-column prop="Fname" label="分类名称" ></el-table-column>
 	    <el-table-column prop="Fdesc" label="分类描述" ></el-table-column>
 	    <el-table-column  label="状态" >
-	    	<template scope="scope">
+	    	<template slot-scope="scope">
 	            <span v-if="scope.row.Fstatus == '1' ">启用</span>
 	    		<span v-else-if="scope.row.Fstatus == '2' ">禁用</span>
 	        </template>
 	    </el-table-column>
 	    <el-table-column label="操作" >
-	        <template scope="scope" >
+	        <template slot-scope="scope" >
 	        	<div v-if="scope.row.Fstatus == 1">
 		        	<el-button class='indexFunBtn' type="primary" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
 		        	<el-button class='indexFunBtn' type="danger" @click="setStatusConfirm(scope.row.Fcate_id , scope.row.Fstatus)"  size="small">禁用</el-button>

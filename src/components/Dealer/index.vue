@@ -84,7 +84,7 @@
 	    </el-table-column>
 	    <el-table-column prop="strDealerName" label="公司全称" ></el-table-column>
 	    <el-table-column prop="strDealerName" label="地区" >
-	    	<template scope="scope">
+	    	<template slot-scope="scope">
 	            {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName }}
 	        </template>
 	    </el-table-column>
@@ -92,7 +92,7 @@
 	    <el-table-column prop="strUserName" label="D4"></el-table-column>
 	    <el-table-column prop="strContractEndTime" label="合同结束时间"></el-table-column>
 	    <el-table-column  label="状态" >
-	    	<template scope="scope">
+	    	<template slot-scope="scope">
 	    		<span v-if="scope.row.strStatus == '1' ">待审核</span>
 	    		<span v-else-if="scope.row.strStatus == '2' ">资料不全</span>
 	    		<span v-else-if="scope.row.strStatus == '3' ">合作中</span>
@@ -102,7 +102,7 @@
 	    <el-table-column
 	        label="操作"
 	        >
-	        <template scope="scope">
+	        <template slot-scope="scope">
 	        	<el-button class = 'indexFunBtn' type="primary" @click="detailDealer(scope.row.strDealerId)"  size="small">详情</el-button>
 	        	<el-button class = 'indexFunBtn' type="primary" @click="editDealer(scope.row.strDealerId)"  size="small">编辑</el-button>
 	        	<el-button class = 'indexFunBtn' type="primary" @click="relateD4(scope.row.strDealerId , scope.row.strUserName)"  size="small">关联D4</el-button>

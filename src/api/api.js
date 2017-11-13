@@ -26,6 +26,7 @@ axios.interceptors.request.use((config) => {
 
 //返回状态判断
 axios.interceptors.response.use((res) =>{
+    let _this = this
     if(res.status != 200){
         return Promise.reject(res)
     }
@@ -33,9 +34,10 @@ axios.interceptors.response.use((res) =>{
 }, (error) => {
     if (error.response) {
       switch (error.response.status) {
-        case 403: 
+        case 403:  
             let host = encodeURIComponent(util.accessHost)
             window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.systemId+'&jump_url=' + host 
+            // router.push({ path: '/login' })
       }
     }
     return Promise.reject(error)

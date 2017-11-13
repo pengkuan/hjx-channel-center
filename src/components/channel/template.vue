@@ -30,7 +30,7 @@
 	    <el-table-column
 	        label="操作"
 	        >
-	        <template scope="scope">
+	        <template slot-scope="scope">
 	        	<el-button class = 'indexFunBtn' type="primary" @click="edit(scope.row.strTemplateId)"  size="small">编辑</el-button>
 	        	<el-button class = 'indexFunBtn' type="danger" @click="delchnn(scope.row.strTemplateId)"  size="small">禁用</el-button>
 	        	<el-button class = 'indexFunBtn' type="primary" @click="upchnn(scope.row.strTemplateId)"  size="small">启用</el-button>

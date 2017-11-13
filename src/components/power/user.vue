@@ -34,14 +34,14 @@
 	    <el-table-column prop="Fdesc" label="角色描述" ></el-table-column>
 	    <el-table-column prop="Fcate_name" label="所属分类"></el-table-column>
 	    <el-table-column  label="状态" >
-	    	<template scope="scope">
+	    	<template slot-scope="scope">
 	    		<span v-if="scope.row.upStatus">禁用<br><span class="unUseStatus">上级被禁用，当前无法操作</span></span>
 	    		<span v-else-if="scope.row.Fstatus == '1' ">启用</span>
 	    		<span v-else>禁用</span>
 	        </template>
 	    </el-table-column>
 	    <el-table-column label="操作" >
-	        <template scope="scope" >
+	        <template slot-scope="scope" >
 	        	<div v-if="scope.row.Fstatus == 1">
 		        	<el-button class='indexFunBtn' type="primary" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
 		        	<el-button class='indexFunBtn' type="primary" @click="setPower(scope.row.Frole_id)"  size="small">设置权限</el-button>

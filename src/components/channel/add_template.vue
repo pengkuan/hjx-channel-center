@@ -15,17 +15,17 @@
 		    </div>
 		    <el-table :data="list" stripe style="width: 100%">
 			    <el-table-column  label="层级"  width="180">
-			    	<template scope="scope">
+			    	<template slot-scope="scope">
 			    		<el-input v-model="scope.row.strLevel" placeholder='请输入层级'></el-input>
 		            </template>
 				</el-table-column>
 				<el-table-column  label="层级名称"  width="180">
-			    	<template scope="scope">
+			    	<template slot-scope="scope">
 			    		<el-input v-model="scope.row.strLevelName" placeholder='请输入层级名称'></el-input>
 		            </template>
 				</el-table-column>
 				<el-table-column   label="层级描述"  width="180">
-			    	<template scope="scope">
+			    	<template slot-scope="scope">
 			    		<el-input v-model="scope.row.strLevelDesc" placeholder='请输入描述'></el-input>
 		            </template>
 				</el-table-column>
@@ -34,7 +34,7 @@
 				
 				<el-table-column label="操作">
 
-		            <template scope="scope">
+		            <template slot-scope="scope">
 		              	<el-button type="primary" @click="setindex(scope.$index)"  size="small">选择角色</el-button>
 		              	<el-button type="primary" @click="removeTodo(scope.$index)"  size="small">删除此行</el-button>
 		            </template>
@@ -50,7 +50,7 @@
 		    </div>
 		    <el-table :data="currentFroles" stripe style="width: 100%">
 			    <el-table-column  label="选择"  width="180">
-			    	<template scope="scope">
+			    	<template slot-scope="scope">
 			    		<el-checkbox v-model="scope.row.strSelect"></el-checkbox>
 		            </template>
 				</el-table-column>

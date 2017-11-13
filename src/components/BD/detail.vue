@@ -45,7 +45,7 @@
 						      	<el-table-column prop="strMyLevelName" label="组织身份" width="180">
 						      	</el-table-column>
 						      	<el-table-column label="对应上级" width="220">
-						        	<template scope="scope">
+						        	<template slot-scope="scope">
 							            {{scope.row.strLeadUserName + ' / ' + scope.row.strLeadPhoneNum }}
 							        </template>
 						      	</el-table-column>
@@ -89,13 +89,13 @@
 					    <el-table-column prop="strStoreName" label="名称" ></el-table-column>
 					    <el-table-column prop="strChannelName" label="所属商户" ></el-table-column>
 					    <el-table-column label="地址">
-					    	<template scope="scope">
+					    	<template slot-scope="scope">
 					            {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName +scope.row.strAddress}}
 					        </template>
 					    </el-table-column>
 
 					    <el-table-column  label="合作状态" >
-					    	<template scope="scope">
+					    	<template slot-scope="scope">
 					    		<span v-if="scope.row.strStatus == '1' ">待审核</span>
 					    		<span v-else-if="scope.row.strStatus == '2' ">资料不全</span>
 					    		<span v-else-if="scope.row.strStatus == '3' ">合作中</span>
@@ -110,7 +110,7 @@
 					    <el-table-column
 					        label="操作"
 					        >
-					        <template scope="scope">
+					        <template slot-scope="scope">
 					        	<el-button type="primary" @click="storeBDetail(scope.row.strStoreId)"  size="small">详情</el-button>
 					        </template>
 					    </el-table-column>

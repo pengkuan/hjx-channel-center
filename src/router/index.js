@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import index from '@/components/index'
+import index from '@/components/index' 
 // 渠道
 import channelIndex from '@/components/channel/index'
 import addChannel from '@/components/channel/add_channel'
@@ -58,17 +58,16 @@ const Login = resolve => require(['@/components/Login'], resolve)
 
 Vue.use(Router)
 
-let router = new Router({
-    // mode: 'history',
+let router = new Router({ 
     routes: [
         {
             path: '/login',
             name: '登录',
             component: Login
-        },
+        },  
         {
             path: '/',
-            name: 'home',
+            name: 'home', 
             component: Home,
             redirect: '/index',
             leaf: true, // 只有一个节点

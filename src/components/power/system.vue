@@ -14,13 +14,13 @@
         <el-table-column prop="name" label="系统名称" ></el-table-column>
         <el-table-column prop="system_desc" label="系统描述" ></el-table-column>
         <el-table-column  label="状态" >
-            <template scope="scope">
+            <template slot-scope="scope">
                 <span v-if="scope.row.status == '1' ">启用</span>
                 <span v-else-if="scope.row.status == '2' ">禁用</span>
             </template>
         </el-table-column>
         <el-table-column label="操作" >
-            <template scope="scope" >
+            <template slot-scope="scope" >
                 <div v-if="scope.row.status == 1">
                     <el-button class='indexFunBtn' type="primary" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
                     <el-button class='indexFunBtn' type="danger" @click="setStatusConfirm(scope.row.system_id , scope.row.status)"  size="small">禁用</el-button>

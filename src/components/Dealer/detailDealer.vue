@@ -101,7 +101,7 @@
                             <el-table-column prop="strLevelName" label="组织身份" width="180">
                             </el-table-column>
                             <el-table-column prop="strLevelName" label="对应上级" width="220">
-                                <template scope="scope">
+                                <template slot-scope="scope">
                                     {{scope.row.strUserName + ' / ' + scope.row.strPhoneNum }}
                                 </template>
                             </el-table-column>

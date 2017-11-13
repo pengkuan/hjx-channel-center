@@ -191,21 +191,21 @@
                 </el-table-column>
                 <el-table-column prop="strStoreName" label="门店名称" ></el-table-column>
                 <el-table-column prop="strProvinceName" label="门店地址">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName +scope.row.strAddress}}
                     </template>
                 </el-table-column>
                 <el-table-column prop="strChannelName" label="渠道商" ></el-table-column>
                 <el-table-column prop="strChannelManagerName" label="渠道经理" ></el-table-column>
                 <el-table-column  label="合作状态" >
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         {{scope.row.strStatus == 1 ?'正常':'停止'}}
                     </template>
                 </el-table-column>
                 <el-table-column 
                     label="操作"
                     >
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
                         <el-button class = 'indexFunBtn' type="danger" @click="disableStore(scope.row.strStoreId)"  size="small">禁用</el-button>
                         <el-button class = 'indexFunBtn' type="primary" @click="enableStore(scope.row.strStoreId)"  size="small">启用</el-button>

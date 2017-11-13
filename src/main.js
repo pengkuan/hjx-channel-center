@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-default/index.css'
 import '@/assets/iconfont.css'
 import '@/common/index.css'
 import router from './router'
+import store from './store'
 import layer from 'vue-layer'
 
 Vue.prototype.$layer = layer(Vue)
@@ -16,6 +17,7 @@ Vue.use(ElementUI)
 new Vue({
 	el: '#app',
 	router,
+	store,
 	template: '<App/>',
 	components: { App }
 })

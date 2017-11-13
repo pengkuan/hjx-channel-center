@@ -1,99 +1,102 @@
 <template>
-    <el-row class="container" ref="container">
-        <!--头部-->
-        <el-col :span="24" class="topbar-wrap">
-            <div class="topbar-logo topbar-btn">
-                <a href="/"><img src="../assets/images/logo.png" style="margin: 10px 0 0 10px;height:30px;border:0"></a>
-            </div>
-            <div class="topbar-title topbar-btn">
-                <!-- <span>运营管理后台</span> -->
-            </div>
-            <div class="topbar-account topbar-btn">
-                <el-dropdown trigger="click">
-                    <span class="el-dropdown-link userinfo-inner"><i class="iconfont icon-user"></i> {{sysUserName}}  <i class="iconfont icon-down"></i></span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>个人信息</el-dropdown-item>
-                        <el-dropdown-item>修改密码</el-dropdown-item>
-                        <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
-        </el-col>
-        <!--中间-->
-        <el-col :span="24" class="main">
-            <!--左侧导航-->
-            <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
-                <!--展开折叠开关-->
-                <div class="menu-toggle" @click.prevent="collapse">
-                    <i class="iconfont icon-menufold" v-show="!collapsed"></i>
-                    <i class="iconfont icon-menuunfold" v-show="collapsed"></i>
+    <div>
+        <el-row class="container" v-show="showDiv">
+            <!--头部-->
+            <el-col :span="24" class="topbar-wrap">
+                <div class="topbar-logo topbar-btn">
+                    <a href="/"><img src="../assets/images/logo.png" style="margin: 10px 0 0 10px;height:30px;border:0"></a>
                 </div>
-                <!--菜单展开时的显示情况-->
-                <el-menu v-show="!collapsed" default-active="0" @open="handleOpen" @close="handleClose" router>
-                    <!-- <template v-for="(item,index) in $router.options.routes" v-if="item.menuShow"> -->
-                    <template v-for="(item,index) in menuRutes" v-if="item.menuShow">
-                        <el-submenu v-if="!item.leaf" :index="index+''">
-                            <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-                            <el-menu-item v-for="term in item.children" :key="term.path" :index="term.path" v-if="term.menuShow" :class="$route.path==term.path?'is-active-add':''">
-                                {{term.name}}
-                            </el-menu-item>
-                        </el-submenu>
-                        <el-menu-item v-else-if="item.leaf&&item.children&&item.children.length" :index="item.children[0].path" class="el-submenu__title">
-                            <i :class="item.iconCls"></i>{{item.children[0].name}}
-                        </el-menu-item>
-                    </template>
-                </el-menu>
-                <!--菜单折叠后的显示情况-->
-                <ul v-show="collapsed" class="el-menu collapsed" ref="menuCollapsed">
-                    <!-- <template v-for="(item,index) in $router.options.routes" v-if="item.menuShow"> -->
-                    <template v-for="(item,index) in menuRutes" v-if="item.menuShow">
-                        <li v-if="!item.leaf" :index="index+''" style="position: relative;">
-                            <div class="el-submenu__title" style="padding-left: 20px;" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)"><i :class="item.iconCls"></i></div>
-                            <ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">
-                                <li v-for="term in item.children" :key="term.path" v-if="term.menuShow" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==term.path?'is-active':''" @click="$router.push(term.path)">
+                <div class="topbar-title topbar-btn">
+                    <!-- <span>运营管理后台</span> -->
+                </div>
+                <!-- <div class="topbar-account topbar-btn">
+                    <el-dropdown trigger="click">
+                        <span class="el-dropdown-link userinfo-inner"><i class="iconfont icon-user"></i> {{sysUserName}}  <i class="iconfont icon-down"></i></span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item>个人信息</el-dropdown-item>
+                            <el-dropdown-item>修改密码</el-dropdown-item>
+                            <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div> -->
+            </el-col>
+            <!--中间-->
+            <el-col :span="24" class="main">
+                <!--左侧导航-->
+                <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
+                    <!--展开折叠开关-->
+                    <div class="menu-toggle" @click.prevent="collapse">
+                        <i class="iconfont icon-menufold" v-show="!collapsed"></i>
+                        <i class="iconfont icon-menuunfold" v-show="collapsed"></i>
+                    </div>
+                    <!--菜单展开时的显示情况-->
+                    <el-menu v-show="!collapsed" default-active="0" @open="handleOpen" @close="handleClose" router>
+                        <!-- <template v-for="(item,index) in $router.options.routes" v-if="item.menuShow"> -->
+                        <template v-for="(item,index) in menuRutes" v-if="item.menuShow" >
+                            <el-submenu v-if="!item.leaf" :index="index+''">
+                                <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
+                                <el-menu-item v-for="term in item.children" :key="term.path" :index="term.path" v-if="term.menuShow" :class="$route.path==term.path?'is-active-add':''">
                                     {{term.name}}
-                                </li>
-                            </ul>
-                        </li>
-                        <li v-else-if="item.leaf&&item.children&&item.children.length" class="el-menu-item el-submenu__title" :class="$route.path==item.children[0].path?'is-active':''" @click="$router.push(item.children[0].path)">
-                            <i :class="item.iconCls"></i>
-                        </li>
-                    </template>
-                </ul>
-            </aside>
-            <!--右侧内容区-->
-            <section class="content-container right-container">
-                <div class="grid-content bg-purple-light">
-                    <el-col :span="24" class="content-wrapper">
-                        <transition name="slide-fade" mode="out-in">
-                            <router-view></router-view>
-                        </transition>
-                    </el-col>
-                </div>
-            </section>
-        </el-col>
-    </el-row>
+                                </el-menu-item>
+                            </el-submenu>
+                            <el-menu-item v-else-if="item.leaf&&item.children&&item.children.length" :index="item.children[0].path" class="el-submenu__title">
+                                <i :class="item.iconCls"></i>{{item.children[0].name}}
+                            </el-menu-item>
+                        </template>
+                    </el-menu>
+                    <!--菜单折叠后的显示情况-->
+                    <ul v-show="collapsed" class="el-menu collapsed" ref="menuCollapsed">
+                        <!-- <template v-for="(item,index) in $router.options.routes" v-if="item.menuShow"> -->
+                        <template v-for="(item,index) in menuRutes" v-if="item.menuShow">
+                            <li v-if="!item.leaf" :index="index+''" style="position: relative;" @click="setCollapsed" >
+                                <div class="el-submenu__title" style="padding-left: 20px;"  @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)"><i :class="item.iconCls"></i></div>
+                                <ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">
+                                    <li v-for="term in item.children" :key="term.path" v-if="term.menuShow" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==term.path?'is-active':''" >
+                                        {{term.name}}
+                                    </li>
+                                </ul>
+                            </li>
+                            <li v-else-if="item.leaf&&item.children&&item.children.length"  
+                                class="el-menu-item el-submenu__title"  
+                                @click="setCollapsed">
+                                <i :class="item.iconCls"></i>
+                            </li>
+                        </template>
+                    </ul>
+                </aside>
+                <!--右侧内容区-->
+                <section class="content-container right-container">
+                    <div class="grid-content bg-purple-light">
+                        <el-col :span="24" class="content-wrapper">
+                            <transition name="slide-fade" mode="out-in">
+                                <router-view></router-view>
+                            </transition>
+                        </el-col>
+                    </div>
+                </section>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 <script>
 import api from '../api/api'
 import util from '../common/util'
 export default {
-    name: 'home',
-    created() {
-        // this.get_user_menu() 
-    },
+    created() {},
     data() {
         return {
-            sysUserName: '',
-            sysUserAvatar: '',
             collapsed: false,
-
-            menuRutes: []
+            menuRutes: [],
+            menuList: [],
+            showDiv: false
         }
     },
     methods: {
         handleOpen() {},
-        handleClose() {},
+        handleClose() {}, 
+        setCollapsed() {
+            this.collapsed = !this.collapsed
+        },
         //折叠导航栏
         collapse: function() {
             this.collapsed = !this.collapsed
@@ -101,49 +104,14 @@ export default {
         showMenu(i, status) {
             this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none'
         },
-        logout() {
-            var _this = this;
-            this.$confirm('确认退出吗?', '提示', {
-                //type: 'warning'
-            }).then(() => {
-                // 这里要请求退出的接口，接口成功后需要删除cookie然后跳转到登陆页面，如果退出登录不成功，那么就提示
-                let userid = util.getCookie('userid')
-                api.logout({ userid: userid }).then((res) => {
-                    if (res.ret != '0') {
-                        this.$message({
-                            message: res.retinfo,
-                            type: 'warning'
-                        })
-                        return
-                    }
-                    // 退出成功，删除cookie,跳转到登陆页  
-                    util.delCookie('userid')
-                    util.delCookie('username')
-                    util.delCookie('last_connection')
-                    util.delCookie('useruuid  ')
-                    window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.systemId + '&jump_url=' + encodeURIComponent(util.accessHost)
-                })
-            }).catch(() => {})
-        },
-        showLoginName() {
-            // var user = sessionStorage.getItem('access-user')
-            let user = util.getCookie('username')
-            if (user) {
-                // user = JSON.parse(user)
-                this.sysUserName = user || ''
-            }
-        },
         // 权限到菜单模块
         getModule(menu) {
             let routes = this.$router.options.routes
-            // console.log(routes)
-
             for (let a in routes) {
                 if (routes[a].menuShow && routes[a].name != 'home') {
                     this.$router.options.routes[a].menuShow = false
                 }
             }
-
             for (let i in menu) {
                 for (let index in routes) {
                     if (menu[i].name == routes[index].name) {
@@ -156,8 +124,6 @@ export default {
         // 权限到菜单页面
         getDeepModule(menu) {
             let routes = this.$router.options.routes
-            // console.log(routes)
-
             // 清空导航以及导航下子路由的menuShow，注意排除home以及home没有children的容错
             for (let a in routes) {
                 if (routes[a].menuShow && routes[a].name != 'home') {
@@ -194,17 +160,22 @@ export default {
 
             this.menuRutes = this.$router.options.routes
         },
+        // 获取权限列表数据
         get_user_menu() {
             let host = encodeURIComponent(util.accessHost),
                 userid = util.getCookie('userid'),
                 token = util.getCookie('useruuid'),
                 params = {
                     userid: userid,
-                    token: token
-                } 
-            if (!userid) { 
+                    token: token,
+                    systemid:  util.systemId
+                }
+                
+            if (!userid) {
                 window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.systemId + '&jump_url=' + host
             } else {
+
+                ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭
                 const loading = this.$loading({
                     lock: true,
                     text: '玩命加载中......',
@@ -220,17 +191,29 @@ export default {
                         loading.close()
                         return
                     }
-                    loading.close()
-                    this.$refs.container.style.display = 'block'
-                    let menu = res.data.menu
-                    this.getModule(menu)
-                    this.showLoginName()
-                })
+                    loading.close() 
+                    this.showDiv = true
+                    this.menuList = res.data.menu
+                    this.getModule(this.menuList) 
+                }) 
+
+
+                ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭 
+                /*this.setTestCookie()
+                this.menuList = [{ name: '渠道关系管理' }, { name: '全部D' }, { name: '全部BD' }]
+                this.showDiv = true
+                this.getModule(this.menuList)*/
             }
+        },
+        // 测试时，模拟写入cookie,登录信息
+        setTestCookie() {
+            util.setCookie('userid', '694')
+            util.setCookie('username', 'tianyu')
+            util.setCookie('useruuid', 'c6ed5c8e9830cf9225d078bdde335de7')
         }
     },
-    mounted() {
-        this.get_user_menu() 
+    mounted() { 
+        this.get_user_menu()
     }
 }
 
@@ -290,7 +273,6 @@ export default {
     top: 0px;
     bottom: 0px;
     width: 100%;
-    display: none;
 
     .topbar-wrap {
         height: 50px;
@@ -302,13 +284,17 @@ export default {
             color: #fff;
         }
         .topbar-btn:hover {
-            background-color: #4A5064;
+            // background-color: #4A5064;
         }
         .topbar-logo {
             float: left;
             text-align: center;
-            width: 49px;
+            width: 170px;
             line-height: 26px;
+            cursor: pointer;
+            a {
+                display: block;
+            }
         }
         .topbar-title {
             float: left;

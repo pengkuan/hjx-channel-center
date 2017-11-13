@@ -64,7 +64,7 @@
 	    border
 	    style="width: 100% ; min-height:300px">
 	    <el-table-column label="ID" >
-	    	<template scope="scope">
+	    	<template slot-scope="scope">
 	    		{{scope.row.strPrefixUserId}}
 	        </template>
 	    </el-table-column>
@@ -74,7 +74,7 @@
 	    <el-table-column prop="strLevelNames" label="组织身份"></el-table-column>
 	    <el-table-column prop="strStatusName" label="状态"></el-table-column>
 	    <!-- <el-table-column  label="状态" >
-	    	<template scope="scope">
+	    	<template slot-scope="scope">
 	            <span v-if="scope.row.strStatus == '1' ">待审核</span>
 	    		<span v-else-if="scope.row.strStatus == '2' ">资料不全</span>
 	    		<span v-else-if="scope.row.strStatus == '3' ">合作中</span>
@@ -85,7 +85,7 @@
 	    <el-table-column
 	        label="操作"
 	        >
-	        <template scope="scope">
+	        <template slot-scope="scope">
 	        	<el-button type="primary" @click="detailBD(scope.row.strUserId)"  size="small">详情</el-button>
 	        	<el-button type="primary" @click="eidtBD(scope.row.strUserId)"  size="small">编辑</el-button>
 	        	<!-- <el-button type="primary" @click="addNext(scope.row.strUserId)"  size="small">添加下级</el-button> -->

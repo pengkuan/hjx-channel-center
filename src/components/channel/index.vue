@@ -31,20 +31,20 @@
         </el-table-column>
         <el-table-column prop="strChannelName" label="商户名称" ></el-table-column>
         <el-table-column prop="strProvinceName" label="商户地址">
-            <template scope="scope">
+            <template slot-scope="scope">
                 {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName}}
             </template>
         </el-table-column>
         <!-- <el-table-column prop="strChannelName" label="渠道商" ></el-table-column>
         <el-table-column prop="strChannelManagerName" label="渠道经理" ></el-table-column> -->
         <el-table-column  label="合作状态" >
-          <template scope="scope">
+          <template slot-scope="scope">
                 {{scope.row.strState == 1 ?'正常':'停止'}}
             </template>
         </el-table-column>
 
         <el-table-column prop="strChannelScore" label="商户评分" >
-            <template scope="scope">
+            <template slot-scope="scope">
                 <span v-if="scope.row.strChannelScore == '0' ">A</span>
                 <span v-else-if="scope.row.strChannelScore == '1' ">B</span>
                 <span v-else-if="scope.row.strChannelScore == '2' ">C</span>
@@ -58,7 +58,7 @@
         <el-table-column
             label="操作"
             >
-            <template scope="scope">
+            <template slot-scope="scope">
                 <!-- <el-button type="primary" @click="showChannel(scope.row.strChannelId)"  size="small">详情</el-button> -->
                 <el-button type="primary" @click="editChannel(scope.row.strChannelId)"  size="small">编辑</el-button>
             </template>

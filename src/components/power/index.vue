@@ -327,6 +327,7 @@ export default {
                     this.$message(res.retinfo)
                     return
                 }
+                console.log(res)
                 this.dataList = util.combineCell(this.relateFstatus(res.data.list))
 				this.total = Number(res.data.nums)
 			})

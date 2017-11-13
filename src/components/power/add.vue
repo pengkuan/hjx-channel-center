@@ -60,7 +60,7 @@
 			    <el-table-column label="序号" type="index" width="70px">
 			    </el-table-column>
 			    <el-table-column label="权限名称">
-			    	<template scope="scope">
+			    	<template slot-scope="scope">
 			    		<el-form-item  
 		    			:prop=" 'c_datas.' + scope.$index + '.name' "
 			    		:rules="{
@@ -72,7 +72,7 @@
 			    </el-table-column>
 
 			    <el-table-column label="描述">
-			    	<template scope="scope">
+			    	<template slot-scope="scope">
 			    		<el-form-item  
 		    			:prop=" 'c_datas.' + scope.$index + '.desc' "
 			    		:rules="{
@@ -83,13 +83,13 @@
 			    	</template>
 			    </el-table-column>
 			    <el-table-column label="权限标识码">
-			    	<template scope="scope">
+			    	<template slot-scope="scope">
 			    		<el-input  v-model="scope.row.access_flags" :value="scope.row.access_flags" :maxlength="20" placeholder="请输入权限标识码"></el-input>
 			    	</template>
 			    </el-table-column>
 
 			    <el-table-column label="操作" >
-			        <template scope="scope" >
+			        <template slot-scope="scope" >
 			        	<el-button @click="handleItem(scope.$index , 'add')" icon="plus" type="text"></el-button>
 			        	<el-button class='delete' v-if="scope.$index != 0" @click="handleItem(scope.$index , 'del')" icon="close" type="text"></el-button>
 			        </template>

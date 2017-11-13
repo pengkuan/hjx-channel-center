@@ -27,14 +27,14 @@
 	    <el-table-column prop="strCardNum" label="身份证"></el-table-column>
 	    <el-table-column prop="strUserTel" label="手机号码" ></el-table-column>
 	    <el-table-column  label="合作状态" >
-	    	<template scope="scope">
+	    	<template slot-scope="scope">
 	            {{scope.row.strStatus == 1 ?'正常':'停止'}}
 	        </template>
 	    </el-table-column>
 	    <el-table-column
 	        label="操作"
 	        >
-	        <template scope="scope">
+	        <template slot-scope="scope">
 	        	<el-button class = 'indexFunBtn' type="primary" @click="editEmployee(scope.row.strUserId)"  size="small">编辑</el-button>
 	        	<el-button class = 'indexFunBtn' type="danger" @click="setEmployee(scope.row.strUserId , 0)"  size="small">禁用</el-button>
 	        	<el-button class = 'indexFunBtn' type="primary" @click="setEmployee(scope.row.strUserId , 1)"  size="small">启用</el-button>
