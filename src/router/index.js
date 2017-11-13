@@ -47,6 +47,7 @@ import DealerDetail from '@/components/Dealer/detailDealer'
 //BD
 import BDList from '@/components/BD/index'
 import BDAdd from '@/components/BD/add'
+import BDAdds from '@/components/BD/adds'
 import EditBD from '@/components/BD/edit'
 import BDAddNext from '@/components/BD/addNext'
 import BDDetail from '@/components/BD/detail'
@@ -72,7 +73,7 @@ let router = new Router({
             redirect: '/index',
             leaf: true, // 只有一个节点
             menuShow: true,
-            iconCls: 'iconfont icon-home', // 图标样式class
+            iconCls: 'iconfont icon-home_fill_light', // 图标样式class
             children: [
                 {path: '/index', component: index, name: '首页', menuShow: true}
             ]
@@ -83,7 +84,7 @@ let router = new Router({
             name: '渠道关系管理',
             menuShow: true,
             //leaf: true, // 只有一个节点
-            iconCls: 'iconfont icon-users', // 图标样式class
+            iconCls: 'iconfont icon-friend_light', // 图标样式class
             children: [
                 {path: '/channel/index', component: channelIndex, name: '渠道商管理', menuShow: true},
                 {path: '/channel/add_channel', component: addChannel},
@@ -107,7 +108,7 @@ let router = new Router({
             component: Home,
             name: '全部D',
             menuShow: true,
-            iconCls: 'iconfont icon-user',
+            iconCls: 'iconfont icon-people',
             children: [
                 {path: '/Dealer/index', component: DealerList, name: '全部Dealer', menuShow: true},
                 {path: '/Dealer/add', component: DealerAdd, name: '新增Dealer'},
@@ -128,11 +129,12 @@ let router = new Router({
             component: Home,
             name: '全部BD',
             menuShow: true,
-            iconCls: 'iconfont icon-user',
+            iconCls: 'iconfont icon-peoplefill',
             children: [
                 {path: '/BD/index', component: BDList, name: 'BD列表', menuShow: true},
                 {path: '/BD/tree', component: BDTree, name: 'BD tree', menuShow: true},
                 {path: '/BD/add', component: BDAdd, name: '新增BD'},
+                {path: '/BD/adds', component: BDAdds, name: '批量新增BD'},
                 {path: '/BD/addNext', component: BDAddNext, name: 'BDAddNext'},
                 {path: '/BD/detail', component: BDDetail, name: 'detailBD'},
                 {path: '/BD/edit', component: EditBD, name: 'editBD'},
@@ -143,7 +145,7 @@ let router = new Router({
             component: Home,
             name: '权限中心',
             menuShow: true,
-            iconCls: 'iconfont icon-setting',
+            iconCls: 'iconfont icon-unlock',
             children: [
                 {path: '/power/system', component: system, name: '系统管理', menuShow: true},
                 {path: '/power/index', component: powerIndex, name: '权限管理', menuShow: true},

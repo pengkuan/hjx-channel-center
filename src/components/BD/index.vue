@@ -56,6 +56,7 @@
     </el-form>
 
     <div class="tool">
+    	<router-link to="adds"><el-button size="small">批量创建</el-button></router-link>
     	<router-link to="add"><el-button type="primary" size="small">创建BD用户</el-button></router-link>
     </div>
 

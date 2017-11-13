@@ -99,6 +99,31 @@ export default {
             }
         }
     },
+    // 设置本地储存
+    Set_lsdata(key, value) {
+        if (key != "") {
+            if (value) {
+                var lsobj = window.localStorage
+                var datajson = JSON.stringify(value)
+                lsobj.setItem(key, datajson)
+            }
+        }
+    },
+    Get_lsdata(key) {
+        if (key != "") {
+            var value = null
+            var lsdata = window.localStorage
+            try {
+                var datajson = lsdata.getItem(key)
+                datajson = JSON.parse(datajson)
+                value = datajson
+            } catch (e) {
+
+            } finally {
+                return value
+            }
+        }
+    },
     //数组去重
     unique(list) {
         var res = []

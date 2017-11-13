@@ -28,16 +28,17 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use((res) =>{
     let _this = this
     if(res.status != 200){
+        
         return Promise.reject(res)
     }
     return res.data.body
 }, (error) => {
     if (error.response) {
+    Message({message:error.response.data.body.retinfo,type:'warning'})
       switch (error.response.status) {
         case 403:  
             let host = encodeURIComponent(util.accessHost)
             window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.systemId+'&jump_url=' + host 
-            // router.push({ path: '/login' })
       }
     }
     return Promise.reject(error)
@@ -212,6 +213,10 @@ export default {
     getBDInfo(params) {return fetch('get_bd_detail', params)},// BD详情
     getBDStoreList(params) {return fetch('get_bd_store_list', params)},// BD负责门店列表
     editBDLogic(params) {return fetch('edit_bd_user', params)},// 编辑BD
+    checkBdExcel(params) {return fetch('check_bd_excel', params)},// 批量验证BD
+    createBdExcel(params) {return fetch('create_bd_excel', params)},// 批量验证BD
+
+    
     /*BD tree*/
     getBD4List(params) {return fetch('get_bdx_list', params)},//获取BD4
     getBD4Tree(params) {return fetch('get_bd_tree', params)},//获取BD4对应tree
