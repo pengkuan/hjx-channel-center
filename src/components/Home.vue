@@ -26,8 +26,8 @@
                 <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
                     <!--展开折叠开关-->
                     <div class="menu-toggle" @click.prevent="collapse">
-                        <i class="iconfont icon-menufold" v-show="!collapsed"></i>
-                        <i class="iconfont icon-menuunfold" v-show="collapsed"></i>
+                        <i class="iconfont icon-close_menu" v-show="!collapsed"></i>
+                        <i class="iconfont icon-open_menu" v-show="collapsed"></i>
                     </div>
                     <!--菜单展开时的显示情况-->
                     <el-menu v-show="!collapsed" default-active="0" @open="handleOpen" @close="handleClose" router>
@@ -68,8 +68,8 @@
                 <section class="content-container right-container">
                     <div class="grid-content bg-purple-light">
                         <el-col :span="24" class="content-wrapper">
-                            <transition name="slide-fade" mode="out-in">
-                                <router-view></router-view>
+                            <transition name="fade">
+                                <router-view class="router-class"></router-view>
                             </transition>
                         </el-col>
                     </div>
@@ -200,7 +200,7 @@ export default {
 
                 ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭 
                 /*this.setTestCookie()
-                this.menuList = [{ name: '渠道关系管理' }, { name: '全部D' }, { name: '全部BD' }]
+                this.menuList = [{ name: '渠道关系管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
                 this.showDiv = true
                 this.getModule(this.menuList)*/
             }
@@ -255,8 +255,7 @@ export default {
 .el-menu .iconfont {
     vertical-align: baseline;
     margin-right: 6px;
-}
-
+} 
 .warp-breadcrum {
     padding: 10px 0px;
     border-bottom: 1px solid #efefef;
@@ -361,11 +360,31 @@ export default {
         background: #fff;
         flex: 1;
         overflow-y: auto;
-        padding: 10px;
-
+        padding: 10px; 
         .content-wrapper {
             background-color: #fff;
             box-sizing: border-box;
+            position: relative;
+            .router-class {
+                position: absolute;
+                width: 100%;
+                left: 0;
+                top:0;
+            }
+            .fade-enter-active,
+            .fade-leave-active {
+                transition: all .3s;
+            }
+
+            .fade-enter {
+                opacity: 0;
+                // transform: translate3d(10%, 0, 0);
+            }
+
+            .fade-leave-to {
+                opacity: 0;
+                // transform: translate3d(-10%, 0, 0);
+            } 
         }
     }
 }
