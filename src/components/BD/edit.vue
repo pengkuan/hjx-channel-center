@@ -1,10 +1,12 @@
 <template>
 <div>
-<div class="title">全部BD > 编辑</div>
-<div class="content-container">
-    <div class="tool">
+<div class="title">
+    <el-col :span="12">BD管理 > 编辑</el-col>
+    <el-col :span="12" class="textRight">
         <router-link to="index"><el-button size="small">返回BD列表</el-button></router-link>
-    </div>
+    </el-col>
+</div>
+<div class="content-container">
     <el-form  :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
     	<p>1.基本信息</p>
         <el-form-item label="姓名：" prop='strUserName' >

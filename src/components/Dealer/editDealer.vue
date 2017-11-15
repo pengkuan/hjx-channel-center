@@ -1,10 +1,12 @@
 <template>
 <div>
-    <div class="title">全部Dealer > 编辑</div>
+    <div class="title">
+        <el-col :span="12">Dealer管理 > 编辑</el-col>
+        <el-col :span="12" class="textRight">
+            <router-link to="index"><el-button size="small">返回Dealer列表</el-button></router-link>
+        </el-col>
+    </div>
     <div class="content-container">
-        <div class="tool">
-            <router-link to="index"><el-button type="primary" size="small">返回dealer</el-button></router-link>
-        </div>
         <el-form  :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
             <p>1.基本信息</p>
             <el-form-item label="公司全称：" prop='dealer.strDealerName' >
@@ -395,7 +397,6 @@
             cancelnow: function() {
                 this.$router.push({ path: '/Dealer/index' })
             },
-            test(){console.log(this.bankAddr.areas)},
 
             //确定
             submitnow(formName , GoOn) {
@@ -412,8 +413,10 @@
                         //     return
                         // }
                         this.ruleForm.dealer.strDealerName = util.Trim(this.ruleForm.dealer.strDealerName)
-                        this.ruleForm.dealer.strContractBeginTime = this.ruleForm.dateRange[0]
-                        this.ruleForm.dealer.strContractEndTime = this.ruleForm.dateRange[1]
+
+                        this.ruleForm.dealer.strContractBeginTime =  util.formatDate.format(this.ruleForm.dateRange[0] , 'y-M-d h:m:s')
+                        this.ruleForm.dealer.strContractEndTime = util.formatDate.format(this.ruleForm.dateRange[1] , 'y-M-d h:m:s')
+
                         api.editDealerLogic(this.ruleForm).then(res => {
                             if (res.ret != '0') {
                                 this.$message('失败！')
@@ -457,9 +460,7 @@
                     var bankCitys = this.bankAddr.citys
                     for (var index in bankCitys) {
                         if (bankCitys[index].strCityId == val) {
-                            console.log(this.bankAddr.areas)
                             this.bankAddr.areas = bankCitys[index].areas
-                            console.log(this.bankAddr.areas)
                             if(!change) this.ruleForm.dealer.account_bank.strAddrAreaId = this.defaultData.account_bank.strAddrAreaId
                         }
                     }

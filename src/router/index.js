@@ -106,18 +106,18 @@ let router = new Router({
         {
             path: '/',
             component: Home,
-            name: '全部D',
+            name: 'D管理',
             menuShow: true,
             iconCls: 'iconfont icon-people',
             children: [
-                {path: '/Dealer/index', component: DealerList, name: '全部Dealer', menuShow: true},
+                {path: '/Dealer/index', component: DealerList, name: 'Dealer列表', menuShow: true},
                 {path: '/Dealer/add', component: DealerAdd, name: '新增Dealer'},
                 {path: '/Dealer/DealerDetail', component: DealerDetail, name: 'detailDealer'},
                 {path: '/Dealer/editDealer', component: EditDealer, name: 'editDealer'},
                 {path: '/Dealer/relateD4', component: RelateD4, name: 'relateD4'},
 
                 {path: '/D/index', component: DList, name: 'D列表', menuShow: true},
-                {path: '/D/tree', component: DTree, name: 'D tree', menuShow: true},
+                {path: '/D/tree', component: DTree, name: 'D tree管理', menuShow: true},
                 {path: '/D/add', component: DAdd, name: '新增D'},
                 {path: '/D/d_addNext', component: DAddNext, name: 'DAddNext'},
                 {path: '/D/detailD', component: DDetail, name: 'detailD'},
@@ -127,12 +127,12 @@ let router = new Router({
         {
             path: '/',
             component: Home,
-            name: '全部BD',
+            name: 'BD管理',
             menuShow: true,
             iconCls: 'iconfont icon-peoplefill',
             children: [
                 {path: '/BD/index', component: BDList, name: 'BD列表', menuShow: true},
-                {path: '/BD/tree', component: BDTree, name: 'BD tree', menuShow: true},
+                {path: '/BD/tree', component: BDTree, name: 'BD tree管理', menuShow: true},
                 {path: '/BD/add', component: BDAdd, name: '新增BD'},
                 {path: '/BD/adds', component: BDAdds, name: '批量新增BD'},
                 {path: '/BD/addNext', component: BDAddNext, name: 'BDAddNext'},

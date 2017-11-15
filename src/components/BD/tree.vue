@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="title">BD tree</div>
+    <div class="title">BD tree管理</div>
     <el-form :inline="true">
         <el-form-item label="请选择BD4：">
             <el-select v-model="strRelationId" filterable placeholder="请选择BD4">

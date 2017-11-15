@@ -1,10 +1,12 @@
 <template>
 <div>
-<div class="title">D管理 > 创建D用户</div>
-<div class="content-container">
-    <div class="tool">
+<div class="title">
+    <el-col :span="12">D管理 > 创建</el-col>
+    <el-col :span="12" class="textRight">
         <router-link to="index"><el-button size="small">返回D列表</el-button></router-link>
-    </div>
+    </el-col>
+</div>
+<div class="content-container">
     <el-form  :model="ruleForm"  :rules="rules" ref="ruleForm" label-width="100px" id="loading-area">
         <el-form-item label="姓名：" prop='strUserName' >
             <el-input v-model="ruleForm.strUserName" placeholder='请输入姓名' ></el-input>

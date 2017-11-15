@@ -1,6 +1,6 @@
 <template>
 <div>
-	<div class="title">全部D</div>
+	<div class="title">D列表</div>
 	<!--工具条-->
     <el-form :model="searchkeys" ref='searchkeys' class = 'searchTool' style='overflow:hidden'>
         <el-row :gutter="14">

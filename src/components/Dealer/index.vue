@@ -1,6 +1,6 @@
 <template>
 <div>
-	<div class="title">全部Dealer</div>
+	<div class="title">Dealer列表</div>
 	
 	<!--工具条-->
     <el-form :model="filters" ref='filters' class = 'searchTool' style='overflow:hidden'>
@@ -176,7 +176,7 @@ export default {
 	    changeEndTime:function(val){
 	    	let endTimeArr = val.split(' ')
 	    	let time = endTimeArr[0]+'T'+endTimeArr[1]+'.000Z'
-	    	return util.formatDate.format( new Date(time) , "yy-MM-dd")
+	    	return util.formatDate.format(time , "yy-MM-dd")
 	    },
 		showList:function(){
 			this.filters.strDealerName = util.Trim(this.filters.strDealerName)

@@ -1,10 +1,12 @@
 <template>
 <div>
-    <div class="title">全部Dealer > 创建Dealer</div>
+    <div class="title">
+        <el-col :span="12">Dealer管理 > 创建</el-col>
+        <el-col :span="12" class="textRight">
+            <router-link to="index"><el-button size="small">返回Dealer列表</el-button></router-link>
+        </el-col>
+    </div>
     <div class="content-container">
-        <div class="tool">
-            <router-link to="index"><el-button type="primary" size="small">返回dealer</el-button></router-link>
-        </div>
         <el-form  :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
             <p>1.基本信息</p>
             <el-form-item label="公司全称：" prop='dealer.strDealerName' >
@@ -356,8 +358,9 @@
                         //     return
                         // }
                         this.ruleForm.dealer.strDealerName = util.Trim(this.ruleForm.dealer.strDealerName)
-                        this.ruleForm.dealer.strContractBeginTime = this.ruleForm.dateRange[0]
-                        this.ruleForm.dealer.strContractEndTime = this.ruleForm.dateRange[1]
+                        this.ruleForm.dealer.strContractBeginTime =  util.formatDate.format(this.ruleForm.dateRange[0] , 'y-M-d h:m:s')
+                        this.ruleForm.dealer.strContractEndTime = util.formatDate.format(this.ruleForm.dateRange[1] , 'y-M-d h:m:s')
+                        
                         api.addDealerLogic(this.ruleForm).then(res => {
                             if (res.ret != '0') {
                                 self.$message(res.retinfo)
