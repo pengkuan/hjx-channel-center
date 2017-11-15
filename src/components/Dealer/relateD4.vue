@@ -1,11 +1,15 @@
 <template>
 	<div>
-		<div class="title">全部Dealer > 关联D4</div>
-		<div class="tool">
-			<router-link to="index"><el-button size="small">返回Dealer列表</el-button></router-link>
-		</div>
+		<div class="title">
+	        <el-col :span="12">Dealer管理 > 关联D4</el-col>
+	        <el-col :span="12" class="textRight">
+	            <router-link to="index"><el-button size="small">返回Dealer列表</el-button></router-link>
+	        </el-col>
+	    </div>
+		
 		<div v-if ='ifD4' class="haveD4">
-        	<p>{{D4Name + ' / ' + D4Tel}}</p>
+        	<p class="hjx-black">{{D4Name + ' / ' + D4Tel}}</p>
+        	<br>
         	<p class="note">在tree中替换D4负责人，此处关联D4工号将随之替换</p>
         </div>
 		<el-form v-else ref="ruleForm" :rules="rules" :model="ruleForm" label-width="100px">

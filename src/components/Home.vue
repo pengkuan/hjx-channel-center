@@ -170,12 +170,13 @@ export default {
                     token: token,
                     systemid:  util.systemId
                 }
-                
+                // this.setTestCookie()
             if (!userid) {
                 window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.systemId + '&jump_url=' + host
             } else {
 
                 ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭
+
                 const loading = this.$loading({
                     lock: true,
                     text: '玩命加载中......',
@@ -198,11 +199,11 @@ export default {
                 }) 
 
 
-                ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭 
+                ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭  
                 /*this.setTestCookie()
                 this.menuList = [{ name: '渠道关系管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
                 this.showDiv = true
-                this.getModule(this.menuList)*/
+                this.getModule(this.menuList)*/ 
             }
         },
         // 测试时，模拟写入cookie,登录信息

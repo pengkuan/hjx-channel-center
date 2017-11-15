@@ -58,28 +58,15 @@ button.indexFunBtn{margin: 8px 8px 8px 0 !important}
 .hjx-ft15{font-size: 15px}
 .hjx-ft16{font-size: 16px}
 /*颜色配置*/
+.hjx-black{color:#1F2D3D}
+.hjx-lightblack{color:#324057}
 .hjx-blue{color:#409EFF}
 .hjx-danger{color:#FA5555}
 .hjx-info{color:#878D99}
 .hjx-success{color:#67C23A}
 .hjx-warning{color:#EB9E05}
-
-.hjx-alert{
-	width: 100%;
-    padding: 8px 16px;
-    font-size: 13px;
-    line-height: 18px;
-    margin: 0;
-    box-sizing: border-box;
-    border-radius: 4px;
-    position: relative;
-    background-color: #fff;
-    overflow: hidden;
-    color: #fff;
-    opacity: 1;
-    display: table;
-    transition: opacity .2s;
-}
-.hjx-alert-warning {
-    background-color: oldlace
-}
+/**/
+.hjx-overflow{overflow: hidden;}
+/*警告条*/
+.hjx-alert{width: 100%;padding: 8px 16px;font-size: 13px;line-height: 18px;margin: 0;box-sizing: border-box;border-radius: 4px;position: relative;background-color: #fff;overflow: hidden;color: #fff;opacity: 1;display: table;transition: opacity .2s;}
+.hjx-alert-warning {background-color: oldlace}

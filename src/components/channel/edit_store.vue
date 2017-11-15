@@ -63,14 +63,14 @@
                             <p class="add-addr-title">已添加地址：</p>
                             <div class="addr-remind" v-show = 'addSaleList.length == 0'>当前未添加地址，请点击上方按钮添加！</div>
                             <div class="addr-container">
-                                <p class='add-addr-item' v-for = "(item , index) in addSaleList" v:key="index">
+                                <div class='hjx-overflow' v-for = "(item , index) in addSaleList" v:key="index">
                                     <el-col :span="18">
                                         <span >{{ item.saleName }}</span>
                                     </el-col>
                                     <el-col :span="6" class = 'submitRightNoM'>
                                         <el-button size="mini" v-on:click="delSaleAddr(index)"> 删除此行</el-button>
                                     </el-col>
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </el-form-item>
@@ -95,7 +95,7 @@
                 <span class="vue-title  vue-M-R30">已关联S1：</span><el-button type="primary" icon="plus" size="small" v-on:click = "add_s1_btn()">添加</el-button>
                 <br><br>
                 <p v-show = "get_store_s1_list.length == 0" class="vue-remind">未关联S1，请点击上方按钮添加S1</p>
-                <p class='add-addr-item' v-for = "(item , index) in get_store_s1_list">
+                <p class='add-people-item' v-for = "(item , index) in get_store_s1_list">
                     <el-col :span="18">
                         <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strUserTel }}</span>
                     </el-col>
@@ -111,7 +111,7 @@
                 <span class="vue-title  vue-M-R30">已关联S2：</span><el-button type="primary" icon="plus" size="small" v-on:click = "add_s2_btn()">添加</el-button>
                 <br><br>
                 <p v-show = "get_store_s2_list.length == 0" class="vue-remind">未关联S2，请点击上方按钮添加S2</p>
-                <p class='add-addr-item' v-for = "(item , index) in get_store_s2_list">
+                <p class='add-people-item' v-for = "(item , index) in get_store_s2_list">
                     <el-col :span="18">
                         <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strUserTel }}</span>
                     </el-col>
@@ -126,7 +126,7 @@
                 <span class="vue-title  vue-M-R30">已关联D1：</span><el-button type="primary" icon="plus" size="small" v-on:click = "add_d1_btn()">添加</el-button>
                 <br><br>
                 <p v-show = "get_store_d1_list.length == 0" class="vue-remind">未关联D1，请点击上方按钮添加D1</p>
-                <p class='add-addr-item' v-for = "(item , index) in get_store_d1_list">
+                <p class='add-people-item' v-for = "(item , index) in get_store_d1_list">
                     <el-col :span="18">
                         <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strPhoneNum }}</span>
                     </el-col>
@@ -142,7 +142,7 @@
                 <span class="vue-title  vue-M-R30">已关联BD1：</span><el-button type="primary" icon="plus" size="small" v-on:click = "add_bd1_btn()">添加</el-button>
                 <br><br>
                 <p v-show = "get_store_bd1_list.length == 0" class="vue-remind">未关联BD1，请点击上方按钮添加BD1</p>
-                <p class='add-addr-item' v-for = "(item , index) in get_store_bd1_list">
+                <p class='add-people-item' v-for = "(item , index) in get_store_bd1_list">
                     <el-col :span="18">
                         <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strPhoneNum }}</span>
                     </el-col>
@@ -166,7 +166,7 @@
                 </template>
                 <el-button type="primary" icon="plus" size="small" v-on:click = "add_s1_list()">添加</el-button>
                 <p v-show = "addS1List.length == 0" class="vue-remind">请点击上方按钮添加预关联S1</p>
-                <div class="addr-container">
+                <div class="people-container">
                     <p   v-for = "(item , index) in addS1List">
                         <el-col :span="18">
                             <span class='sale_addr_name'>{{ item }}</span>
@@ -191,7 +191,7 @@
                 </template>
                 <el-button type="primary" icon="plus" size="small" v-on:click = "add_s2_list()">添加</el-button>
                 <p v-show = "addS2List.length == 0" class="vue-remind">请点击上方按钮添加预关联S2</p>
-                <div class="addr-container">
+                <div class="people-container">
                     <p   v-for = "(item , index) in addS2List">
                         <el-col :span="18">
                             <span class='sale_addr_name'>{{ item }}</span>
@@ -216,7 +216,7 @@
                 </template>
                 <el-button type="primary" icon="plus" size="small" v-on:click = "add_d1_list()">添加</el-button>
                 <p v-show = "addD1List.length == 0" class="vue-remind">请点击上方按钮添加预关联D1</p>
-                <div class="addr-container">
+                <div class="people-container">
                     <p class="haveRelated"  v-for = "(item , index) in addD1List">
                         <el-col :span="18">
                         <span class='sale_addr_name'>{{ item }}</span>
@@ -241,7 +241,7 @@
                 </template>
                 <el-button type="primary" icon="plus" size="small" v-on:click = "add_bd1_list()">添加</el-button>
                 <p v-show = "addBD1List.length == 0" class="vue-remind">请点击上方按钮添加预关联BD1</p>
-                <div class="addr-container">
+                <div class="people-container">
                     <p class="haveRelated"  v-for = "(item , index) in addBD1List">
                         <el-col :span="18">
                         <span class='sale_addr_name'>{{ item }}</span>
@@ -270,10 +270,12 @@
 </template>
 <style type="text/css" scope>
     #Edit-store{width: 1000px}
-    .vue-remind{font-size: 12px;color:#999;}
+    .vue-remind{font-size: 12px;color:#999;margin: 8px 0}
     span{font-size: 13px}
+    .people-container>p{overflow: hidden;}
+    .people-container{padding: 10px 0}
     .addr-container>p{overflow: hidden;}
-    .add-addr-item{overflow: hidden;margin: 10px}
+    .add-people-item{overflow: hidden;margin: 6px}
 </style>
 <script>
 import api from '../../api/api'
@@ -779,7 +781,7 @@ export default {
         del_has_s1:function(index){
             this.get_store_s1_list.splice(index,1)
             this.get_store_s1Id_list.splice(index,1)
-            this.final_add_S1()
+            this.final_add_S1('del')
         },
 
         // 获取s1选项列表
@@ -828,13 +830,15 @@ export default {
             this.addS1List.splice(index,1)
         },
         // 提交添加的S1列表
-        final_add_S1:function(add){
-            if(add == 'add' && this.addS1Id.length == 0){
+        final_add_S1:function(handle){
+            if(handle == 'add' && this.addS1Id.length == 0){
                 this.$message('请选择要关联S1')
                 return
+            }else if(handle == 'del'){
+                this.addS1Id = []
             }
             var hasList = this.get_store_s1Id_list
-            var userList = hasList.lenght != 0 ? hasList.concat(this.addS1Id): this.addS1Id
+            var userList = hasList.length != 0 ? hasList.concat(this.addS1Id): this.addS1Id
             var sendData = {
                 strPeopleType : 'S1',
                 strStoreId:this.id,
@@ -882,7 +886,7 @@ export default {
         del_has_s2:function(index){
             this.get_store_s2_list.splice(index,1)
             this.get_store_s2Id_list.splice(index,1)
-            this.final_add_S2()
+            this.final_add_S2('del')
         },
 
         // 获取s2选项列表
@@ -932,16 +936,18 @@ export default {
             this.addS2List.splice(index,1)
         },
         // 提交添加的S2列表
-        final_add_S2:function(add){
-            if(add == 'add' && this.addS2Id.length == 0){
+        final_add_S2:function(handle){
+            if(handle == 'add' && this.addS2Id.length == 0){
                 this.$message('请选择要关联S2')
                 return
+            }else if(handle == 'del'){
+                this.addS2Id = []
             }
             var hasList = [] 
             for(var i in this.get_store_s2_list){
                 hasList.push(String(this.get_store_s2_list[i].strUserId))
             }
-            var userList = hasList.lenght != 0 ? hasList.concat(this.addS2Id): this.addS2Id
+            var userList = hasList.length != 0 ? hasList.concat(this.addS2Id): this.addS2Id
             
             // var sendData = {
             //     strType : this.S2Type,
@@ -996,7 +1002,7 @@ export default {
         del_has_d1:function(index){
             this.get_store_d1_list.splice(index,1)
             this.get_store_d1Id_list.splice(index,1)
-            this.final_add_D1()
+            this.final_add_D1('del')
         },
 
         // 获取d1选项列表
@@ -1045,19 +1051,20 @@ export default {
             this.addD1List.splice(index,1)
         },
         // 提交添加的D1列表
-        final_add_D1:function(add){
-            if(add == 'add' && this.addD1Id.length == 0){
+        final_add_D1:function(handle){
+            if(handle == 'add' && this.addD1Id.length == 0){
                 this.$message('请选择要关联D1')
                 return
+            }else if(handle == 'del'){
+                this.addD1Id = []
             }
             var hasList = this.get_store_d1Id_list
-            var userList = hasList.lenght != 0 ? hasList.concat(this.addD1Id): this.addD1Id
+            var userList = hasList.length != 0 ? hasList.concat(this.addD1Id): this.addD1Id
             var sendData = {
                 strPeopleType : 'D1',
                 strStoreId:this.id,
                 strPeopleIdList : userList,
             }
-            console.log(sendData)
             api.addStoreDS(sendData).then(res => {
                 if(res.ret != '0'){
                     this.$message(res.retinfo)
@@ -1099,7 +1106,7 @@ export default {
         del_has_bd1:function(index){
             this.get_store_bd1_list.splice(index,1)
             this.get_store_bd1Id_list.splice(index,1)
-            this.final_add_BD1()
+            this.final_add_BD1('del')
         },
 
         // 获取bd1选项列表
@@ -1148,19 +1155,20 @@ export default {
             this.addBD1List.splice(index,1)
         },
         // 提交添加的D1列表
-        final_add_BD1:function(add){
-            if(add == 'add' && this.addBD1Id.length == 0){
+        final_add_BD1:function(handle){
+            if(handle == 'add' && this.addBD1Id.length == 0){
                 this.$message('请选择要关联BD1')
                 return
+            }else if(handle == 'del'){
+                this.addBD1Id = []
             }
             var hasList = this.get_store_bd1Id_list
-            var userList = hasList.lenght != 0 ? hasList.concat(this.addBD1Id): this.addBD1Id
+            var userList = hasList.length != 0 ? hasList.concat(this.addBD1Id): this.addBD1Id
             var sendData = {
                 strPeopleType : 'BD1',
                 strStoreId:this.id,
                 strPeopleIdList : userList,
             }
-            console.log(sendData)
             api.addStoreDS(sendData).then(res => {
                 if(res.ret != '0'){
                     this.$message(res.retinfo)
