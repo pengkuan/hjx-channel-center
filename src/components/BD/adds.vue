@@ -37,9 +37,9 @@
                 <router-link to="index"><el-button size="small">取消</el-button></router-link>
             </div>
             <div class="hjx-clear">
-                <br>
+                <br><br><br><br>
                 <p class="instructions-limit">
-                    单次上传最多处理100条数据
+                    单次上传最多处理<span class="hjx-danger">100条数据</span>
                     <br>
                 </p>
                 <p class="instructions-limit">
@@ -48,6 +48,7 @@
                     <br> • 手机号：11位数字，不能与已有BD重复
                     <br> • 身份证号码：15或18位数字，最后一位可以为x，不能与已有BD重复
                     <br> • email：4~50字符，包含@
+                    <br> • 请将所以单元格的格式设置成<span class="hjx-danger">文本格式</span>
                 </p>
             </div>
         </div>
@@ -79,7 +80,7 @@
                 </tr>
             </table>
             <br>
-            <i class="iconfont icon-more_android_light"></i>
+            <i v-if="step2_success_data.okRowNum>3" class="iconfont icon-more_android_light"></i>
             <p class="instructions">共{{step2_success_data.okRowNum}}条</p>
             <br>
             <p class="hjx-center">
@@ -166,10 +167,8 @@
         line-height: 20px
     }
 
-    .step-download,
-    .step-choose-file {
-        height: 155px;
-    }
+    .step-download{height: 153px;}
+    .step-choose-file {height: 150px;}
 
     .download-btn {
         padding: 7px 9px;
@@ -209,7 +208,6 @@ export default {
             },
             iconClass:'iconfont icon-gantanhao-',
             fixedName: 'BD信息表',
-            pageDescribe: '',
             active: 1,
             fileName: 'fileName',
             excelname: '',
@@ -226,6 +224,13 @@ export default {
 
         }
     },
+    computed : {
+            pageDescribe() {
+                if(this.steps.step_1){ return ''}
+                else if(this.steps.step_2_success || this.steps.step_2_fail){ return ' > 提交结果'}
+                else{ return ' > 创建结果'}
+            }
+        },
   
     mounted() {
 
