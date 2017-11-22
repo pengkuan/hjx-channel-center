@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="detailDealer">
         <div class="title">
             <el-col :span="12">Dealer管理 > 详情</el-col>
             <el-col :span="12" class="textRight">
@@ -14,6 +14,7 @@
                 <el-tab-pane label="Dealer详情">
                     <el-form :model="ruleForm" ref="ruleForm" label-width="150px">
                         <p>1.基本信息</p>
+                        <br>
                         <el-form-item label="公司全称：" prop='dealer.strDealerName'>
                             <span>{{ruleForm.dealer.strDealerName}}</span>
                         </el-form-item>
@@ -24,9 +25,11 @@
                             <span>{{ruleForm.dealer.strLicenseNum}}</span>
                         </el-form-item>
                         <el-form-item label="三证照片：" class='pic'>
-                            <img :src="apiRoot+ '/static/upload/' + ruleForm.dealer.strLicensePic">
+                            <img v-if="ruleForm.dealer.strLicensePic" :src="apiRoot+ '/static/upload/' + ruleForm.dealer.strLicensePic">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <p>2.收款信息</p>
+                        <br>
                         <el-form-item label="银行卡号：" prop='dealer.account_bank.strAccountNum'>
                             <span>{{ruleForm.dealer.account_bank.strAccountNum}}</span>
                         </el-form-item>
@@ -43,6 +46,7 @@
                             <span>{{ruleForm.dealer.account_bank.strBranchName}}</span>
                         </el-form-item>
                         <p>3.合作信息</p>
+                        <br>
                         <el-form-item label="合同生效时间：" prop='dealer.strContractBeginTime'>
                             <span>{{ruleForm.dealer.strContractBeginTime}}</span>
                         </el-form-item>
@@ -50,7 +54,8 @@
                             <span>{{ruleForm.dealer.strContractEndTime}}</span>
                         </el-form-item>
                         <el-form-item label="合作协议照片：" class='pic'>
-                            <img :src="apiRoot+ '/static/upload/' + ruleForm.dealer.strContractPic">
+                            <img v-if="ruleForm.dealer.strContractPic" :src="apiRoot+ '/static/upload/' + ruleForm.dealer.strContractPic">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <p>4.合作状态</p>
                         <el-form-item label="状态：" prop="dealer.account_bank.strBankName">
@@ -62,6 +67,7 @@
                     <div v-if='haveD4'>未关联D4</div>
                     <el-form v-else label-width="150px">
                         <p>1.基本信息</p>
+                        <br>
                         <el-form-item label="用户ID：">
                             <span>{{DruleForm.baseinfo.strUserId}}</span>
                         </el-form-item>
@@ -75,15 +81,19 @@
                             <span>{{DruleForm.baseinfo.strCardNum}}</span>
                         </el-form-item>
                         <el-form-item label="身份证照片正面：" class='pic'>
-                            <img :src="apiRoot+ '/static/upload/' + DruleForm.baseinfo.strCardPicFront">
+                            <img v-if="DruleForm.baseinfo.strCardPicFront" :src="apiRoot+ '/static/upload/' + DruleForm.baseinfo.strCardPicFront">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <el-form-item label="身份证照片背面：" class='pic'>
-                            <img :src="apiRoot+ '/static/upload/' + DruleForm.baseinfo.strCardPicBack">
+                            <img v-if="DruleForm.baseinfo.strCardPicBack" :src="apiRoot+ '/static/upload/' + DruleForm.baseinfo.strCardPicBack">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <el-form-item label="头像照片：" class='pic'>
-                            <img :src="apiRoot+ '/static/upload/' + DruleForm.baseinfo.strHeadPic">
+                            <img v-if="DruleForm.baseinfo.strHeadPic" :src="apiRoot+ '/static/upload/' + DruleForm.baseinfo.strHeadPic">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <p>2.数据范围</p>
+                        <br>
                         <el-form-item label="">
                             <el-table :data="DruleForm.identityList" style="width: 402px">
                                 <el-table-column prop="strLevelName" label="组织身份" width="180">
@@ -101,14 +111,18 @@
                             </div>
                         </el-form-item>
                         <p>3.收款信息</p>
+                        <br>
                         <el-form-item label="微信昵称：">
-                            <span>{{DruleForm.accountInfo.strWechatName}}</span>
+                            <span v-if="DruleForm.accountInfo.strWechatName">{{DruleForm.accountInfo.strWechatName}}</span>
+                            <span v-else>暂无</span>
                         </el-form-item>
                         <el-form-item label="微信openid：">
-                            <span>{{DruleForm.accountInfo.strWechatOpenId}}</span>
+                            <span v-if="DruleForm.accountInfo.strWechatOpenId">{{DruleForm.accountInfo.strWechatOpenId}}</span>
+                            <span v-else>暂无</span>
                         </el-form-item>
-                        <el-form-item label="微信头像：">
-                            <span>{{DruleForm.accountInfo.strAccountInfoId}}</span>
+                        <el-form-item label="微信头像：" class="pic">
+                            <img v-if="DruleForm.accountInfo.strWechatHeadPic"  :src="DruleForm.accountInfo.strWechatHeadPic">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <p>4.合作状态</p>
                         <el-form-item label="状态：">
@@ -118,6 +132,7 @@
                 </el-tab-pane>
             </el-tabs>
             <div class="tool">
+                <br>
                 <router-link to="index">
                     <el-button size="small">关闭</el-button>
                 </router-link>
@@ -125,6 +140,9 @@
         </div>
     </div>
 </template>
+<style type="text/css">
+    #detailDealer .pic{margin-bottom: 12px}
+</style>
 <script type="text/javascript">
 import api from '../../api/api';
 import util from '../../common/util';

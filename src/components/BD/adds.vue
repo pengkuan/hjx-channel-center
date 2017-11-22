@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="bd-adds">
         <div class="title">
             <el-col :span="12"> BD管理 > 批量创建BD {{pageDescribe}}</el-col>
             <el-col :span="12" class="textRight">
@@ -33,7 +33,7 @@
                         </span>
                     </el-upload>
                 </div>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload" :disabled="!canSubmit">上传到服务器</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="primary" @click="submitUpload" :disabled="!canSubmit">上传</el-button>
                 <router-link to="index"><el-button size="small">取消</el-button></router-link>
             </div>
             <div class="hjx-clear">
@@ -58,7 +58,7 @@
                 <span class="hjx-info">上传表格所有数据</span>
                 <span class="hjx-blue">校验通过，</span>
                 <span class="hjx-info">预览如下</span>
-                <span class="hjx-danger">（第102行及之后的数据未做校验）</span>
+                <span class="hjx-danger" v-if="step2_success_data.totalNum>100">（第102行及之后的数据未做校验）</span>
             </div>
             <br>
 
@@ -84,7 +84,7 @@
             <p class="instructions">共{{step2_success_data.okRowNum}}条</p>
             <br>
             <p class="hjx-center">
-                <el-button type="primary" @click="confirmSubmit" size="small">确认上传</el-button>
+                <el-button type="primary" @click="confirmSubmit" size="small">确认创建</el-button>
                 <el-button @click="reChooseFile" size="small">取消</el-button>
             </p>
         </div>
@@ -102,7 +102,7 @@
                 <el-table-column prop="name" label="姓名"></el-table-column>
                 <el-table-column prop="phonenum" label="手机号"></el-table-column>
                 <el-table-column prop="cardnum" label="身份证号码"></el-table-column>
-                <el-table-column prop="errinfo" label="错误详情" class-name="hjx-danger"></el-table-column>
+                <el-table-column prop="errinfo" label="错误详情" class-name="hjx-danger hjx-ft12"></el-table-column>
             </el-table>
             <br>
             <p class="hjx-center">
@@ -111,7 +111,6 @@
         </div>
         <!-- 创建成功（部分） -->
         <div class="step-3-mostSuccess" v-else-if="steps.step_3_most">
-            
             <div class="hjx-alert hjx-alert-warning" >
                 <span class="hjx-info">共提交{{step3_most_data.totalNum}}条数据，</span>
                 <span class="hjx-success">{{step3_most_data.successNum}}条创建成功。</span>
@@ -123,7 +122,7 @@
                 <el-table-column prop="name" label="姓名"></el-table-column>
                 <el-table-column prop="phonenum" label="手机号"></el-table-column>
                 <el-table-column prop="cardnum" label="身份证号码"></el-table-column>
-                <el-table-column prop="errinfo" label="重复详情"></el-table-column>
+                <el-table-column prop="errinfo" label="重复详情" class-name="hjx-danger hjx-ft12"></el-table-column>
             </el-table>
             <br>
             <div class="hjx-center">
@@ -148,6 +147,9 @@
         
     </div>
 </template>
+<style type="text/css">
+    #bd-adds .el-upload-list.el-upload-list--text{width:53%;}
+</style>
 <style scoped lang="scss">
     .instructions {
         color: #666;
@@ -274,7 +276,15 @@ export default {
         checkBdExcel(excelname) {
             api.checkBdExcel({ 'excelname': excelname }).then(res => {
                 if (res.ret != '0') {
-                    this.$message(res.retinfo)
+                    // this.$message(res.retinfo)
+                    this.$alert(res.retinfo, '提示', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                            console.log(6666)
+                            document.querySelector(".el-icon-close").click()
+                        }
+                    })
+
                     return
                 }
                 let msg = res.data

@@ -172,9 +172,9 @@
                     // this.imageUrl2 = '/WebService/static/upload/' + baseInfo.strCardPicBack
                     // this.imageUrl3 = '/WebService/static/upload/' + baseInfo.strHeadPic
 
-                    this.imageUrl1 = this.apiRoot + '/static/upload/' + baseInfo.strCardPicFront
-                    this.imageUrl2 = this.apiRoot + '/static/upload/' + baseInfo.strCardPicBack
-                    this.imageUrl3 = this.apiRoot + '/static/upload/' + baseInfo.strHeadPic
+                    this.imageUrl1 = baseInfo.strCardPicFront?this.apiRoot + '/static/upload/' + baseInfo.strCardPicFront:''
+                    this.imageUrl2 = baseInfo.strCardPicBack?this.apiRoot + '/static/upload/' + baseInfo.strCardPicBack:''
+                    this.imageUrl3 = baseInfo.strHeadPic?this.apiRoot + '/static/upload/' + baseInfo.strHeadPic:''
                 })
             },
 

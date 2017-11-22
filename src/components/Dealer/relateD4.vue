@@ -8,6 +8,7 @@
 	    </div>
 		
 		<div v-if ='ifD4' class="haveD4">
+			<br><br><br><br><br>
         	<p class="hjx-black">{{D4Name + ' / ' + D4Tel}}</p>
         	<br>
         	<p class="note">在tree中替换D4负责人，此处关联D4工号将随之替换</p>
