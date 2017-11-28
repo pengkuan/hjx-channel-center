@@ -1,4 +1,5 @@
 import axios from 'axios'
+import originJsonp from 'jsonp'
 // import qs from 'qs'
 import router from '../router'
 import util from '../common/util'
@@ -38,11 +39,11 @@ axios.interceptors.response.use((res) =>{
       switch (error.response.status) {
         case 403:  
             let host = encodeURIComponent(util.accessHost)
-            window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.systemId+'&jump_url=' + host 
+            // window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.systemId+'&jump_url=' + host 
       }
     }
     return Promise.reject(error)
-})
+}) 
 
 export function fetch(Interface, params) {
     var resParams = {
@@ -124,7 +125,35 @@ export function crossDomain(Interface, params ) {
     })
 }
 
+/* jsonp接口开始 */
+function param(data) {
+  let url = ''
+  for (var k in data) {
+    let value = data[k] !== undefined ? data[k] : ''
+    url += '&' + k + '=' + encodeURIComponent(value)
+  }
+  return url ? url.substring(1) : ''
+}
+
+// 待处理 1 data的拼接，一般有登录信息 2 err的token失效时登录信息的跳转
+export function jsonp(url, data, option) {
+  url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
+
+  return new Promise((resolve, reject) => {
+    originJsonp(url, option, (err, data) => {
+      if (!err) {
+        resolve(data)
+      } else {
+        reject(err)
+      }
+    })
+  })
+}  
+/* jsonp接口结束 */
+
 export default {
+    //数据关联 jsonp接口测试 
+    getOldImportData(data) {return jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',data, {param:'cb'})},  //测试百度搜索接口 
 
     Login(params) {return fetch('loginLogic', params)},// 用户登录
     upload(params) {return fetch('upload', params)},// 

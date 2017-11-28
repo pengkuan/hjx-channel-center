@@ -32,7 +32,7 @@
                     <!--菜单展开时的显示情况-->
                     <el-menu v-show="!collapsed" default-active="0" @open="handleOpen" @close="handleClose" router>
                         <!-- <template v-for="(item,index) in $router.options.routes" v-if="item.menuShow"> -->
-                        <template v-for="(item,index) in menuRutes" v-if="item.menuShow" >
+                        <template v-for="(item,index) in menuRutes" v-if="item.menuShow">
                             <el-submenu v-if="!item.leaf" :index="index+''">
                                 <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
                                 <el-menu-item v-for="term in item.children" :key="term.path" :index="term.path" v-if="term.menuShow" :class="$route.path==term.path?'is-active-add':''">
@@ -48,17 +48,15 @@
                     <ul v-show="collapsed" class="el-menu collapsed" ref="menuCollapsed">
                         <!-- <template v-for="(item,index) in $router.options.routes" v-if="item.menuShow"> -->
                         <template v-for="(item,index) in menuRutes" v-if="item.menuShow">
-                            <li v-if="!item.leaf" :index="index+''" style="position: relative;" @click="setCollapsed" >
-                                <div class="el-submenu__title" style="padding-left: 20px;"  @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)"><i :class="item.iconCls"></i></div>
+                            <li v-if="!item.leaf" :index="index+''" style="position: relative;" @click="setCollapsed">
+                                <div class="el-submenu__title" style="padding-left: 20px;" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)"><i :class="item.iconCls"></i></div>
                                 <ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">
-                                    <li v-for="term in item.children" :key="term.path" v-if="term.menuShow" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==term.path?'is-active':''" >
+                                    <li v-for="term in item.children" :key="term.path" v-if="term.menuShow" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==term.path?'is-active':''">
                                         {{term.name}}
                                     </li>
                                 </ul>
                             </li>
-                            <li v-else-if="item.leaf&&item.children&&item.children.length"  
-                                class="el-menu-item el-submenu__title"  
-                                @click="setCollapsed">
+                            <li v-else-if="item.leaf&&item.children&&item.children.length" class="el-menu-item el-submenu__title" @click="setCollapsed">
                                 <i :class="item.iconCls"></i>
                             </li>
                         </template>
@@ -93,7 +91,7 @@ export default {
     },
     methods: {
         handleOpen() {},
-        handleClose() {}, 
+        handleClose() {},
         setCollapsed() {
             this.collapsed = !this.collapsed
         },
@@ -168,42 +166,41 @@ export default {
                 params = {
                     userid: userid,
                     token: token,
-                    systemid:  util.systemId
+                    systemid: util.systemId
                 }
-                // this.setTestCookie()
+            // this.setTestCookie()  本地时打开一次即可
             if (!userid) {
                 window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.systemId + '&jump_url=' + host
             } else {
 
-                ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭
-
-                const loading = this.$loading({
-                    lock: true,
-                    text: '玩命加载中......',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                })
-                api.get_user_authority(params).then((res) => {
-                    if (res.ret != '0') {
-                        this.$message({
-                            message: res.retinfo,
-                            type: 'warning'
-                        })
-                        loading.close()
-                        return
-                    }
-                    loading.close() 
-                    this.showDiv = true
-                    this.menuList = res.data.menu
-                    this.getModule(this.menuList) 
-                }) 
+                ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭 
+                // const loading = this.$loading({
+                //     lock: true,
+                //     text: '玩命加载中......',
+                //     spinner: 'el-icon-loading',
+                //     background: 'rgba(0, 0, 0, 0.7)'
+                // })
+                // api.get_user_authority(params).then((res) => {
+                //     if (res.ret != '0') {
+                //         this.$message({
+                //             message: res.retinfo,
+                //             type: 'warning'
+                //         })
+                //         loading.close()
+                //         return
+                //     }
+                //     loading.close()
+                //     this.showDiv = true
+                //     this.menuList = res.data.menu
+                //     this.getModule(this.menuList)
+                // })
 
 
                 ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭  
-                /*this.setTestCookie()
+                this.setTestCookie()
                 this.menuList = [{ name: '渠道关系管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
                 this.showDiv = true
-                this.getModule(this.menuList)*/ 
+                this.getModule(this.menuList)
             }
         },
         // 测试时，模拟写入cookie,登录信息
@@ -213,7 +210,7 @@ export default {
             util.setCookie('useruuid', 'c6ed5c8e9830cf9225d078bdde335de7')
         }
     },
-    mounted() { 
+    mounted() {
         this.get_user_menu()
     }
 }
@@ -256,7 +253,8 @@ export default {
 .el-menu .iconfont {
     vertical-align: baseline;
     margin-right: 6px;
-} 
+}
+
 .warp-breadcrum {
     padding: 10px 0px;
     border-bottom: 1px solid #efefef;
@@ -281,7 +279,7 @@ export default {
         padding: 0px;
 
         .topbar-btn {
-            color: #fff;
+            color: #fff; 
         }
         .topbar-btn:hover {
             // background-color: #4A5064;
@@ -293,13 +291,13 @@ export default {
             line-height: 26px;
             cursor: pointer;
             a {
-                display: block;
+                display: block; 
             }
         }
         .topbar-title {
             float: left;
             text-align: center;
-            width: 129px;
+            width: 129px; 
         }
         .topbar-account {
             float: right;
@@ -361,7 +359,7 @@ export default {
         background: #fff;
         flex: 1;
         overflow-y: auto;
-        padding: 10px; 
+        padding: 10px;
         .content-wrapper {
             background-color: #fff;
             box-sizing: border-box;
@@ -370,7 +368,7 @@ export default {
                 position: absolute;
                 width: 100%;
                 left: 0;
-                top:0;
+                top: 0;
             }
             .fade-enter-active,
             .fade-leave-active {
@@ -378,14 +376,12 @@ export default {
             }
 
             .fade-enter {
-                opacity: 0;
-                // transform: translate3d(10%, 0, 0);
+                opacity: 0; // transform: translate3d(10%, 0, 0);
             }
 
             .fade-leave-to {
-                opacity: 0;
-                // transform: translate3d(-10%, 0, 0);
-            } 
+                opacity: 0; // transform: translate3d(-10%, 0, 0);
+            }
         }
     }
 }

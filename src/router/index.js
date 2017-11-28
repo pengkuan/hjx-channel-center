@@ -23,6 +23,7 @@ import powerPage from '@/components/power/page'
 import powerModule from '@/components/power/module'
 import powerIndex from '@/components/power/index'
 import powerAdd from '@/components/power/add'
+import dataImport from '@/components/power/dataImport'
   //角色管理
 import userList from '@/components/power/user'
 import userCategory from '@/components/power/category'
@@ -155,7 +156,8 @@ let router = new Router({
                 {path: '/power/user', component: userList, name: '角色管理', menuShow: true},
                 {path: '/power/category', component: userCategory, name: '分类管理'},
                 {path: '/power/setPower', component: setPower, name: 'setPower'},
-                {path: '/power/record', component: RecordPower, name: '操作日志', menuShow: true}
+                {path: '/power/record', component: RecordPower, name: '操作日志', menuShow: true},
+                {path: '/power/dataImport', component: dataImport, name: '数据导入', menuShow: true}
             ]
         }
     ]
