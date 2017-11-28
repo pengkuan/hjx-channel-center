@@ -379,8 +379,8 @@
 
                     this.ruleForm.dealer.strLicensePic = msg.strLicensePic
                     this.ruleForm.dealer.strContractPic = msg.strContractPic
-                    this.imageUrl1 =this.apiRoot+ '/static/upload/' + msg.strLicensePic
-                    this.imageUrl2 =this.apiRoot+  '/static/upload/' + msg.strContractPic
+                    this.imageUrl1 = msg.strLicensePic?this.apiRoot+ '/static/upload/' + msg.strLicensePic:''
+                    this.imageUrl2 =msg.strContractPic?this.apiRoot+  '/static/upload/' + msg.strContractPic:''
                     //处理后台返回时间格式 为该时间组件默认格式
                     let beginTimeArr = msg.strContractBeginTime.split(' ')
                     let endTimeArr = msg.strContractEndTime.split(' ')

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="bd-adds">
         <div class="title">
             <el-col :span="12"> BD管理 > 批量创建BD {{pageDescribe}}</el-col>
             <el-col :span="12" class="textRight">
@@ -33,13 +33,13 @@
                         </span>
                     </el-upload>
                 </div>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload" :disabled="!canSubmit">上传到服务器</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="primary" @click="submitUpload" :disabled="!canSubmit">上传</el-button>
                 <router-link to="index"><el-button size="small">取消</el-button></router-link>
             </div>
             <div class="hjx-clear">
-                <br>
+                <br><br><br><br>
                 <p class="instructions-limit">
-                    单次上传最多处理100条数据
+                    单次上传最多处理<span class="hjx-danger">100条数据</span>
                     <br>
                 </p>
                 <p class="instructions-limit">
@@ -48,6 +48,7 @@
                     <br> • 手机号：11位数字，不能与已有BD重复
                     <br> • 身份证号码：15或18位数字，最后一位可以为x，不能与已有BD重复
                     <br> • email：4~50字符，包含@
+                    <br> • 请将所以单元格的格式设置成<span class="hjx-danger">文本格式</span>
                 </p>
             </div>
         </div>
@@ -57,7 +58,7 @@
                 <span class="hjx-info">上传表格所有数据</span>
                 <span class="hjx-blue">校验通过，</span>
                 <span class="hjx-info">预览如下</span>
-                <span class="hjx-danger">（第102行及之后的数据未做校验）</span>
+                <span class="hjx-danger" v-if="step2_success_data.totalNum>100">（第102行及之后的数据未做校验）</span>
             </div>
             <br>
 
@@ -79,11 +80,11 @@
                 </tr>
             </table>
             <br>
-            <i class="iconfont icon-more_android_light"></i>
+            <i v-if="step2_success_data.okRowNum>3" class="iconfont icon-more_android_light"></i>
             <p class="instructions">共{{step2_success_data.okRowNum}}条</p>
             <br>
             <p class="hjx-center">
-                <el-button type="primary" @click="confirmSubmit" size="small">确认上传</el-button>
+                <el-button type="primary" @click="confirmSubmit" size="small">确认创建</el-button>
                 <el-button @click="reChooseFile" size="small">取消</el-button>
             </p>
         </div>
@@ -101,7 +102,7 @@
                 <el-table-column prop="name" label="姓名"></el-table-column>
                 <el-table-column prop="phonenum" label="手机号"></el-table-column>
                 <el-table-column prop="cardnum" label="身份证号码"></el-table-column>
-                <el-table-column prop="errinfo" label="错误详情" class-name="hjx-danger"></el-table-column>
+                <el-table-column prop="errinfo" label="错误详情" class-name="hjx-danger hjx-ft12"></el-table-column>
             </el-table>
             <br>
             <p class="hjx-center">
@@ -110,7 +111,6 @@
         </div>
         <!-- 创建成功（部分） -->
         <div class="step-3-mostSuccess" v-else-if="steps.step_3_most">
-            
             <div class="hjx-alert hjx-alert-warning" >
                 <span class="hjx-info">共提交{{step3_most_data.totalNum}}条数据，</span>
                 <span class="hjx-success">{{step3_most_data.successNum}}条创建成功。</span>
@@ -122,7 +122,7 @@
                 <el-table-column prop="name" label="姓名"></el-table-column>
                 <el-table-column prop="phonenum" label="手机号"></el-table-column>
                 <el-table-column prop="cardnum" label="身份证号码"></el-table-column>
-                <el-table-column prop="errinfo" label="重复详情"></el-table-column>
+                <el-table-column prop="errinfo" label="重复详情" class-name="hjx-danger hjx-ft12"></el-table-column>
             </el-table>
             <br>
             <div class="hjx-center">
@@ -147,6 +147,9 @@
         
     </div>
 </template>
+<style type="text/css">
+    #bd-adds .el-upload-list.el-upload-list--text{width:53%;}
+</style>
 <style scoped lang="scss">
     .instructions {
         color: #666;
@@ -166,10 +169,8 @@
         line-height: 20px
     }
 
-    .step-download,
-    .step-choose-file {
-        height: 155px;
-    }
+    .step-download{height: 153px;}
+    .step-choose-file {height: 150px;}
 
     .download-btn {
         padding: 7px 9px;
@@ -209,7 +210,6 @@ export default {
             },
             iconClass:'iconfont icon-gantanhao-',
             fixedName: 'BD信息表',
-            pageDescribe: '',
             active: 1,
             fileName: 'fileName',
             excelname: '',
@@ -226,6 +226,13 @@ export default {
 
         }
     },
+    computed : {
+            pageDescribe() {
+                if(this.steps.step_1){ return ''}
+                else if(this.steps.step_2_success || this.steps.step_2_fail){ return ' > 提交结果'}
+                else{ return ' > 创建结果'}
+            }
+        },
   
     mounted() {
 
@@ -269,7 +276,15 @@ export default {
         checkBdExcel(excelname) {
             api.checkBdExcel({ 'excelname': excelname }).then(res => {
                 if (res.ret != '0') {
-                    this.$message(res.retinfo)
+                    // this.$message(res.retinfo)
+                    this.$alert(res.retinfo, '提示', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                            console.log(6666)
+                            document.querySelector(".el-icon-close").click()
+                        }
+                    })
+
                     return
                 }
                 let msg = res.data

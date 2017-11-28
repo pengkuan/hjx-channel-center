@@ -197,10 +197,10 @@ export default {
 
 
                 ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭  
-                this.setTestCookie()
-                this.menuList = [{ name: '渠道关系管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
-                this.showDiv = true
-                this.getModule(this.menuList)
+                // this.setTestCookie()
+                // this.menuList = [{ name: '渠道关系管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
+                // this.showDiv = true
+                // this.getModule(this.menuList)  
             }
         },
         // 测试时，模拟写入cookie,登录信息

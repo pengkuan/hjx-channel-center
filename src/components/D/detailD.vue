@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="d-detailD">
         <div class="title">
 		    <el-col :span="12">D管理 > 详情</el-col>
 		    <el-col :span="12" class="textRight">
@@ -27,13 +27,16 @@
                             <span>{{ruleForm.baseinfo.strCardNum}}</span>
                         </el-form-item>
                         <el-form-item label="身份证照片正面：" class='pic'>
-                            <img :src=" apiRoot + '/static/upload/' + ruleForm.baseinfo.strCardPicFront">
+                            <img v-if="ruleForm.baseinfo.strCardPicFront" :src=" apiRoot + '/static/upload/' + ruleForm.baseinfo.strCardPicFront">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <el-form-item label="身份证照片背面：" class='pic'>
-                            <img :src=" apiRoot+'/static/upload/' + ruleForm.baseinfo.strCardPicBack">
+                            <img v-if="ruleForm.baseinfo.strCardPicBack"  :src=" apiRoot+'/static/upload/' + ruleForm.baseinfo.strCardPicBack">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <el-form-item label="头像照片：" class='pic'>
-                            <img :src=" apiRoot+ '/static/upload/' + ruleForm.baseinfo.strHeadPic">
+                            <img v-if="ruleForm.baseinfo.strHeadPic"  :src=" apiRoot+ '/static/upload/' + ruleForm.baseinfo.strHeadPic">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <p>2.数据范围</p>
                         <el-form-item label="">
@@ -54,13 +57,16 @@
                         </el-form-item>
                         <p>3.收款信息</p>
                         <el-form-item label="微信昵称：">
-                            <span>{{ruleForm.accountInfo.strWechatName}}</span>
+                            <span v-if="ruleForm.accountInfo.strWechatName">{{ruleForm.accountInfo.strWechatName}}</span>
+                            <span v-else>暂无</span>
                         </el-form-item>
                         <el-form-item label="微信openid：">
-                            <span>{{ruleForm.accountInfo.strWechatOpenId}}</span>
+                            <span v-if="ruleForm.accountInfo.strWechatOpenId">{{ruleForm.accountInfo.strWechatOpenId}}</span>
+                            <span v-else>暂无</span>
                         </el-form-item>
-                        <el-form-item label="微信头像：">
-                            <span>{{ruleForm.accountInfo.strAccountInfoId}}</span>
+                        <el-form-item label="微信头像：" class="pic">
+                            <img v-if="ruleForm.accountInfo.strWechatHeadPic"  :src="ruleForm.accountInfo.strWechatHeadPic">
+                            <img v-else src="../../assets/images/no_img.png">
                         </el-form-item>
                         <p>4.合作状态</p>
                         <el-form-item label="状态：">
@@ -106,6 +112,9 @@
         </div>
     </div>
 </template>
+<style type="text/css">
+    #d-detailD .pic{margin-bottom: 12px}
+</style>
 <script type="text/javascript">
 import api from '../../api/api';
 import util from '../../common/util';
