@@ -6,9 +6,9 @@ module.exports = {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../static/index.html'),
     assetsRoot: path.resolve(__dirname, '../static'),
-    assetsSubDirectory: 'other',
+    assetsSubDirectory: 'other/channelCenter',
     assetsPublicPath: '/static/',
-    productionSourceMap: true,
+    productionSourceMap: false,
     // Gzip off by default as many popular other hosts such as
     // Surge or Netlify already gzip all other assets for you.
     // Before setting to `true`, make sure to:

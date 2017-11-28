@@ -99,7 +99,7 @@ export default {
         loadInfo:function(){
             api.addChannelTemplatePageData({}).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.roles = res.data
@@ -187,20 +187,20 @@ export default {
         submitnow:function () {
 
             if(!this.dict.strTemplateName){
-                this.$layer.alert("请输入模板名称")
+                this.$alert("请输入模板名称","提示")
                 return
             }
             if(!this.dict.strTemplateDesc){
-                this.$layer.alert("请输入模板描述")
+                this.$alert("请输入模板描述","提示")
                 return
             }
             if(this.list.length < 2){
-                this.$layer.alert('层级不正确')
+                this.$alert('层级不正确',"提示")
                 return;
             }
             for (var i = this.list.length - 1; i >= 0; i--) {
                 if(this.list[i].strLevelName == ""){
-                    this.$layer.alert("请输入层级名称")
+                    this.$alert("请输入层级名称","提示")
                     return
                 }
 
@@ -220,14 +220,14 @@ export default {
             };
             for (var i = this.list.length - 1; i >= 0; i--) {
                 if(this.list[i].strLevel != (i+1)){
-                    this.$layer.alert('层级不正确')
+                    this.$alert('层级不正确',"提示")
                     return;
                 }
             }
             var sendData ={data:JSON.stringify(this.list)};
             api.addTemplateLogic(sendData).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.$message('成功！')

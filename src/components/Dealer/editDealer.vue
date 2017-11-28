@@ -329,7 +329,7 @@
                 if(commonData.addrList.length == 0){
                     api.getAddress({}).then(res => {
                         if (res.ret != '0') {
-                            this.$layer.alert(res.retinfo)
+                            this.$alert(res.retinfo,"提示")
                             return
                         }
                         commonData.addrList = res.data.address
@@ -405,11 +405,11 @@
 
                     if (valid) {
                         // if(!this.ruleForm.dealer.strLicensePic){
-                        //     this.$layer.alert('请上传三证照片')
+                        //     this.$alert('请上传三证照片','提示')
                         //     return
                         // } 
                         // if(!this.ruleForm.dealer.strLicensePic){
-                        //     this.$layer.alert('请上传合同协议照片')
+                        //     this.$alert('请上传合同协议照片','提示')
                         //     return
                         // }
                         this.ruleForm.dealer.strDealerName = util.Trim(this.ruleForm.dealer.strDealerName)

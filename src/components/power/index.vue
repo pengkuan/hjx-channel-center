@@ -255,6 +255,7 @@ export default {
 		handleSizeChange(val) {},
 	    handleCurrentChange(val) {
 	    	this.pageIndex = (val- 1)
+	    	this.currentPage = val
 	        this.showList()
 	    },
 	    
@@ -363,6 +364,8 @@ export default {
 		search:function(){
 			this.searchkeys.s_page_name = util.Trim(this.searchkeys.s_page_name)
 			this.searchkeys.s_auth_name = util.Trim(this.searchkeys.s_auth_name)
+			this.currentPage = 1
+            this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(){

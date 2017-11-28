@@ -76,6 +76,7 @@ export default {
 	    },
 	    handleCurrentChange(val) {
 	    	this.pageIndex = (val- 1) * 10
+	    	this.currentPage = val
 	        this.showList()
 	    },
 		showList:function(){
@@ -86,7 +87,7 @@ export default {
 			}
 			api.getTemplateList(data).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				this.dataList = res.data.channelTemplates
@@ -105,7 +106,7 @@ export default {
 	  		var data = {id:templateid}
 	  		api.upChannelTemplate(data).then(res => {
 	  			if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.$message('启用成功')
@@ -118,7 +119,7 @@ export default {
 	  		var data = {id:templateid}
 	  		api.delChannelTemplate(data).then(res => {
 	  			if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.$message('禁用成功')
@@ -130,6 +131,8 @@ export default {
 		//search
 		search:function(){
 			this.filters.searchkey = util.Trim(this.filters.searchkey)
+			this.currentPage = 1
+            this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(){

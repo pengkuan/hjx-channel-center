@@ -8,9 +8,7 @@ import '@/assets/iconfont.css'
 import '@/common/index.css'
 import router from './router'
 import store from './store'
-import layer from 'vue-layer'
 
-Vue.prototype.$layer = layer(Vue)
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 

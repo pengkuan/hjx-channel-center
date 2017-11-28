@@ -2,6 +2,8 @@
 <div>
 <div class="title">渠道商 / 编辑</div>
 <div class="">
+    <p class="hjx-black">{{form.strFullName}}</p><br>
+
     <el-tabs type="border-card">
         <el-tab-pane label="商家信息" class='channelInfo'>
             <el-form ref="form" :model="form" label-width="180px" :rules="rules">
@@ -12,7 +14,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="商户全称：" prop='strFullName'>
-                    <el-input v-model="form.strFullName" placeholder="请输入合同乙方全称"></el-input>
+                    <el-input v-model="form.strFullName" placeholder="请输入合同乙方营业执照名称"></el-input>
                 </el-form-item>
                 <el-form-item label="所属品牌商/合作方：">
                     <el-select v-model="form.strPartner_id" placeholder="请选择">
@@ -28,7 +30,7 @@
                 </el-form-item> -->
 
 
-                <el-form-item label="门店地址：">
+                <el-form-item label="营业执照地址：">
                     <el-col :span="6">
                         <el-form-item prop="strAddr_province_id">
                             <el-select v-model="form.strAddr_province_id" filterable placeholder="请选择省份">
@@ -107,7 +109,7 @@
                 <el-form-item label="工号前缀：" prop = 'strPrefix_str'>
                     <el-input v-model="form.strPrefix_str" placeholder='2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)'></el-input>
                 </el-form-item>
-                <el-form-item label="S4：">
+                <el-form-item label="商户负责S4：">
                     <el-select v-model="form.strConnection_info" placeholder="请选择">
                         <el-option  v-for="item in channelUserList"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserId" :key="item.strUserId">
                         </el-option>
@@ -118,11 +120,12 @@
                     <el-input v-model="form.strMonth_sales"></el-input>
                 </el-form-item>
                 <el-form-item label="商户等级：">
-                    <el-select v-model="form.strScore" placeholder="请选择">
-                        <el-option label="A" value="0"></el-option>
-                        <el-option label="B" value="1"></el-option>
-                        <el-option label="C" value="2"></el-option>
-                        <el-option label="D" value="3"></el-option>
+                    <el-select v-model="form.strChannelScore" placeholder="请选择">
+                        <el-option label="S" value="0"></el-option>
+                        <el-option label="A" value="1"></el-option>
+                        <el-option label="B" value="2"></el-option>
+                        <el-option label="C" value="3"></el-option>
+                        <el-option label="D" value="4"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="估价模型：">
@@ -137,7 +140,7 @@
                             </el-col>
                         </el-form-item>
                         <div style="height:16px"></div>
-                        <el-form-item label="苹果机型封顶（元）：" prop='strApplyMax' >
+                        <el-form-item label="苹果机型封顶（元）：" >
                             <el-col :span="4">
                                 <el-input type="number"  v-model="form.strApplyMax"></el-input>
                             </el-col>
@@ -147,7 +150,7 @@
                     <el-button type="primary" size="small" v-model="form.strShopAwardId">+设置店员激励方案</el-button>
                 </el-form-item>
                 <el-form-item label="付款模式：">
-                    <el-select v-model="form.strPayMethodId" placeholder="请请选择付款模式">
+                    <el-select v-model="form.strPayMethodId" placeholder="请选择付款模式">
                         <el-option label="预付" value="1"></el-option>
                         <el-option label="垫付" value="0"></el-option>
                     </el-select>
@@ -157,6 +160,13 @@
                         <el-checkbox label="收集用户信息" ></el-checkbox>
                         <el-checkbox label="环保回收"></el-checkbox>
                     </el-checkbox-group>
+                </el-form-item>
+
+                <el-form-item label="合作状态：">
+                    <el-select v-model="form.strStatus" placeholder="请选择合作状态">
+                        <el-option label="合作中" value="1"></el-option>
+                        <el-option label="停止合作" value="2"></el-option>
+                    </el-select>
                 </el-form-item>
 
                 <el-form-item class = 'submitRight'>
@@ -195,8 +205,17 @@
                         {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName +scope.row.strAddress}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="strChannelName" label="渠道商" ></el-table-column>
-                <el-table-column prop="strChannelManagerName" label="渠道经理" ></el-table-column>
+                <el-table-column prop="strRelationD1List" label="D1" >
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.strRelationD1List.length == 1">
+                            {{scope.row.strRelationD1List[0].strUserName+' / '+scope.row.strRelationD1List[0].strPhoneNum}}
+                        </span>
+                        <span v-else-if="scope.row.strRelationD1List.length>1">
+                            {{scope.row.strRelationD1List[0].strUserName+' / '+scope.row.strRelationD1List[0].strPhoneNum}}  ...
+                        </span>
+                        <span v-else>暂无</span>
+                    </template>
+                </el-table-column>
                 <el-table-column  label="合作状态" >
                     <template slot-scope="scope">
                         {{scope.row.strStatus == 1 ?'正常':'停止'}}
@@ -241,8 +260,11 @@
     data() {
         
         var validateEmployeeNum = (rule, value, callback) => {
+            if(!value){
+                callback()
+            }
 
-            if(!/^(([a-zA-Z]{2})|([a-zA-Z]{4}))\d{2,4}$/g.test(value)){
+            if( !/^(([a-zA-Z]{2})|([a-zA-Z]{4}))\d{2,4}$/g.test(value)){
                 callback(new Error('请输入正确工号（2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)）'))
             }
             callback()
@@ -272,7 +294,7 @@
               strConnection_info: '',
               strMonth_sales: '',
               strChannelPic:'',
-              strScore: '1',
+              strChannelScore: '1',
               strValuationId: '',
               strPercent: '',
               strApplyMax: '',
@@ -282,6 +304,7 @@
               selfFunction: [],
               strGreen_recycle:'0',
               strGather_userInfo:'0',
+              // strState:'',
               strChannelId:''
 
             },
@@ -324,7 +347,7 @@
                     {  required: true , validator: util.validateLicenseNum, trigger: 'blur' }
                 ],
                 'strPrefix_str': [
-                    {  required: true , validator: validateEmployeeNum, trigger: 'blur' }
+                    {  required: false , validator: validateEmployeeNum, trigger: 'blur' }
                 ],
                 'strPercent': [
                     {  required: true, message: '请填写分成比例', trigger: 'blur' }
@@ -394,7 +417,7 @@
                 if (valid) {
                     api.addChannelLogic(this.form).then(res => {
                         if (res.ret != '0') {
-                            this.$layer.alert(res.retinfo)
+                            this.$alert(res.retinfo,"提示")
                             return
                         }
                         this.$message('成功！')
@@ -407,20 +430,11 @@
             })
         },
         loadInfo: function() {
-            // api.getAddress({}).then(res => {
-            //     if (res.ret != '0') {
-            //         this.$layer.alert(res.retinfo)
-            //         return
-            //     }
-            //     this.provinces = res.data.address
-            //     this.saleAdds.provinces = res.data.address
-            //     this.form.strAddr_province_id = this.defaultDate.strAddrProvinceId
-            // }),
 
             if(commonData.addrList.length == 0){
                 api.getAddress({}).then(res => {
                     if (res.ret != '0') {
-                        this.$layer.alert(res.retinfo)
+                        this.$alert(res.retinfo,"提示")
                         return
                     }
                     commonData.addrList = res.data.address
@@ -435,7 +449,7 @@
 
             api.getChannelTemplate({}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.channelTemplateList = res.data.channelTemplateList
@@ -444,7 +458,7 @@
             })
             api.getPartner({}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.partnerList = res.data.partnerList
@@ -453,7 +467,7 @@
             })
             api.getAllS1({}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.channelUserList = res.data.listUsers
@@ -471,7 +485,7 @@
         getDefaultDate : function(channelId){
             api.getChannelInfo({channelId:channelId}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.defaultDate = res.data
@@ -487,6 +501,7 @@
                 this.form.strLicense_num = this.defaultDate.strLicenseNum
                 this.form.strPrefix_str = this.defaultDate.strPrefix
                 this.form.strMonth_sales = this.defaultDate.strMonthSales
+                this.form.strChannelScore = this.defaultDate.strChannelScore //商户评分
                 this.form.strPercent = this.defaultDate.strSharePercent
                 this.form.strApplyMax = this.defaultDate.strAppleMax
                 this.form.strDetailAddress = this.defaultDate.strAddress
@@ -494,6 +509,8 @@
 
                 this.form.strValuationId = this.defaultDate.strPlatformTypeId
                 this.form.strPayMethodId = this.defaultDate.strPayId
+
+                this.form.strStatus = this.defaultDate.strState
 
                 if(this.defaultDate.strIsCollect == '1') this.form.selfFunction.push('收集用户信息')
                 if(this.defaultDate.strIsRecycle == '1') this.form.selfFunction.push('环保回收')
@@ -571,7 +588,7 @@
                     && this.addSaleList[i].saleId.addr_city_id == willAddSale.saleId.addr_city_id
                     && this.addSaleList[i].saleId.addr_area_id == willAddSale.saleId.addr_area_id
                     ){
-                        this.$layer.alert('该地址已添加！')
+                        this.$alert('该地址已添加！','提示')
                         return
                 }
             }
@@ -607,7 +624,7 @@
             }
             api.getChannelStoreList(data).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.dataList = res.data.list
@@ -628,7 +645,7 @@
         disableStore:function(strStoreId){
             api.disableStore({strStoreId:strStoreId}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.$message({
@@ -642,7 +659,7 @@
         enableStore:function(strStoreId){
             api.enableStore({strStoreId:strStoreId}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.$message({

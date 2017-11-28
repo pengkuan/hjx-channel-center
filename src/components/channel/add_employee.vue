@@ -13,7 +13,7 @@
             <el-form-item label="身份证："  prop='strCardNum'>
                 <el-input v-model="ruleForm.strCardNum" :maxlength='18'  placeholder='请输入18位身份证号'></el-input>
             </el-form-item>
-            <el-form-item label="邮箱："  prop='strEmail'>
+            <el-form-item label="邮箱：" >
                 <el-input v-model="ruleForm.strEmail" placeholder='请输入邮箱'></el-input>
             </el-form-item>
             <el-form-item>
@@ -83,7 +83,7 @@
                     if (valid) {
                         api.addEmployeeLogic(this.ruleForm).then(res => {
                             if (res.ret != '0') {
-                                this.$layer.alert(res.retinfo)
+                                this.$alert(res.retinfo,"提示")
                                 return
                             }
                             this.$message("成功！")

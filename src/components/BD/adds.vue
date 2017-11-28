@@ -280,7 +280,6 @@ export default {
                     this.$alert(res.retinfo, '提示', {
                         confirmButtonText: '确定',
                         callback: action => {
-                            console.log(6666)
                             document.querySelector(".el-icon-close").click()
                         }
                     })

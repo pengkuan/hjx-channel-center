@@ -10,9 +10,9 @@
 	                <el-input v-model="ruleForm.strUserTel" :type="'number'" :maxlength='11' placeholder='请输入手机号'></el-input>
 	            </el-form-item>
 	            <el-form-item label="身份证："  prop='strCardNum'>
-	                <el-input v-model="ruleForm.strCardNum"  placeholder='请输入18位身份证号'></el-input>
+	                <el-input v-model="ruleForm.strCardNum" disabled  placeholder='请输入18位身份证号'></el-input>
 	            </el-form-item>
-	            <el-form-item label="邮箱："  prop='strEmail'>
+	            <el-form-item label="邮箱："  >
 	                <el-input v-model="ruleForm.strEmail" placeholder='请输入邮箱'></el-input>
 	            </el-form-item>
 		        
@@ -33,6 +33,9 @@
 		        </el-form-item>
 		        <el-form-item label="门店工号：">
 		            <el-input v-model="strUserNum" disabled></el-input>
+		        </el-form-item>
+		        <el-form-item label="组织身份：">
+		            <el-input v-model="strIdentityList" disabled></el-input>
 		        </el-form-item>
 
 		        <el-form-item>
@@ -62,6 +65,7 @@
 	                {statusName : '停用' , statusId : '0'}
 	            ],
 	            strUserNum:'',//工号
+	            strIdentityList:'',
 	            S4_list:'',//商户
 	            S3_list:'',//二级渠道
 	            S2_list:'',//门店
@@ -111,6 +115,7 @@
                     }
 					let msg = res.data
                     this.strUserNum = msg.strUserNum
+                    this.strIdentityList = msg.strIdentityList
 
                     this.ruleForm.strStatus = msg.strStatus
                     this.ruleForm.strUserName = msg.strUserName

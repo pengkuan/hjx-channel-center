@@ -39,16 +39,17 @@
         <el-table-column prop="strChannelManagerName" label="渠道经理" ></el-table-column> -->
         <el-table-column  label="合作状态" >
           <template slot-scope="scope">
-                {{scope.row.strState == 1 ?'正常':'停止'}}
+                {{scope.row.strState == 1 ?'合作中':'停止合作'}}
             </template>
         </el-table-column>
 
         <el-table-column prop="strChannelScore" label="商户评分" >
             <template slot-scope="scope">
-                <span v-if="scope.row.strChannelScore == '0' ">A</span>
-                <span v-else-if="scope.row.strChannelScore == '1' ">B</span>
-                <span v-else-if="scope.row.strChannelScore == '2' ">C</span>
-                <span v-else-if="scope.row.strChannelScore == '3' ">D</span>
+                <span v-if="scope.row.strChannelScore == '0' ">S</span>
+                <span v-else-if="scope.row.strChannelScore == '1' ">A</span>
+                <span v-else-if="scope.row.strChannelScore == '2' ">B</span>
+                <span v-else-if="scope.row.strChannelScore == '3' ">C</span>
+                <span v-else-if="scope.row.strChannelScore == '4' ">D</span>
             </template>
         </el-table-column>
         <el-table-column prop="strS4Name" label="S4" ></el-table-column>
@@ -68,7 +69,7 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage4"
+          :current-page="currentPage"
           :page-sizes="[10, 20, 30, 40]"
           :page-size="10"
           layout="total, prev, pager, next, jumper"
@@ -90,7 +91,7 @@ export default {
             provinceId:'',
             pageIndex:'0',
             pageSize:'10',
-            currentPage4:1,
+            currentPage:1,
             total:0,
             filters:{
                 searchkey:''
@@ -104,31 +105,34 @@ export default {
         },
         handleCurrentChange(val) {
             this.pageIndex = (val- 1) * 10
+            this.currentPage = val
             this.showList()
+        },
+        init(){
+            api.getProvince().then(res => {
+                if (res.ret != '0') {
+                    this.$alert(res.retinfo,"提示")
+                    return
+                }
+                this.provinces = res.data.provinceList
+            })
         },
         showList:function(){
             let data ={
                 pageIndex:String(this.pageIndex),
                 pageSize:this.pageSize,
                 provinceId:this.provinceId,
-                search:this.filters.searchkey,
-                // csrfmiddlewaretoken:getCookie('csrftoken')
+                search:this.filters.searchkey
             }
             api.getChannelList(data).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.dataList = res.data.channelList
                 this.total = res.data.nums
             })
-            api.getProvince(data).then(res => {
-                if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
-                    return
-                }
-                this.provinces = res.data.provinceList
-            })
+            
         },
         //跳至编辑页面
         editChannel:function(strChannelId){
@@ -141,7 +145,10 @@ export default {
         search:function(){
             this.provinceId = util.Trim(this.provinceId)
             this.filters.searchkey = util.Trim(this.filters.searchkey)
+            this.currentPage = 1
+            this.pageIndex = '0'
             this.showList()
+
         },
         clearForm(){
             this.provinceId= ''
@@ -151,6 +158,7 @@ export default {
         // 添加门店
     },
     mounted()  {
+        this.init()
         this.showList()
     }
 
