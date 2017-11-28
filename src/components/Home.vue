@@ -108,7 +108,7 @@ export default {
         getModule(menu) {
             let routes = this.$router.options.routes
             for (let a in routes) {
-                if (routes[a].menuShow && routes[a].name != 'home') {
+                if (routes[a].menuShow) {
                     this.$router.options.routes[a].menuShow = false
                 }
             }
@@ -126,7 +126,7 @@ export default {
             let routes = this.$router.options.routes
             // 清空导航以及导航下子路由的menuShow，注意排除home以及home没有children的容错
             for (let a in routes) {
-                if (routes[a].menuShow && routes[a].name != 'home') {
+                if (routes[a].menuShow) {
                     this.$router.options.routes[a].menuShow = false
                 }
 
@@ -178,7 +178,7 @@ export default {
             } else { 
 
 
-                
+
                 ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭 
                 // const loading = this.$loading({
                 //     lock: true,
@@ -206,7 +206,7 @@ export default {
 
                 ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭  
                 this.setTestCookie()
-                this.menuList = [{ name: '渠道关系管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
+                this.menuList = [{ name: 'home' },{ name: '渠道关系管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
                 this.showDiv = true
                 this.getModule(this.menuList)  
             }
