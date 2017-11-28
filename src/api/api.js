@@ -39,7 +39,7 @@ axios.interceptors.response.use((res) =>{
       switch (error.response.status) {
         case 403:  
             let host = encodeURIComponent(util.accessHomeHost)
-            // window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.homeSystemId+'&jump_url=' + host 
+            window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.homeSystemId+'&jump_url=' + host 
       }
     }
     return Promise.reject(error)
@@ -162,12 +162,12 @@ export default {
 
     getAddress(params) {return fetch('get_addressInfo', params)},// 获取地址
     getBank(params) {return fetch('get_bank', params)},// 获取银行
-    getAllChannels(params) {return fetch('get_allChannels', params)},// 获取渠道商
-    getChannelsChild(params) {return fetch('get_Orgs', params)},// 获取渠道商下级
+    getAllChannels(params) {return fetch('get_allChannels', params)},// 获取商户
+    getChannelsChild(params) {return fetch('get_Orgs', params)},// 获取商户下级
     getChannelManager(params) {return fetch('get_channelManager', params)},// 获取渠道经理
 
     getChannelTemplate(params) {return fetch('get_channel_template', params)},// 获取渠道模板
-    getPartner(params) {return fetch('get_partner', params)},// 获取渠道商
+    getPartner(params) {return fetch('get_partner', params)},// 获取商户
     getDStatus(params) {return fetch('get_channelstatus_list', params)},// 获取D相关状态
 
     /*渠道相关*/ 

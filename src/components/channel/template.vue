@@ -1,6 +1,6 @@
 <template>
 <div>
-	<div class="title">渠道商 / 模板列表</div>
+	<div class="title">商户 / 模板列表</div>
 	<!--工具条-->
     <el-form :inline="true" :model="filters">
         <el-form-item>
@@ -26,14 +26,21 @@
 	    <el-table-column prop="strTemplateName" label="模板名称" ></el-table-column>
 	    <el-table-column prop="strTemplateDesc" label="模板描述" ></el-table-column>
 	    <el-table-column prop="strCreateTime" label="创建日期" ></el-table-column>
-	    <el-table-column prop="strStatus" label="合作状态" ></el-table-column>
+	    <el-table-column prop="strStatus" label="状态" ></el-table-column>
 	    <el-table-column
 	        label="操作"
 	        >
 	        <template slot-scope="scope">
-	        	<el-button class = 'indexFunBtn' type="primary" @click="edit(scope.row.strTemplateId)"  size="small">编辑</el-button>
-	        	<el-button class = 'indexFunBtn' type="danger" @click="delchnn(scope.row.strTemplateId)"  size="small">禁用</el-button>
-	        	<el-button class = 'indexFunBtn' type="primary" @click="upchnn(scope.row.strTemplateId)"  size="small">启用</el-button>
+	        	<span v-if="scope.row.strStatus == '有效' ">
+	        		<el-button class = 'indexFunBtn' type="primary" @click="edit(scope.row.strTemplateId)"  size="small">编辑</el-button>
+	        		<el-button class = 'indexFunBtn' type="danger" @click="delchnn(scope.row.strTemplateId)"  size="small">禁用</el-button>
+	        	</span>
+	        	<span v-else>
+	        		<el-button class = 'indexFunBtn' type="primary" @click="edit(scope.row.strTemplateId)"  size="small">编辑</el-button>
+	        		<el-button class = 'indexFunBtn' type="primary" @click="upchnn(scope.row.strTemplateId)"  size="small">启用</el-button>
+	        	</span>
+	        	
+
 	        </template>
 	    </el-table-column>
 	</el-table>

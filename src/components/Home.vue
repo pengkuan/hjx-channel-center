@@ -3,6 +3,9 @@
         <el-row class="container" v-show="showDiv">
             <!--头部-->
             <el-col :span="24" class="topbar-wrap">
+                <div class="topbar-account gohome">
+                    <a href="/">首页</a>
+                </div>
                 <div class="topbar-logo topbar-btn">
                     <a href="/"><img src="../assets/images/logo.png" style="margin: 10px 0 0 10px;height:30px;border:0"></a>
                 </div>
@@ -17,6 +20,7 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </div>
+                
             </el-col>
             <!--中间-->
             <el-col :span="24" class="main">
@@ -31,6 +35,7 @@
                     <el-menu v-show="!collapsed" default-active="0" @open="handleOpen" @close="handleClose" router>
                         <!-- <template v-for="(item,index) in $router.options.routes" v-if="item.menuShow"> -->
                         <template v-for="(item,index) in menuRutes" v-if="item.menuShow">
+
                             <el-submenu v-if="!item.leaf" :index="index+''">
                                 <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
                                 <el-menu-item v-for="term in item.children" :key="term.path" :index="term.path" v-if="term.menuShow" :class="$route.path==term.path?'is-active-add':''">
@@ -74,9 +79,7 @@
         </el-row>
     </div>
 </template>
-<style type="text/css" scoped>
-    .icon-down{font-size: 12px;position: relative;top: 3px}
-</style>
+
 <script>
 import api from '../api/api'
 import util from '../common/util'
@@ -171,8 +174,8 @@ export default {
                     token: token,
                     systemid: util.channelCenterSystemId
                 }
-            // 本地时打开一次即可
-            // this.setTestCookie()  
+                // this.setTestCookie()  //本地时打开一次即可
+
             if (!userid) {
                 window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
             } else { 
@@ -180,35 +183,36 @@ export default {
 
 
                 ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭 
-                // const loading = this.$loading({
-                //     lock: true,
-                //     text: '玩命加载中......',
-                //     spinner: 'el-icon-loading',
-                //     background: 'rgba(0, 0, 0, 0.7)'
-                // })
-                // api.get_user_authority(params).then((res) => {
-                //     if (res.ret != '0') {
-                //         this.$message({
-                //             message: res.retinfo,
-                //             type: 'warning'
-                //         })
-                //         loading.close()
-                //         return
-                //     }
-                //     loading.close()
-                //     this.showDiv = true
-                //     this.menuList = res.data.menu
-                //     this.getModule(this.menuList)
-                // }) 
+                const loading = this.$loading({
+                    lock: true,
+                    text: '玩命加载中......',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                })
+                api.get_user_authority(params).then((res) => {
+                    if (res.ret != '0') {
+                        this.$message({
+                            message: res.retinfo,
+                            type: 'warning'
+                        })
+                        loading.close()
+                        return
+                    }
+                    loading.close()
+                    this.showDiv = true
+                    this.menuList = res.data.menu
+                    this.getModule(this.menuList)
+                }) 
 
  
 
 
                 ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭  
-                this.setTestCookie()
-                this.menuList = [{ name: 'home' },{ name: '渠道关系管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
-                this.showDiv = true
-                this.getModule(this.menuList)  
+ 
+                // this.setTestCookie()
+                // this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
+                // this.showDiv = true
+                // this.getModule(this.menuList)   
             }
         },
         // 测试时，模拟写入cookie,登录信息
@@ -254,6 +258,12 @@ export default {
 }
 
 </script>
+<style type="text/css" scoped>
+    .icon-down{font-size: 12px}
+    .gohome{font-size: 14px;cursor: pointer;}
+    .gohome>a:hover{color:#409EFF;}
+    .gohome>a{color: #fff}
+</style>
 <style>
 .el-menu-item,
 .el-submenu__title {

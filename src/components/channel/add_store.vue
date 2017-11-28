@@ -5,14 +5,14 @@
 	<div id="Add-store">
 
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-            <el-form-item label="渠道商：" prop='structAid'>
-                <el-select v-model="ruleForm.structAid" filterable placeholder="请输入渠道商名称" >
+            <el-form-item label="商户：" prop='structAid'>
+                <el-select v-model="ruleForm.structAid" filterable placeholder="请输入商户名称" >
                     <el-option  v-for="item in structA"  :label="item.strRelationName"  :value="item.strRelationId+','+item.strLevelId + ',0'" :key="item.strRelationId">
                     </el-option>
                 </el-select>
             </el-form-item>
 
-            <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName" :key="index">
+            <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName" :key="index" class="mustStar">
                 <el-select v-model="modelList['model_'+(index+1)]" placeholder="请选择">
                     <el-option  v-for="item in option.Relations"  :label="item.strRelationName"  :key="item.strRelationId"  :value="item.strRelationId+','+item.strLevelId+','+(index+1) " >
                     </el-option>
@@ -104,8 +104,8 @@
 		
 	</div>
 
-    <el-dialog title="新增门店" :visible.sync="dialogFormVisible">
-        <el-input v-model="addGroupName" placeholder="请输入门店名"></el-input>
+    <el-dialog title="新增" :visible.sync="dialogFormVisible">
+        <el-input v-model="addGroupName" placeholder="请输入名称"></el-input>
         <br><br>
         <div class = 'textRight'>
             <el-button type="primary" icon="plus" size="small" v-on:click = "submitAddGroup()">提交</el-button>
@@ -184,7 +184,7 @@ export default {
             },
             rules:{
                 'structAid': [
-                    {  required: true, message: '请选择渠道商', trigger: 'change' }
+                    {  required: true, message: '请选择商户', trigger: 'change' }
                 ],
                 'strStoreName': [
                     {  required: true , validator: util.validateName, trigger: 'blur' }
@@ -255,10 +255,10 @@ export default {
 
 	methods:{
 		loadInfo: function() {
-            //获取一级渠道商
+            //获取一级商户
             if(commonData.channelList.length == 0){
                 var loading = this.$loading({
-                    text:'获取渠道商列表',
+                    text:'获取商户列表',
                     target:'#Add-store'
                 })
                 api.getAllChannels({}).then(res => {
@@ -346,7 +346,7 @@ export default {
                 if(key.split('_')[1] >  valList[2]) this.modelList[key] = ''
             }
 
-            // 获取渠道商下级
+            // 获取商户下级
             api.getChannelsChild({ 'strRelationId': valList[0] }).then(res => {
 				if (res.ret != '0') {
                     this.$alert(res.retinfo,"提示")
@@ -470,7 +470,7 @@ export default {
                 { val: msgData.saleAddrList == '[]' ? false : true , msg: "请添加销售范围" },
                 // { val: msgData.strChannelManagerId, msg: "请选择渠道经理" }
             ]
-            if(this.ifValidateNext) _validateList.splice(1,0,{ val: this.structBid, msg: "请选择次级渠道" })
+            if(this.ifValidateNext) _validateList.splice(1,0,{ val: this.structBid, msg: "请选择门店组" })
 
             this.$refs[formName].validate((valid) => {
                 if (valid && util.Validate(_validateList)) {

@@ -1,9 +1,9 @@
 <template>
 <div>
-<div class="title">渠道商 / 新增</div>
+<div class="title">商户 / 新增</div>
 <div class="content-containered">
 	<el-form ref="form" :model="form" label-width="180px" :rules="rules">
-		<el-form-item label="渠道关系模型：">
+		<el-form-item label="O关系模型：">
 		    <el-select v-model="form.strLevelId" placeholder="请选择">
 		      	<el-option  v-for="item in channelTemplateList"  :label="item.strTemplateName"  :value="item.strTemplateId" :key="item.strTemplateId" >
                 </el-option>
@@ -122,7 +122,7 @@
 		    	<el-option label="2B估价模型" value="2"></el-option>
 		    </el-select>
 		</el-form-item>
-		<el-form-item label="渠道分成：">
+		<el-form-item label="商户分成：">
                 <el-form-item  label="分成比例（%）：" prop='strPercent' >
                     <el-col :span="4">
                         <el-input type="number" v-model="form.strPercent"></el-input>

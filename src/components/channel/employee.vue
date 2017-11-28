@@ -35,9 +35,14 @@
 	        label="操作"
 	        >
 	        <template slot-scope="scope">
-	        	<el-button class = 'indexFunBtn' type="primary" @click="editEmployee(scope.row.strUserId)"  size="small">编辑</el-button>
-	        	<el-button class = 'indexFunBtn' type="danger" @click="setEmployee(scope.row.strUserId , 0)"  size="small">禁用</el-button>
-	        	<el-button class = 'indexFunBtn' type="primary" @click="setEmployee(scope.row.strUserId , 1)"  size="small">启用</el-button>
+	        	<span v-if="scope.row.strStatus == '1' ">
+	        		<el-button class = 'indexFunBtn' type="primary" @click="editEmployee(scope.row.strUserId)"  size="small">编辑</el-button>
+	        		<el-button class = 'indexFunBtn' type="danger" @click="setEmployee(scope.row.strUserId , 0)"  size="small">禁用</el-button>
+	        	</span>
+	        	<span v-else>
+	        		<el-button class = 'indexFunBtn' type="primary" @click="editEmployee(scope.row.strUserId)"  size="small">编辑</el-button>
+	        		<el-button class = 'indexFunBtn' type="primary" @click="setEmployee(scope.row.strUserId , 1)"  size="small">启用</el-button>
+	        	</span>
 	        </template>
 	    </el-table-column>
 	</el-table>

@@ -5,14 +5,14 @@
         <el-tabs type="border-card">
             <el-tab-pane label="POS信息">
                 <el-form ref="form" :model="form" label-width="100px">
-                    <el-form-item label="渠道商：">
-                        <el-select v-model="structAid" filterable placeholder="请输入渠道商名称">
+                    <el-form-item label="商户：" class="mustStar">
+                        <el-select v-model="structAid" filterable placeholder="请输入商户名称">
                             <el-option  v-for="item in structA"  :label="item.strRelationName"  :value="item.strRelationId+','+item.strLevelId + ',0'" :key="item.strRelationId">
                             </el-option>
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName" :key="index">
+                    <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName" :key="index" class="mustStar">
                         <el-select v-model="modelList['model_'+(index+1)]" placeholder="请选择">
                             <el-option  v-for="item in option.Relations"  :label="item.strRelationName"  :key="item.strRelationId"  :value="item.strRelationId+','+item.strLevelId+','+(index+1) " >
                             </el-option>
@@ -20,11 +20,11 @@
                         <el-button type="primary" v-on:click="addGroup(option.upStrRelationId , option.upStrLevelId ,index)" size="small">新增</el-button>
                     </el-form-item>
 
-                    <el-form-item label="门店名称：">
+                    <el-form-item label="门店名称：" class="mustStar">
                         <el-input v-model="strStoreName" placeholder="请输入门店名称"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="门店地址：">
+                    <el-form-item label="门店地址：" class="mustStar">
                         <el-select v-model="strProvinceId" filterable placeholder="请选择省份">
                             <el-option  v-for="item in provinces"  :label="item.strProvinceName"  :value="item.strProvinceId" :key="item.strProvinceId" >
                             </el-option>
@@ -41,7 +41,7 @@
                         <el-input v-model="strAddress" placeholder="请输入详细地址"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="销售区域：">
+                    <el-form-item label="销售区域：" class="mustStar">
                         <el-select v-model="saleAddsId.strSaleProvinceId" filterable placeholder="请选择省份">
                             <el-option label="全部" value="" ></el-option>
                             <el-option  v-for="item in saleAdds.provinces"  :label="item.strProvinceName"  :value="item.strProvinceId +','+ item.strProvinceName"  :key="item.strProvinceId">
@@ -465,7 +465,7 @@ export default {
             this.id= this.$route.query.id
         },
 		loadInfo: function() {
-            //获取一级渠道商
+            //获取一级商户
             if(commonData.channelList.length != 0){
                 // 设置默认值
                 if(!this.structAChange) this.structAid = this.defaultDate.relationUp[0].strRelationId + ',' + this.defaultDate.relationUp[0].strLevelId + ',0'
@@ -562,7 +562,7 @@ export default {
                 if(key.split('_')[1] >  this.setTrue) this.changeList['change_'+key.split('_')[1]] = true
             }
 
-            // 获取渠道商下级
+            // 获取商户下级
             api.getChannelsChild({ 'strRelationId': valList[0] }).then(res => {
 				if (res.ret != '0') {
                     this.$alert(res.retinfo,"提示")
@@ -728,13 +728,13 @@ export default {
                 
             }
             var _validateList = [
-                {val:msgData.strRelationId , msg : "请选择关联渠道"} ,
+                {val:msgData.strRelationId , msg : "请选择商户"} ,
                 { val: /^.{2,25}$/g.test(msgData.strStoreName), msg: "请输入2~25位门店名" },
                 {val:this.strProvinceId , msg : "请选择省份"} ,
                 {val:this.strAddress , msg : "请输入详细地址"} ,
                 { val: msgData.saleAddrList == '[]' ? false : true , msg: "请添加销售范围" },
             ]
-            if(this.ifValidateNext) _validateList.splice(1,0,{ val: this.structBid, msg: "请选择次级渠道" })
+            if(this.ifValidateNext) _validateList.splice(1,0,{ val: this.structBid, msg: "请选择门店组" })
 
             if (this.Validate(_validateList)) {
             	// 地址
