@@ -46,8 +46,10 @@ export default {
     // accessHost: 'mba.huanjixia.com/channel_center', //登录后，后台跳转的页面
     // apiCross :  process.env.NODE_ENV == 'development'?'https://dev-amc-server.huanjixia.com':'https://amc-server.huanjixia.com' ,//开发环境 、线上环境
     powerCenterLoginPage: 'http://api-amc.huishoubao.com.cn', //权限中心登录页面
-    accessHost: 'mba.huanjixia.com', //登录后，后台跳转的页面
-    systemId: '23', //渠道中心系统id 
+    accessChannelHost: 'mba.huanjixia.com', //登录后，后台跳转到渠道中心页面
+    accessHomeHost: 'mba.huanjixia.com', //登录后，后台跳转到home页面
+    channelCenterSystemId: '23', //渠道中心系统id 
+    homeSystemId: '100', //渠道中心系统id 
     removeClass(obj, cls) {
         if (cls) {
             var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
