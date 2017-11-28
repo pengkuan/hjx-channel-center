@@ -157,7 +157,7 @@ let router = new Router({
                 {path: '/power/category', component: userCategory, name: '分类管理'},
                 {path: '/power/setPower', component: setPower, name: 'setPower'},
                 {path: '/power/record', component: RecordPower, name: '操作日志', menuShow: true},
-                {path: '/power/dataImport', component: dataImport, name: '数据导入', menuShow: false}
+                {path: '/power/dataImport', component: dataImport, name: '数据导入', menuShow: true}
             ]
         }
     ]

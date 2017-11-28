@@ -178,41 +178,38 @@ export default {
 
             if (!userid) {
                 window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
-            } else { 
-
-
-
+            } else {  
                 ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭 
-                const loading = this.$loading({
-                    lock: true,
-                    text: '玩命加载中......',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                })
-                api.get_user_authority(params).then((res) => {
-                    if (res.ret != '0') {
-                        this.$message({
-                            message: res.retinfo,
-                            type: 'warning'
-                        })
-                        loading.close()
-                        return
-                    }
-                    loading.close()
-                    this.showDiv = true
-                    this.menuList = res.data.menu
-                    this.getModule(this.menuList)
-                }) 
+                // const loading = this.$loading({
+                //     lock: true,
+                //     text: '玩命加载中......',
+                //     spinner: 'el-icon-loading',
+                //     background: 'rgba(0, 0, 0, 0.7)'
+                // })
+                // api.get_user_authority(params).then((res) => {
+                //     if (res.ret != '0') {
+                //         this.$message({
+                //             message: res.retinfo,
+                //             type: 'warning'
+                //         })
+                //         loading.close()
+                //         return
+                //     }
+                //     loading.close()
+                //     this.showDiv = true
+                //     this.menuList = res.data.menu
+                //     this.getModule(this.menuList)
+                // }) 
 
  
 
 
                 ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭  
  
-                // this.setTestCookie()
-                // this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
-                // this.showDiv = true
-                // this.getModule(this.menuList)   
+                this.setTestCookie()
+                this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
+                this.showDiv = true
+                this.getModule(this.menuList)   
             }
         },
         // 测试时，模拟写入cookie,登录信息
