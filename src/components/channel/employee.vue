@@ -80,6 +80,7 @@ export default {
 	    },
 	    handleCurrentChange(val) {
 	    	this.pageIndex = (val- 1) * 10
+	    	this.currentPage = val
 	        this.showList()
 	    },
 		showList:function(){
@@ -87,11 +88,11 @@ export default {
 				pageIndex:String(this.pageIndex),
 				pageSize:this.pageSize,
 				search:this.filters.searchkey
-				// csrfmiddlewaretoken:getCookie('csrftoken')
+				
 			}
 			api.getEmployeeList(data).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				this.dataList = res.data.jobNumList
@@ -109,7 +110,7 @@ export default {
 		setEmployee:function(userId , status){
 			api.setEmployee({strUserId:userId , strStatus: status}).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				if(status == 0) this.$message({message: '禁用成功',type: 'success'})
@@ -121,6 +122,8 @@ export default {
 		//search
 		search:function(){
 			this.filters.searchkey = util.Trim(this.filters.searchkey)
+			this.currentPage = 1
+            this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(){

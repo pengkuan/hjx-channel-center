@@ -184,15 +184,15 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         // if(!this.ruleForm.strCardPicFront){
-                        //     this.$layer.alert('请上传身份证正面照片')
+                        //     this.$alert('请上传身份证正面照片','提示')
                         //     return
                         // } 
                         // if(!this.ruleForm.strCardPicBack) {
-                        //     this.$layer.alert('请上传身份证背面照片')
+                        //     this.$alert('请上传身份证背面照片','提示')
                         //     return
                         // }
                         // if(!this.ruleForm.strHeadPic) {
-                        //     this.$layer.alert('请上传头像')
+                        //     this.$alert('请上传头像','提示')
                         //     return
                         // }
                         api.editBDLogic({bduser:this.ruleForm}).then(res => {

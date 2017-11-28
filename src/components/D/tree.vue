@@ -296,7 +296,7 @@
                 if(commonData.addrList.length == 0){
                     api.getAddress({}).then(res => {
                         if (res.ret != '0') {
-                            this.$layer.alert(res.retinfo)
+                            this.$alert(res.retinfo,"提示")
                             return
                         }
                         commonData.addrList = res.data.address
@@ -332,7 +332,7 @@
                 this.delNode.showDelNodeModel = false
                 api.getD4Tree({'strRelationId':strRelationId}).then(res =>{
                     if (res.ret != '0') {
-                        this.$layer.alert(res.retinfo)
+                        this.$alert(res.retinfo,"提示")
                         return
                     }
                     this.treeList = []
@@ -422,7 +422,7 @@
             getReplaceDxList(strRelationId){
                 api.getReplaceDxList({'strRelationId':strRelationId}).then(res =>{
                     if (res.ret != '0') {
-                        this.$layer.alert(res.retinfo)
+                        this.$alert(res.retinfo,"提示")
                         return
                     }
                     this.replaceNodeForm.replaceNodeList = res.dlist
@@ -459,7 +459,7 @@
                 api.delLeafNode({'strRelationId':strRelationId}).then(res =>{
                     loading.close()
                     if (res.ret != '0') {
-                        this.$layer.alert(res.retinfo)
+                        this.$alert(res.retinfo,"提示")
                         return
                     }
                     this.$message('成功')
@@ -526,7 +526,7 @@
                         && whichForm.addSaleList[i].saleId.addr_city_id == willAddSale.saleId.addr_city_id
                         && whichForm.addSaleList[i].saleId.addr_area_id == willAddSale.saleId.addr_area_id
                         ){
-                            this.$layer.alert('该地址已添加！')
+                            this.$alert('该地址已添加！','提示')
                             return
                     }
                 }
@@ -556,11 +556,11 @@
                 }
                 if(judge == 'AddNextForm'){
                     if(!data.strUserId) {
-                        this.$layer.alert('请选择节点负责人')
+                        this.$alert('请选择节点负责人','提示')
                         return
                     }
                     if(data.saleAddrList.length == 0) {
-                        this.$layer.alert('请添加销售地址')
+                        this.$alert('请添加销售地址','提示')
                         return
                     }
                     var loading = this.$loading({
@@ -570,7 +570,7 @@
                     api.setAddNext(data).then(res => {
                         loading.close()
                         if (res.ret != '0') {
-                            this.$layer.alert(res.retinfo)
+                            this.$alert(res.retinfo,"提示")
                             return
                         }
                         this.$message("成功！")
@@ -579,11 +579,11 @@
                     })
                 }else if(judge == 'replaceNodeForm'){
                     if(!data.strUserId) {
-                        this.$layer.alert('请选择节点负责人')
+                        this.$alert('请选择节点负责人','提示')
                         return
                     }
                     if(data.saleAddrList.length == 0) {
-                        this.$layer.alert('请添加销售地址')
+                        this.$alert('请添加销售地址','提示')
                         return
                     }
                     var loading = this.$loading({
@@ -593,7 +593,7 @@
                     api.replaceDxNode(data).then(res => {
                         loading.close()
                         if (res.ret != '0') {
-                            this.$layer.alert(res.retinfo)
+                            this.$alert(res.retinfo,"提示")
                             return
                         }
                         this.$message("成功！")

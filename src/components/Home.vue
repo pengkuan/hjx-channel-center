@@ -9,16 +9,14 @@
                 <div class="topbar-title topbar-btn">
                     <!-- <span>运营管理后台</span> -->
                 </div>
-                <!-- <div class="topbar-account topbar-btn">
+                <div class="topbar-account topbar-btn">
                     <el-dropdown trigger="click">
-                        <span class="el-dropdown-link userinfo-inner"><i class="iconfont icon-user"></i> {{sysUserName}}  <i class="iconfont icon-down"></i></span>
+                        <span class="el-dropdown-link userinfo-inner"> {{sysUserName}}  <i class="iconfont icon-people"></i> <i class="iconfont icon-down"></i></span>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>个人信息</el-dropdown-item>
-                            <el-dropdown-item>修改密码</el-dropdown-item>
                             <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
-                </div> -->
+                </div>
             </el-col>
             <!--中间-->
             <el-col :span="24" class="main">
@@ -76,6 +74,9 @@
         </el-row>
     </div>
 </template>
+<style type="text/css" scoped>
+    .icon-down{font-size: 12px;position: relative;top: 3px}
+</style>
 <script>
 import api from '../api/api'
 import util from '../common/util'
@@ -86,6 +87,7 @@ export default {
             collapsed: false,
             menuRutes: [],
             menuList: [],
+            sysUserName:'',
             showDiv: false
         }
     },
@@ -160,19 +162,19 @@ export default {
         },
         // 获取权限列表数据
         get_user_menu() {
-            let host = encodeURIComponent(util.accessHost),
+
+            let host = encodeURIComponent(util.accessHomeHost),
                 userid = util.getCookie('userid'),
                 token = util.getCookie('useruuid'),
                 params = {
                     userid: userid,
                     token: token,
-                    systemid: util.systemId
+                    systemid: util.channelCenterSystemId
                 }
             // this.setTestCookie()  本地时打开一次即可
             if (!userid) {
-                window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.systemId + '&jump_url=' + host
-            } else {
-
+                window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+            } else { 
                 ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭 
                 // const loading = this.$loading({
                 //     lock: true,
@@ -193,7 +195,9 @@ export default {
                 //     this.showDiv = true
                 //     this.menuList = res.data.menu
                 //     this.getModule(this.menuList)
-                // })
+                // }) 
+
+ 
 
 
                 ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭  
@@ -208,6 +212,36 @@ export default {
             util.setCookie('userid', '694')
             util.setCookie('username', 'tianyu')
             util.setCookie('useruuid', 'c6ed5c8e9830cf9225d078bdde335de7')
+        },
+        showLoginName() {
+            let user = util.getCookie('username')
+            if (user) {
+                this.sysUserName = user || ''
+            }
+        },
+        logout() {
+            var _this = this;
+            this.$confirm('确认退出吗?', '提示', {
+                type: 'warning'
+            }).then(() => {
+                // 这里要请求退出的接口，接口成功后需要删除cookie然后跳转到登陆页面，如果退出登录不成功，那么就提示
+                let userid = util.getCookie('userid')
+                api.logout({ userid: userid }).then((res) => {
+                    if (res.ret != '0') {
+                        this.$message({
+                            message: res.retinfo,
+                            type: 'warning'
+                        })
+                        return
+                    }
+                    // 退出成功，删除cookie,跳转到登陆页  
+                    util.delCookie('userid')
+                    util.delCookie('username')
+                    util.delCookie('last_connection')
+                    util.delCookie('useruuid  ')
+                    window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.systemHomeId + '&jump_url=' + encodeURIComponent(util.accessHomeHost)
+                })
+            }).catch(() => {})
         }
     },
     mounted() {

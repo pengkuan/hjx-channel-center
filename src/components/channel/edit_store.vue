@@ -6,7 +6,7 @@
             <el-tab-pane label="POS信息">
                 <el-form ref="form" :model="form" label-width="100px">
                     <el-form-item label="渠道商：">
-                        <el-select v-model="structAid" filterable placeholder="请选择渠道商">
+                        <el-select v-model="structAid" filterable placeholder="请输入渠道商名称">
                             <el-option  v-for="item in structA"  :label="item.strRelationName"  :value="item.strRelationId+','+item.strLevelId + ',0'" :key="item.strRelationId">
                             </el-option>
                         </el-select>
@@ -503,7 +503,7 @@ export default {
             if(commonData.addrList.length == 0){
                 api.getAddress({}).then(res => {
                     if (res.ret != '0') {
-                        this.$layer.alert(res.retinfo)
+                        this.$alert(res.retinfo,"提示")
                         return
                     }
                     commonData.addrList = res.data.address
@@ -521,7 +521,7 @@ export default {
         getDefaultDate : function(strStoreId){
             api.getStoreInfo({strStoreId:strStoreId}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 
@@ -565,7 +565,7 @@ export default {
             // 获取渠道商下级
             api.getChannelsChild({ 'strRelationId': valList[0] }).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 if(res.data) {
@@ -604,7 +604,7 @@ export default {
             }
             api.addOrgLogic(data).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.res(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.dialogFormVisible = false
@@ -680,7 +680,7 @@ export default {
                     && this.addSaleList[i].saleId.addr_city_id == willAddSale.saleId.addr_city_id
                     && this.addSaleList[i].saleId.addr_area_id == willAddSale.saleId.addr_area_id
                     ){
-                        this.$layer.alert('该地址已添加！')
+                        this.$alert('该地址已添加！','提示')
                         return
                 }
             }
@@ -725,7 +725,7 @@ export default {
                 strRelationId:this.strRelationId, //最末层关系节点Id
                 strLevelId:this.strLevelId,//最末层关系节点层级id
                 saleAddrList  :  JSON.stringify(saleList), 
-                // csrfmiddlewaretoken:getCookie('csrftoken')
+                
             }
             var _validateList = [
                 {val:msgData.strRelationId , msg : "请选择关联渠道"} ,

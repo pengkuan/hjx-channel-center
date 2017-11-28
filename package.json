@@ -14,7 +14,6 @@
     "babel-polyfill": "^6.26.0",
     "element-ui": "^1.4.3",
     "vue": "^2.4.2",
-    "vue-layer": "^0.8.4",
     "vue-router": "^2.7.0",
     "vuex": "^3.0.0",
     "jsonp": "0.2.1"

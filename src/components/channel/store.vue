@@ -33,7 +33,17 @@
 	        </template>
 	    </el-table-column>
 	    <el-table-column prop="strChannelName" label="渠道商" ></el-table-column>
-	    <el-table-column prop="strChannelManagerName" label="渠道经理" ></el-table-column>
+	    <el-table-column prop="strRelationD1List" label="D1" >
+            <template slot-scope="scope">
+                <span v-if="scope.row.strRelationD1List.length == 1">
+                    {{scope.row.strRelationD1List[0].strUserName+' / '+scope.row.strRelationD1List[0].strPhoneNum}}
+                </span>
+                <span v-else-if="scope.row.strRelationD1List.length>1">
+                    {{scope.row.strRelationD1List[0].strUserName+' / '+scope.row.strRelationD1List[0].strPhoneNum}}  ...
+                </span>
+                <span v-else>暂无</span>
+            </template>
+        </el-table-column>
 	    <el-table-column  label="合作状态" >
 	    	<template slot-scope="scope">
 	            {{scope.row.strStatus == 1 ?'正常':'停止'}}
@@ -53,7 +63,7 @@
 	    <el-pagination
 	      @size-change="handleSizeChange"
 	      @current-change="handleCurrentChange"
-	      :current-page="currentPage4"
+	      :current-page="currentPage"
 	      :page-sizes="[10, 20, 30, 40]"
 	      :page-size="10"
 	      layout="total, prev, pager, next, jumper"
@@ -73,7 +83,7 @@ export default {
 	    	dataList:[],
 	    	pageIndex:'0',
         	pageSize:'10',
-        	currentPage4:1,
+        	currentPage:1,
         	total:0,
         	filters:{
         		'strStoreId':'',
@@ -89,6 +99,7 @@ export default {
 	    },
 	    handleCurrentChange(val) {
 	    	this.pageIndex = (val- 1) * 10
+	    	this.currentPage = val
 	        this.showList()
 	    },
 		showList:function(){
@@ -101,7 +112,7 @@ export default {
 			}
 			api.getStoreList(data).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				this.dataList = res.data.list
@@ -119,7 +130,7 @@ export default {
 		disableStore:function(strStoreId){
 			api.disableStore({strStoreId:strStoreId}).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				this.$message({
@@ -133,7 +144,7 @@ export default {
 		enableStore:function(strStoreId){
 			api.enableStore({strStoreId:strStoreId}).then(res => {
 				if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				this.$message({
@@ -146,9 +157,10 @@ export default {
 		},
 		//search
 		search:function(){
-			console.log(364)
 			this.filters.strStoreId = util.Trim(this.filters.strStoreId)
 			this.filters.strStoreName = util.Trim(this.filters.strStoreName)
+			this.currentPage = 1
+            this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(){

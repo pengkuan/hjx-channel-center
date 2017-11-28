@@ -10,7 +10,7 @@
 		    </el-select>
 		</el-form-item>
         <el-form-item label="商户全称：" prop='strFullName'>
-            <el-input v-model="form.strFullName" placeholder="请输入合同乙方全称"></el-input>
+            <el-input v-model="form.strFullName" placeholder="请输入合同乙方营业执照名称"></el-input>
         </el-form-item>
 		<el-form-item label="所属品牌商/合作方：">
 		    <el-select v-model="form.strPartner_id" placeholder="请选择">
@@ -26,7 +26,7 @@
 		</el-form-item> -->
 
 
-        <el-form-item label="门店地址：">
+        <el-form-item label="营业执照地址：">
             <el-col :span="6">
                 <el-form-item prop="strAddr_province_id">
                     <el-select v-model="form.strAddr_province_id" filterable placeholder="请选择省份">
@@ -98,7 +98,7 @@
         <el-form-item label="工号前缀：" prop = 'strPrefix_str'>
             <el-input v-model="form.strPrefix_str" placeholder='2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)'></el-input>
         </el-form-item>
-        <el-form-item label="S4：">
+        <el-form-item label="商户负责S4：">
 		    <el-select v-model="form.strConnection_info" placeholder="请选择">
 		      	<el-option  v-for="item in channelUserList"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserId" :key="item.strUserId">
                 </el-option>
@@ -110,10 +110,11 @@
         </el-form-item>
         <el-form-item label="商户等级：">
 		    <el-select v-model="form.strScore" placeholder="请选择">
-		    	<el-option label="A" value="0"></el-option>
-		    	<el-option label="B" value="1"></el-option>
-                <el-option label="C" value="2"></el-option>
-		    	<el-option label="D" value="3"></el-option>
+                <el-option label="S" value="0"></el-option>
+		    	<el-option label="A" value="1"></el-option>
+		    	<el-option label="B" value="2"></el-option>
+                <el-option label="C" value="3"></el-option>
+		    	<el-option label="D" value="4"></el-option>
 		    </el-select>
 		</el-form-item>
 		<el-form-item label="估价模型：">
@@ -298,7 +299,7 @@ export default {
                 if (valid) {
                 	api.addChannelLogic(this.form).then(res => {
                         if (res.ret != '0') {
-                            this.$layer.alert(res.retinfo)
+                            this.$alert(res.retinfo,"提示")
                             return
                         }
                         this.$message('成功！')
@@ -314,7 +315,7 @@ export default {
             if(commonData.addrList.length == 0){
                 api.getAddress({}).then(res => {
                     if (res.ret != '0') {
-                        this.$layer.alert(res.retinfo)
+                        this.$alert(res.retinfo,"提示")
                         return
                     }
                     commonData.addrList = res.data.address
@@ -324,21 +325,21 @@ export default {
             }
 			api.getChannelTemplate({}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				this.channelTemplateList = res.data.channelTemplateList
 			})
 			api.getPartner({}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				this.partnerList = res.data.partnerList
 			})
 			api.getAllS1({}).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
 				this.channelUserList = res.data.listUsers
@@ -401,7 +402,7 @@ export default {
                     && this.addSaleList[i].saleId.addr_city_id == willAddSale.saleId.addr_city_id
                     && this.addSaleList[i].saleId.addr_area_id == willAddSale.saleId.addr_area_id
                     ){
-                        this.$layer.alert('该地址已添加！')
+                        this.$alert('该地址已添加！','提示')
                         return
                 }
             }

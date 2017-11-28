@@ -38,8 +38,8 @@ axios.interceptors.response.use((res) =>{
     Message({message:error.response.data.body.retinfo,type:'warning'})
       switch (error.response.status) {
         case 403:  
-            let host = encodeURIComponent(util.accessHost)
-            // window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.systemId+'&jump_url=' + host 
+            let host = encodeURIComponent(util.accessHomeHost)
+            // window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.homeSystemId+'&jump_url=' + host 
       }
     }
     return Promise.reject(error)

@@ -170,6 +170,7 @@ export default {
 	    },
 	    handleCurrentChange(val) {
 	    	this.pageIndex = (val- 1) * 10
+	    	this.currentPage = val
 	        this.showList()
 
 	    },
@@ -205,7 +206,7 @@ export default {
             if(commonData.addrList.length == 0){
                 api.getAddress({}).then(res => {
                     if (res.ret != '0') {
-                        this.$layer.alert(res.retinfo)
+                        this.$alert(res.retinfo,"提示")
                         return
                     }
                     commonData.addrList = res.data.address
@@ -238,6 +239,8 @@ export default {
 		
 		//search
 		search:function(){
+			this.currentPage = 1
+            this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(){

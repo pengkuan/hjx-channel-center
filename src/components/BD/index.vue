@@ -141,6 +141,7 @@ export default {
 	    },
 	    handleCurrentChange(val) {
 	    	this.pageIndex = (val- 1) * 10
+	    	this.currentPage = val
 	        this.showList()
 	    },
 	    addPrefix:function(val){
@@ -214,6 +215,8 @@ export default {
 		
 		//search
 		search:function(){
+			this.currentPage = 1
+            this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(){

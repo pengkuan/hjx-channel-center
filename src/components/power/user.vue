@@ -162,6 +162,7 @@ export default {
 	    },
 	    handleCurrentChange(val) {
 	    	this.pageIndex = (val- 1)
+	    	this.currentPage = val
 	        this.showList()
 	    },
 	    //关联上级状态 如上层为禁用，下层全为禁用
@@ -252,6 +253,8 @@ export default {
 		search:function(){
 			this.pageIndex = '0'
 			this.searchkeys.roleName = util.Trim(this.searchkeys.roleName)
+			this.currentPage = 1
+            this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(){

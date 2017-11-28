@@ -183,6 +183,7 @@ export default {
 	    },
 	    handleCurrentChange(val) {
 	    	this.pageIndex = (val- 1)
+	    	this.currentPage = val
 	        this.showList()
 	    },
 	    
@@ -276,6 +277,8 @@ export default {
 		//search
 		search:function(){
 			this.searchkeys.s_module_name = util.Trim(this.searchkeys.s_module_name)
+			this.currentPage = 1
+            this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(){

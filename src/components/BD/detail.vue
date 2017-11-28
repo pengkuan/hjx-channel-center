@@ -216,7 +216,7 @@ export default {
         getDefaultDate: function(strStoreId) {
             api.getBDInfo({ strUserId: this.strUserId }).then(res => {
                 if (res.ret != '0') {
-                    this.$layer.alert(res.retinfo)
+                    this.$alert(res.retinfo,"提示")
                     return
                 }
                 res.baseinfo.strUserId = this.addPrefix(res.baseinfo.strUserId)
