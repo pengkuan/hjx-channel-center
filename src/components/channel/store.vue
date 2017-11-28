@@ -32,7 +32,7 @@
 	            {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName +scope.row.strAddress}}
 	        </template>
 	    </el-table-column>
-	    <el-table-column prop="strChannelName" label="渠道商" ></el-table-column>
+	    <el-table-column prop="strChannelName" label="商户" ></el-table-column>
 	    <el-table-column prop="strRelationD1List" label="D1" >
             <template slot-scope="scope">
                 <span v-if="scope.row.strRelationD1List.length == 1">
@@ -53,9 +53,15 @@
 	        label="操作"
 	        >
 	        <template slot-scope="scope">
-	        	<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
-	        	<el-button class = 'indexFunBtn' type="danger" @click="disableStore(scope.row.strStoreId)"  size="small">禁用</el-button>
-	        	<el-button class = 'indexFunBtn' type="primary" @click="enableStore(scope.row.strStoreId)"  size="small">启用</el-button>
+	        	<span v-if="scope.row.strStatus == '1' ">
+	        		<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
+	        		<el-button class = 'indexFunBtn' type="danger" @click="disableStore(scope.row.strStoreId)"  size="small">禁用</el-button>
+	        	</span>
+	        	<span v-else>
+	        		<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
+	        		<el-button class = 'indexFunBtn' type="primary" @click="enableStore(scope.row.strStoreId)"  size="small">启用</el-button>
+	        	</span>
+
 	        </template>
 	    </el-table-column>
 	</el-table>

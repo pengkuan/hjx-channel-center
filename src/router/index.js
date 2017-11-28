@@ -73,7 +73,7 @@ let router = new Router({
             component: Home,
             redirect: '/index',
             leaf: true, // 只有一个节点
-            menuShow: true,
+            menuShow: false,
             iconCls: 'iconfont icon-home_fill_light', // 图标样式class
             children: [
                 {path: '/index', component: index, name: '首页', menuShow: true}
@@ -82,12 +82,12 @@ let router = new Router({
         {
             path: '/',
             component: Home,
-            name: '渠道关系管理',
+            name: 'O/S管理',
             menuShow: true,
             //leaf: true, // 只有一个节点
             iconCls: 'iconfont icon-friend_light', // 图标样式class
             children: [
-                {path: '/channel/index', component: channelIndex, name: '渠道商管理', menuShow: true},
+                {path: '/channel/index', component: channelIndex, name: '商户管理', menuShow: true},
                 {path: '/channel/add_channel', component: addChannel},
                 {path: '/channel/edit_channel', component: editChannel , name:'editChannel'},
 
@@ -99,7 +99,7 @@ let router = new Router({
                 {path: '/channel/add_employee', component: channelAddEmployee},
                 {path: '/channel/edit_employee', component: channelEditEmployee , name:'editEmployee'},
 
-                {path: '/channel/template', component: channelTemplate, name: '渠道模板管理', menuShow: true} ,  
+                {path: '/channel/template', component: channelTemplate, name: 'O模板管理', menuShow: true} ,  
                 {path: '/channel/add_template', component: channelAddTemplate, name: '新增渠道模板'}   ,
                 {path: '/channel/edit_template', component: channelEditTemplate, name: 'editTemplate'}   
             ]
@@ -157,7 +157,7 @@ let router = new Router({
                 {path: '/power/category', component: userCategory, name: '分类管理'},
                 {path: '/power/setPower', component: setPower, name: 'setPower'},
                 {path: '/power/record', component: RecordPower, name: '操作日志', menuShow: true},
-                {path: '/power/dataImport', component: dataImport, name: '数据导入', menuShow: true}
+                {path: '/power/dataImport', component: dataImport, name: '数据导入', menuShow: false}
             ]
         }
     ]

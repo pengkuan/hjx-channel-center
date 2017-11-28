@@ -1,11 +1,11 @@
 <template>
 <div>
-	<div class="title">渠道商 / 新增模板</div>
+	<div class="title">商户 / 新增模板</div>
 	<el-form   label-width="180px" class="content-width">
-        <el-form-item label="渠道关系模板名称：" prop='strTemplateName'>
+        <el-form-item label="O关系模板名称：" prop='strTemplateName'>
             <el-input v-model="dict.strTemplateName" placeholder='请输入模板名称'></el-input>
         </el-form-item>
-        <el-form-item label="渠道关系模板描述："  prop='strTemplateDesc'>
+        <el-form-item label="O关系模板描述："  prop='strTemplateDesc'>
             <el-input type="textarea" v-model="dict.strTemplateDesc" placeholder='请输入模板描述'></el-input>
         </el-form-item>
     

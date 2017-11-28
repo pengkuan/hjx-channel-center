@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="title">渠道商 / 列表</div>
+    <div class="title">商户 / 列表</div>
     <!--工具条-->
     <el-form :inline="true" :model="filters">
         <el-form-item>
@@ -35,7 +35,7 @@
                 {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName}}
             </template>
         </el-table-column>
-        <!-- <el-table-column prop="strChannelName" label="渠道商" ></el-table-column>
+        <!-- <el-table-column prop="strChannelName" label="商户" ></el-table-column>
         <el-table-column prop="strChannelManagerName" label="渠道经理" ></el-table-column> -->
         <el-table-column  label="合作状态" >
           <template slot-scope="scope">
