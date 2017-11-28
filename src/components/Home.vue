@@ -179,7 +179,7 @@ export default {
             if (!userid) {
                 window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
             } else {  
-                ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭 
+                ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭  
                 // const loading = this.$loading({
                 //     lock: true,
                 //     text: '玩命加载中......',
@@ -199,13 +199,13 @@ export default {
                 //     this.showDiv = true
                 //     this.menuList = res.data.menu
                 //     this.getModule(this.menuList)
-                // }) 
-
- 
+                // })   
 
 
-                ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭  
- 
+
+
+
+                ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭   
                 this.setTestCookie()
                 this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
                 this.showDiv = true
