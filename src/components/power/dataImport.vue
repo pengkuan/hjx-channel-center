@@ -3,9 +3,9 @@
         <div class="title">数据导入</div>
         <div class="data-import-cont">
             <div class="search-box">
-                <el-form ref="form" :model="form" label-width="60px" inline style="display:inline-block">
+                <el-form ref="form" :model="oldForm" label-width="60px" inline style="display:inline-block">
                     <el-form-item label="旧系统">
-                        <el-select v-model="form.region" class="my-region">
+                        <el-select v-model="oldForm.region" class="my-region">
                             <el-option label="员工姓名" value="员工姓名"></el-option>
                             <el-option label="员工工号" value="员工工号"></el-option>
                             <el-option label="手机号码" value="手机号码"></el-option>
@@ -13,36 +13,36 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item class="my-text-input">
-                        <el-input v-model="form.name" :placeholder="'请输入'+form.region"></el-input>
+                        <el-input v-model="oldForm.name" :placeholder="'请输入'+oldForm.region"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="oldSubmit(form)">搜索</el-button>
+                        <el-button type="primary" @click="oldSubmit(oldForm)">搜索</el-button>
                     </el-form-item>
                 </el-form>
-                <el-form ref="form" :model="form2" label-width="60px" inline style="display:inline-block;margin-left:20px;">
+                <el-form ref="form" :model="newForm" label-width="60px" inline style="display:inline-block;margin-left:20px;">
                     <el-form-item label="新系统">
-                        <el-select v-model="form2.region" placeholder="" class="my-region">
+                        <el-select v-model="newForm.region" placeholder="" class="my-region">
                             <el-option label="员工姓名" value="员工姓名"></el-option>
                             <el-option label="手机号码" value="手机号码"></el-option>
                             <el-option label="身份证" value="身份证"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item class="my-text-input">
-                        <el-input v-model="form2.name" :placeholder="'请输入'+form2.region"></el-input>
+                        <el-input v-model="newForm.name" :placeholder="'请输入'+newForm.region"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="newSubmit(form2)">搜索</el-button>
+                        <el-button type="primary" @click="newSubmit(newForm)">搜索</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-checkbox v-model="form2.isAllSelect">新旧同时查询</el-checkbox>
+                        <el-checkbox v-model="newForm.isAllSelect">新旧同时查询</el-checkbox>
                     </el-form-item>
                 </el-form>
             </div>
             <el-row :gutter="10">
                 <el-col :span="11" class="left-wrap">
                     <div class="left">
-                        <div class="default-show-text" v-show="defaultShow.old">请输入搜索条件</div>
-                        <div class="no-result-text" v-show="noResultShow.old">没有符合条件的结果</div>
+                        <div class="default-show-text result" v-show="defaultShow.old">请输入搜索条件</div>
+                        <div class="no-result-text result" v-show="noResultShow.old">没有符合条件的结果</div>
                         <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0" v-show="sysTableShow.old">
                             <tr>
                                 <th width="10%" class="is-leaf">
@@ -157,6 +157,32 @@
                                     <el-button type="primary">选择</el-button>
                                 </div>
                             </div>
+                            <div class="more-info-item">
+                                <div class="more-info-desc">
+                                    <p>
+                                        <span>姓名：张三</span>
+                                        <span class="address">所在城市：北京</span>
+                                    </p>
+                                    <p>手机号码：15877774444</p>
+                                    <p>身份证号：1587777444411111111</p>
+                                </div>
+                                <div class="more-info-select">
+                                    <el-button type="primary">选择</el-button>
+                                </div>
+                            </div>
+                            <div class="more-info-item">
+                                <div class="more-info-desc">
+                                    <p>
+                                        <span>姓名：张三</span>
+                                        <span class="address">所在城市：北京</span>
+                                    </p>
+                                    <p>手机号码：15877774444</p>
+                                    <p>身份证号：1587777444411111111</p>
+                                </div>
+                                <div class="more-info-select">
+                                    <el-button type="primary">选择</el-button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </el-col>
@@ -165,8 +191,8 @@
                 </el-col>
                 <el-col :span="11" class="right-wrap">
                     <div class="right">
-                        <div class="default-show-text" v-show="defaultShow.new">请输入搜索条件</div>
-                        <div class="no-result-text" v-show="noResultShow.new">没有符合条件的结果</div>
+                        <div class="default-show-text result" v-show="defaultShow.new">请输入搜索条件</div>
+                        <div class="no-result-text result" v-show="noResultShow.new">没有符合条件的结果</div>
                         <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0" v-show="sysTableShow.new">
                             <tr>
                                 <th v-show="onlyNewSys" width="10%" class="is-leaf">
@@ -301,7 +327,7 @@
             </el-row>
         </div>
         <div class="msg-relative">
-            <el-button type="primary" :disabled="false" @click="msg_Relative()">信息关联</el-button>
+            <el-button type="primary" :disabled="true" @click="msg_Relative()">信息关联</el-button>
             <el-button type="primary" v-show="msgRelative.off">解除关联</el-button>
         </div>
     </div>
@@ -312,11 +338,11 @@ export default {
     data() {
         return {
             //旧新系统的搜索框数据
-            form: {
+            oldForm: {
                 region: '员工姓名',
                 name: ''
             },
-            form2: {
+            newForm: {
                 region: '员工姓名',
                 name: '',
                 isAllSelect: false
@@ -362,7 +388,7 @@ export default {
                     type: 'warning'
                 })
             } else {
-                if (this.form2.isAllSelect) {
+                if (this.newForm.isAllSelect) {
                     dataParams = Object.assign(initParams, {
                         [rs.type]: form.name
                     }, { isAll: true })
@@ -371,7 +397,7 @@ export default {
                         [rs.type]: form.name
                     }, { isAll: false })
                 }
-                this.form2.name = ''
+                this.newForm.name = ''
                 console.log(dataParams, '请求接口开始')
             }
         },
@@ -388,16 +414,12 @@ export default {
                 })
             } else {
                 // 数据合并
-                if (this.form2.isAllSelect) {
-                    dataParams = Object.assign(initParams, {
-                        [rs.type]: form.name
-                    }, { isAll: true })
+                if (this.newForm.isAllSelect) {
+                    dataParams = Object.assign(initParams, {[rs.type]: form.name}, { isAll: true })
                 } else {
-                    dataParams = Object.assign(initParams, {
-                        [rs.type]: form.name
-                    }, { isAll: false })
+                    dataParams = Object.assign(initParams, {[rs.type]: form.name}, { isAll: false })
                 }
-                this.form.name = ''
+                this.oldForm.name = ''
                 console.log(dataParams, '请求接口开始')
                 // this.$router.push('/index') 
             }
@@ -419,9 +441,9 @@ export default {
                 showCancelButton: true,
                 cancelButtonText: '取消',
                 confirmButtonText: '确认'
-            }).then((action) => { 
+            }).then((action) => {
                 console.log('确定，开始接口操作')
-            }).catch((res)=>{console.log(res)}) 
+            }).catch((res) => { console.log(res) })
         },
         validate(opt) {
             let result = { isPass: false, msg: '', type: '' }
@@ -480,9 +502,10 @@ export default {
 .data-import {
     .data-import-cont {
         min-width: 1100px;
-        .left-wrap {
+        // max-width: 1500px; 
+        .left-wrap,.right-wrap {
             height: 450px;
-            .left {
+            .left,.right {
                 height: 435px;
                 overflow-y: auto;
             }
@@ -494,18 +517,15 @@ export default {
             position: relative;
             top: 0;
             left: 50%;
-        }
-        .right-wrap {
-            height: 450px;
-            .right {
-                min-height: 435px;
-                overflow-y: hidden;
-            }
-        }
+        } 
         tr,
         th {
             height: 48px;
             min-height: 48px;
+        }
+        .result {
+            height: 430px;
+            border: 1px solid #DFE6EC;
         }
         .my-region {
             width: 130px;
@@ -514,7 +534,7 @@ export default {
             width: 180px;
         }
         .more-info-wrap {
-            min-height: 130px;
+            min-height: 130px; 
             .more-info-item {
                 min-height: 130px;
                 display: flex;
@@ -551,6 +571,7 @@ export default {
     }
     .msg-relative {
         min-width: 1100px;
+        // max-width: 1500px;
         text-align: center;
         height: 60px;
         line-height: 60px;
