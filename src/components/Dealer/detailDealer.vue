@@ -107,7 +107,7 @@
                         </el-form-item>
                         <el-form-item label="销售区域：">
                             <div v-for="item in DruleForm.saleareaList">
-                                {{item.strProvinceName + item.strCityName + item.strAreaName}}
+                                {{item}}
                             </div>
                         </el-form-item>
                         <p>3.收款信息</p>
@@ -261,6 +261,9 @@ export default {
                     return false
                 }
                 let msg = res.data
+
+                
+
                 this.defaultDate = res.data
                 this.strDUserId = res.data.strDUserId
 
@@ -301,6 +304,10 @@ export default {
                     return false
                 }
                 this.DruleForm = res
+                this.DruleForm.saleareaList = util.unique(this.DruleForm.saleareaList
+                    .map(function(item) {
+                        return item.strProvinceName + item.strCityName + item.strAreaName
+                    }))
 
             })
         },

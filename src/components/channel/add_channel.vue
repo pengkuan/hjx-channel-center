@@ -3,7 +3,7 @@
 <div class="title">商户 / 新增</div>
 <div class="content-containered">
 	<el-form ref="form" :model="form" label-width="180px" :rules="rules">
-		<el-form-item label="O关系模型：">
+		<el-form-item label="O关系模型：" prop="strLevelId">
 		    <el-select v-model="form.strLevelId" placeholder="请选择">
 		      	<el-option  v-for="item in channelTemplateList"  :label="item.strTemplateName"  :value="item.strTemplateId" :key="item.strTemplateId" >
                 </el-option>
@@ -26,7 +26,7 @@
 		</el-form-item> -->
 
 
-        <el-form-item label="营业执照地址：">
+        <el-form-item label="营业执照地址：" class="mustStar">
             <el-col :span="6">
                 <el-form-item prop="strAddr_province_id">
                     <el-select v-model="form.strAddr_province_id" filterable placeholder="请选择省份">
@@ -109,12 +109,12 @@
             <el-input v-model="form.strMonth_sales"></el-input>
         </el-form-item>
         <el-form-item label="商户等级：">
-		    <el-select v-model="form.strScore" placeholder="请选择">
+		    <el-select v-model="form.strChannelScore" placeholder="请选择">
                 <el-option label="S" value="0"></el-option>
 		    	<el-option label="A" value="1"></el-option>
 		    	<el-option label="B" value="2"></el-option>
                 <el-option label="C" value="3"></el-option>
-		    	<el-option label="D" value="4"></el-option>
+		    	<el-option label="D" value="4"></el-option>  
 		    </el-select>
 		</el-form-item>
 		<el-form-item label="估价模型：">
@@ -195,9 +195,9 @@ export default {
 	          strLicense_num: '',
 	          strPrefix_str: '',
 	          strConnection_info: '',
-	          strMonth_sales: '',
+	          strMonth_sales: '0',
 	          strChannelPic:'',
-	          strScore: '',
+	          strChannelScore: '1',
 	          strValuationId: '2',
 	          strPercent: '',
 	          strApplyMax: '',
@@ -228,6 +228,9 @@ export default {
 	        channelUserList :[],
 
             rules:{
+                'strLevelId': [
+                    {  required: true, message: '请选择O关系模型', trigger: 'change' }
+                ],
                 'strAddr_province_id': [
                     {  required: true, message: '请选择省份', trigger: 'change' }
                 ],

@@ -7,7 +7,7 @@
     <el-tabs type="border-card">
         <el-tab-pane label="商家信息" class='channelInfo'>
             <el-form ref="form" :model="form" label-width="180px" :rules="rules">
-                <el-form-item label="O关系模型：">
+                <el-form-item label="O关系模型：" prop="strLevelId">
                     <el-select v-model="form.strLevelId" filterable placeholder="请选择">
                         <el-option  v-for="item in channelTemplateList"  :label="item.strTemplateName"  :value="item.strTemplateId" :key="item.strTemplateId">
                         </el-option>
@@ -30,7 +30,7 @@
                 </el-form-item> -->
 
 
-                <el-form-item label="营业执照地址：">
+                <el-form-item label="营业执照地址：" class="mustStar">
                     <el-col :span="6">
                         <el-form-item prop="strAddr_province_id">
                             <el-select v-model="form.strAddr_province_id" filterable placeholder="请选择省份">
@@ -140,7 +140,7 @@
                             </el-col>
                         </el-form-item>
                         <div style="height:16px"></div>
-                        <el-form-item label="苹果机型封顶（元）：" >
+                        <el-form-item label="苹果机型封顶（元）：" prop='strApplyMax'>
                             <el-col :span="4">
                                 <el-input type="number"  v-model="form.strApplyMax"></el-input>
                             </el-col>
@@ -328,6 +328,9 @@
             channelUserList :[],
             defaultDate:'',//初始默认数据
             rules:{
+                'strLevelId': [
+                    {  required: true, message: '请选择O关系模型', trigger: 'change' }
+                ],
                 'strAddr_province_id': [
                     {  required: true, message: '请选择省份', trigger: 'change' }
                 ],

@@ -41,7 +41,7 @@ function checkNumber(val) {
 export default {
     api: process.env.NODE_ENV == 'development' ? '/pengkuan' : '',
     // apiCross :  process.env.NODE_ENV == 'development'?'http://10.0.11.24':'https://dev-amc-server.huanjixia.com' , //PHP本地 、 
-    // apiCross: process.env.NODE_ENV == 'development' ? 'https://dev-amc-server.huanjixia.com' : 'https://dev-amc-server.huanjixia.com', //开发环境(51测试环境)
+    // apiCross: process.env.NODE_ENV == 'development' ? 'https://dev-amc-server.huanjixia.com' : 'https://dev-amc-server.huanjixia.com', //开发环境(测试环境)
     apiCross :  process.env.NODE_ENV == 'development'?'https://dev-amc-server.huanjixia.com':'https://amc-server.huanjixia.com' ,//开发环境 、线上环境 
     powerCenterLoginPage: 'http://api-amc.huishoubao.com.cn', //权限中心登录页面
     accessChannelHost: 'mba.huanjixia.com/channel_center', //登录后，后台跳转到渠道中心页面
