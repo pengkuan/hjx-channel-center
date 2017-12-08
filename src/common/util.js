@@ -39,15 +39,15 @@ function checkNumber(val) {
 }
 
 export default {
-    api: process.env.NODE_ENV == 'development' ? '/pengkuan' : '',
-    // apiCross :  process.env.NODE_ENV == 'development'?'http://10.0.11.24':'https://dev-amc-server.huanjixia.com' , //PHP本地 、 
-    // apiCross: process.env.NODE_ENV == 'development' ? 'https://dev-amc-server.huanjixia.com' : 'https://dev-amc-server.huanjixia.com', //开发环境(51测试环境)
-    apiCross :  process.env.NODE_ENV == 'development'?'https://dev-amc-server.huanjixia.com':'https://amc-server.huanjixia.com' ,//开发环境 、线上环境 
+    jsonpUrl: process.env.NODE_ENV == 'development' ? 'https://dev-access.huanjixia.com/index/index' : '',//jsonp开发环境、线上环境
+    api: process.env.NODE_ENV == 'development' ? '/pengkuan' : '',  
+    apiCross: process.env.NODE_ENV == 'development' ? 'https://dev-amc-server.huanjixia.com' : 'https://dev-amc-server.huanjixia.com', //开发环境(51测试环境)
+    // apiCross :  process.env.NODE_ENV == 'development'?'https://dev-amc-server.huanjixia.com':'https://amc-server.huanjixia.com' ,//开发环境 、线上环境 
     powerCenterLoginPage: 'http://api-amc.huishoubao.com.cn', //权限中心登录页面
     accessChannelHost: 'https://mba.huanjixia.com/channel_center', //登录后，后台跳转到渠道中心页面
     accessHomeHost: 'https://mba.huanjixia.com/login', //登录后，后台跳转到home页面
     channelCenterSystemId: '23', //渠道中心系统id 
-    homeSystemId: '100', //渠道中心系统id  
+    homeSystemId: '100', //总入口系统id  
     removeClass(obj, cls) {
         if (cls) {
             var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
@@ -63,10 +63,12 @@ export default {
     },
     getCookie(name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)")
-        if (arr = document.cookie.match(reg))
+        if (arr = document.cookie.match(reg)) {
             return unescape(arr[2])
-        else
+        } 
+        else {
             return null
+        } 
     },
     delCookie(name) {
         var exp = new Date()

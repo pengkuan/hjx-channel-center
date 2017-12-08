@@ -197,6 +197,7 @@ export default {
                 //     }
                 //     loading.close()
                 //     this.showDiv = true
+                //     this.showLoginName()
                 //     this.menuList = res.data.menu
                 //     this.getModule(this.menuList)
                 // })   
