@@ -37,9 +37,12 @@ axios.interceptors.response.use((res) => {
     if (error.response) {
         Message({ message: error.response.data.body.retinfo, type: 'warning' })
         switch (error.response.status) {
-            case 403:
-                let host = encodeURIComponent(util.accessHomeHost)
-                window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+            case 403: 
+                if (process.env.NODE_ENV == 'production') {
+                    let host = encodeURIComponent(util.accessHomeHost) 
+                    window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+                }
+                break
         }
     }
     return Promise.reject(error)
@@ -138,12 +141,14 @@ export function jsonp(_interface, params) {
             "_msgType": "request",
             "_timestamps": timestamps,
             "_interface": _interface,
-            "_remark": "123",    
+            "_remark": "",    
         },
         "_param": { 
             "system":"test",          
             "userid": userid, 
-            "token": token,  
+            "token": token, 
+            // "userid": '694', 
+            // "token": 'f20feefe857f4a0f809606ab23f01271',  
         }
     }
     // 合并参数 
@@ -160,10 +165,12 @@ export function jsonp(_interface, params) {
         originJsonp(url, {param: 'callback'}, (err, data) => {
             if (!err) {
                 // 登录超时处理
-                /*if (data._data._ret == '1' && data._data._errStr == '登录验证不通过') {
-                    let host = encodeURIComponent(util.accessHomeHost)
-                    window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
-                }*/  
+                if (process.env.NODE_ENV == 'production') {
+                    if (data._data._ret == '1' && data._data._errStr == '登录验证不通过') {
+                        let host = encodeURIComponent(util.accessHomeHost)
+                        window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+                    }
+                } 
                 resolve(data)
             } else {
                 reject(err)
