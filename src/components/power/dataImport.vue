@@ -45,10 +45,10 @@
                         <div class="no-result-text result" v-show="noResultShow.old">没有符合条件的结果</div>
                         <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0" v-show="sysTableShow.old">
                             <tr>
-                                <th width="10%" class="is-leaf">
+                                <th width="50%" class="is-leaf">
                                     <div class="cell">系统名称</div>
                                 </th>
-                                <th width="15%" class="is-leaf">
+                                <th width="50%" class="is-leaf">
                                     <div class="cell">老系统信息</div>
                                 </th>
                             </tr>
@@ -57,7 +57,7 @@
                                     <div class="cell">员工姓名</div>
                                 </td>
                                 <td>
-                                    <div class="cell">张三</div>
+                                    <div class="cell">{{oldSysData.username}}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -65,7 +65,7 @@
                                     <div class="cell">员工角色</div>
                                 </td>
                                 <td>
-                                    <div class="cell">S1</div>
+                                    <div class="cell">{{oldSysData.level}}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -73,7 +73,7 @@
                                     <div class="cell">所属门店</div>
                                 </td>
                                 <td>
-                                    <div class="cell">A门店</div>
+                                    <div class="cell">{{oldSysData.store}}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -81,7 +81,7 @@
                                     <div class="cell">所属商户</div>
                                 </td>
                                 <td>
-                                    <div class="cell">B渠道</div>
+                                    <div class="cell">{{oldSysData.channelName}}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -89,7 +89,7 @@
                                     <div class="cell">手机号码</div>
                                 </td>
                                 <td>
-                                    <div class="cell">15899996666</div>
+                                    <div class="cell">{{oldSysData.phone}}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -97,7 +97,7 @@
                                     <div class="cell">身份证号</div>
                                 </td>
                                 <td>
-                                    <div class="cell">1111111111111111111</div>
+                                    <div class="cell">{{oldSysData.idCard}}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -105,7 +105,7 @@
                                     <div class="cell">门店工号</div>
                                 </td>
                                 <td>
-                                    <div class="cell"></div>
+                                    <div class="cell">{{oldSysData.number}}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -113,74 +113,23 @@
                                     <div class="cell">是否与其他账号进行关联</div>
                                 </td>
                                 <td>
-                                    <div class="cell"><span style="color:red;">是</span></div>
+                                    <div class="cell"><span style="color:red;" v-show="oldSysData.associated=='是'">是（已与“{{oldSysData.assocUser}}”进行关联）</span></div>
+                                    <div class="cell"><span v-show="oldSysData.associated=='否'">否</span></div>
                                 </td>
                             </tr>
                         </table>
                         <div class="more-info-wrap" v-show="sysItemShow.old">
-                            <div class="more-info-item">
+                            <div class="more-info-item" v-for="(item,index) in oldSysItemData" :key="index">
                                 <div class="more-info-desc">
                                     <p>
-                                        <span>姓名：张三</span>
-                                        <span class="address">所在城市：北京</span>
+                                        <span>姓名：{{item.username}}</span>
+                                        <span class="address">所在城市：{{item.city}}</span>
                                     </p>
-                                    <p>手机号码：15877774444</p>
-                                    <p>身份证号：1587777444411111111</p>
+                                    <p>手机号码：{{item.phone}}</p>
+                                    <p>身份证号：{{item.idCard}}</p>
                                 </div>
                                 <div class="more-info-select">
-                                    <el-button type="primary">选择</el-button>
-                                </div>
-                            </div>
-                            <div class="more-info-item">
-                                <div class="more-info-desc">
-                                    <p>
-                                        <span>姓名：张三</span>
-                                        <span class="address">所在城市：北京</span>
-                                    </p>
-                                    <p>手机号码：15877774444</p>
-                                    <p>身份证号：1587777444411111111</p>
-                                </div>
-                                <div class="more-info-select">
-                                    <el-button type="primary">选择</el-button>
-                                </div>
-                            </div>
-                            <div class="more-info-item">
-                                <div class="more-info-desc">
-                                    <p>
-                                        <span>姓名：张三</span>
-                                        <span class="address">所在城市：北京</span>
-                                    </p>
-                                    <p>手机号码：15877774444</p>
-                                    <p>身份证号：1587777444411111111</p>
-                                </div>
-                                <div class="more-info-select">
-                                    <el-button type="primary">选择</el-button>
-                                </div>
-                            </div>
-                            <div class="more-info-item">
-                                <div class="more-info-desc">
-                                    <p>
-                                        <span>姓名：张三</span>
-                                        <span class="address">所在城市：北京</span>
-                                    </p>
-                                    <p>手机号码：15877774444</p>
-                                    <p>身份证号：1587777444411111111</p>
-                                </div>
-                                <div class="more-info-select">
-                                    <el-button type="primary">选择</el-button>
-                                </div>
-                            </div>
-                            <div class="more-info-item">
-                                <div class="more-info-desc">
-                                    <p>
-                                        <span>姓名：张三</span>
-                                        <span class="address">所在城市：北京</span>
-                                    </p>
-                                    <p>手机号码：15877774444</p>
-                                    <p>身份证号：1587777444411111111</p>
-                                </div>
-                                <div class="more-info-select">
-                                    <el-button type="primary">选择</el-button>
+                                    <el-button type="primary" @click="showDetail('old',item)">选择</el-button>
                                 </div>
                             </div>
                         </div>
@@ -195,13 +144,13 @@
                         <div class="no-result-text result" v-show="noResultShow.new">没有符合条件的结果</div>
                         <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0" v-show="sysTableShow.new">
                             <tr>
-                                <th v-show="onlyNewSys" width="10%" class="is-leaf">
+                                <th v-show="onlyNewSys" width="33%" class="is-leaf">
                                     <div class="cell">系统名称</div>
                                 </th>
-                                <th width="15%" class="is-leaf">
+                                <th width="33%" class="is-leaf">
                                     <div class="cell">新系统信息</div>
                                 </th>
-                                <th width="15%" class="is-leaf">
+                                <th width="33%" class="is-leaf">
                                     <div class="cell">信息是否一致</div>
                                 </th>
                             </tr>
@@ -210,10 +159,12 @@
                                     <div class="cell">员工姓名</div>
                                 </td>
                                 <td>
-                                    <div class="cell">张三</div>
+                                    <div class="cell">{{newSysData.username}}</div>
                                 </td>
                                 <td>
-                                    <div class="cell">-</div>
+                                    <div class="cell" style="color:red" v-show="sysTableShow.old == true && (oldSysData.username != newSysData.username)">否</div>
+                                    <div class="cell" v-show="sysTableShow.old == true && (oldSysData.username == newSysData.username)">是</div>
+                                    <div class="cell" v-show="sysTableShow.old == false">-</div>
                                 </td>
                             </tr>
                             <tr>
@@ -221,10 +172,12 @@
                                     <div class="cell">员工角色</div>
                                 </td>
                                 <td>
-                                    <div class="cell">S1</div>
+                                    <div class="cell">{{newSysData.level}}</div>
                                 </td>
                                 <td>
-                                    <div class="cell">-</div>
+                                    <div class="cell" style="color:red" v-show="sysTableShow.old == true && (oldSysData.level != newSysData.level)">否</div>
+                                    <div class="cell" v-show="sysTableShow.old == true && (oldSysData.level == newSysData.level)">是</div>
+                                    <div class="cell" v-show="sysTableShow.old == false">-</div>
                                 </td>
                             </tr>
                             <tr>
@@ -232,10 +185,12 @@
                                     <div class="cell">所属门店</div>
                                 </td>
                                 <td>
-                                    <div class="cell">A门店</div>
+                                    <div class="cell">{{newSysData.store}}</div>
                                 </td>
                                 <td>
-                                    <div class="cell">-</div>
+                                    <div class="cell" style="color:red" v-show="sysTableShow.old == true && (oldSysData.store != newSysData.store)">否</div>
+                                    <div class="cell" v-show="sysTableShow.old == true && (oldSysData.store == newSysData.store)">是</div>
+                                    <div class="cell" v-show="sysTableShow.old == false">-</div>
                                 </td>
                             </tr>
                             <tr>
@@ -243,10 +198,12 @@
                                     <div class="cell">所属商户</div>
                                 </td>
                                 <td>
-                                    <div class="cell">B渠道</div>
+                                    <div class="cell">{{newSysData.channelName}}</div>
                                 </td>
                                 <td>
-                                    <div class="cell">-</div>
+                                    <div class="cell" style="color:red" v-show="sysTableShow.old == true && (oldSysData.channelName != newSysData.channelName)">否</div>
+                                    <div class="cell" v-show="sysTableShow.old == true && (oldSysData.channelName == newSysData.channelName)">是</div>
+                                    <div class="cell" v-show="sysTableShow.old == false">-</div>
                                 </td>
                             </tr>
                             <tr>
@@ -254,10 +211,12 @@
                                     <div class="cell">手机号码</div>
                                 </td>
                                 <td>
-                                    <div class="cell">15899996666</div>
+                                    <div class="cell">{{newSysData.phone}}</div>
                                 </td>
                                 <td>
-                                    <div class="cell">-</div>
+                                    <div class="cell" style="color:red" v-show="sysTableShow.old == true && (oldSysData.phone != newSysData.phone)">否</div>
+                                    <div class="cell" v-show="sysTableShow.old == true && (oldSysData.phone == newSysData.phone)">是</div>
+                                    <div class="cell" v-show="sysTableShow.old == false">-</div>
                                 </td>
                             </tr>
                             <tr>
@@ -265,10 +224,12 @@
                                     <div class="cell">身份证号</div>
                                 </td>
                                 <td>
-                                    <div class="cell">1111111111111111111</div>
+                                    <div class="cell">{{newSysData.idCard}}</div>
                                 </td>
                                 <td>
-                                    <div class="cell">-</div>
+                                    <div class="cell" style="color:red" v-show="sysTableShow.old == true && (oldSysData.idCard != newSysData.idCard)">否</div>
+                                    <div class="cell" v-show="sysTableShow.old == true && (oldSysData.idCard == newSysData.idCard)">是</div>
+                                    <div class="cell" v-show="sysTableShow.old == false">-</div>
                                 </td>
                             </tr>
                             <tr>
@@ -279,7 +240,7 @@
                                     <div class="cell"></div>
                                 </td>
                                 <td>
-                                    <div class="cell">-</div>
+                                    <div class="cell"></div>
                                 </td>
                             </tr>
                             <tr>
@@ -287,38 +248,26 @@
                                     <div class="cell">是否与其他账号进行关联</div>
                                 </td>
                                 <td>
-                                    <div class="cell"><span style="color:red;">是（已与“张三12”进行关联）</span></div>
+                                    <div class="cell"><span style="color:red;" v-show="newSysData.associated=='是'">是（已与“{{newSysData.assocUser}}”进行关联）</span></div>
+                                    <div class="cell"><span v-show="newSysData.associated=='否'">否</span></div>
                                 </td>
                                 <td>
-                                    <div class="cell">-</div>
+                                    <div class="cell"></div>
                                 </td>
                             </tr>
                         </table>
                         <div class="more-info-wrap" v-show="sysItemShow.new">
-                            <div class="more-info-item">
+                            <div class="more-info-item" v-for="(item,index) in newSysItemData" :key="index">
                                 <div class="more-info-desc">
                                     <p>
-                                        <span>姓名：张三</span>
-                                        <span class="address">所在城市：北京</span>
+                                        <span>姓名：{{item.username}}</span>
+                                        <span class="address">所在城市：{{item.city}}</span>
                                     </p>
-                                    <p>手机号码：15877774444</p>
-                                    <p>身份证号：1587777444411111111</p>
+                                    <p>手机号码：{{item.phone}}</p>
+                                    <p>身份证号：{{item.idCard}}</p>
                                 </div>
                                 <div class="more-info-select">
-                                    <el-button type="primary">选择</el-button>
-                                </div>
-                            </div>
-                            <div class="more-info-item">
-                                <div class="more-info-desc">
-                                    <p>
-                                        <span>姓名：张三</span>
-                                        <span class="address">所在城市：北京</span>
-                                    </p>
-                                    <p>手机号码：15877774444</p>
-                                    <p>身份证号：1587777444411111111</p>
-                                </div>
-                                <div class="more-info-select">
-                                    <el-button type="primary">选择</el-button>
+                                    <el-button type="primary" @click="showDetail('new',item)">选择</el-button>
                                 </div>
                             </div>
                         </div>
@@ -327,8 +276,7 @@
             </el-row>
         </div>
         <div class="msg-relative">
-            <el-button type="primary" :disabled="true" @click="msg_Relative()">信息关联</el-button>
-            <el-button type="primary" v-show="msgRelative.off">解除关联</el-button>
+            <el-button type="primary" :disabled="!canBind" @click="msg_Relative()">信息关联</el-button>
         </div>
     </div>
 </template>
@@ -345,89 +293,223 @@ export default {
             newForm: {
                 region: '员工姓名',
                 name: '',
-                isAllSelect: false
+                isAllSelect: true
             },
             // 新旧系统的表格显示数据
             sysTableShow: {
                 old: false,
-                new: true
+                new: false
             },
             // 新旧系统的多条数据显示
             sysItemShow: {
-                old: true,
+                old: false,
                 new: false
             },
             // 没有搜索时的默认状态
             defaultShow: {
-                old: false,
-                new: false
+                old: true,
+                new: true
             },
             // 搜索无结果时的文案显示
             noResultShow: {
                 old: false,
                 new: false
             },
-            // 关联信息和解除信息
-            msgRelative: {
-                on: true,
-                off: false
+            // 旧新系统的具体数据
+            oldSysData: {
+                username: '',
+                user_id: '',
+                level: '',
+                store: '',
+                channelName: '',
+                phone: '',
+                idCard: '',
+                number: '',
+                associated: '',
+                assocUser: '',
+                city: ''
             },
-            // 只有新系统时的第一列显示数据
-            onlyNewSys: true
+            newSysData: {
+                username: '',
+                user_id: '',
+                level: '',
+                store: '',
+                channelName: '',
+                phone: '',
+                idCard: '',
+                number: '',
+                associated: '',
+                assocUser: '',
+                city: ''
+            },
+            // 旧新系统的列表数据
+            oldSysItemData: [],
+            newSysItemData: []
         }
     },
     methods: {
         newSubmit(form) {
-            if (!form.name) { return }
+            if (!form.name) {
+                this.$message({
+                    message: '未输入内容，无法进行搜索',
+                    type: 'warning'
+                })
+                return
+            }
             let rs = this.validate(form)
-            let initParams = { id: '', name: '' }
             let dataParams = {}
+            // 验证不通过
             if (!rs.isPass) {
                 this.$message({
                     message: rs.msg,
                     type: 'warning'
                 })
+                return
             } else {
+                // 验证通过并判断是否为全选
                 if (this.newForm.isAllSelect) {
-                    dataParams = Object.assign(initParams, {
-                        [rs.type]: form.name
-                    }, { isAll: true })
+                    dataParams = {
+                        [rs.type]: form.name }
+                    this.fetchDate('new', 'all', dataParams)
                 } else {
-                    dataParams = Object.assign(initParams, {
-                        [rs.type]: form.name
-                    }, { isAll: false })
+                    dataParams = {
+                        [rs.type]: form.name }
+                    this.fetchDate('new', 'one', dataParams)
                 }
                 this.newForm.name = ''
                 console.log(dataParams, '请求接口开始')
             }
         },
         oldSubmit(form) {
-            if (!form.name) { return }
+            if (!form.name) {
+                this.$message({
+                    message: '未输入内容，无法进行搜索',
+                    type: 'warning'
+                })
+                return
+            }
             let rs = this.validate(form)
-            // 模拟接口初始数据 
-            let initParams = { id: '', name: '' }
+            // 模拟接口初始数据  
             let dataParams = {}
+            // 验证不通过
             if (!rs.isPass) {
                 this.$message({
                     message: rs.msg,
                     type: 'warning'
                 })
+                return
             } else {
-                // 数据合并
+                // 验证通过并判断是否为全选
                 if (this.newForm.isAllSelect) {
-                    dataParams = Object.assign(initParams, {[rs.type]: form.name}, { isAll: true })
+                    dataParams = {
+                        [rs.type]: form.name }
+                    this.fetchDate('old', 'all', dataParams)
                 } else {
-                    dataParams = Object.assign(initParams, {[rs.type]: form.name}, { isAll: false })
+                    dataParams = {
+                        [rs.type]: form.name }
+                    this.fetchDate('old', 'one', dataParams)
                 }
                 this.oldForm.name = ''
                 console.log(dataParams, '请求接口开始')
-                // this.$router.push('/index') 
+            }
+        },
+        // 请求接口
+        fetchDate(isNew, isAll, data) {
+            if (isNew == 'new' && isAll == 'one') {
+                console.log('新系统，单独搜索')
+                this.handlerNewSys(data)
+            }
+            if (isNew == 'old' && isAll == 'one') {
+                console.log('老系统，单独搜索')
+                this.handlerOldSys(data)
+            }
+            if (isAll == "all") {
+                console.log('新旧同时搜索')
+                this.handlerOldSys(data)
+                this.handlerNewSys(data)
+            }
+        },
+        handlerOldSys(data) {
+            api.searchOldSystem(data).then((res) => {
+                if (res._data._ret != '0') {
+                    this.$message({
+                        message: res._data._errStr,
+                        type: 'warning'
+                    })
+                    return
+                }
+                if (res._data.data.length == 1) {
+                    this.oldSysData = Object.assign(this.oldSysData, res._data.data[0])
+                    this.defaultShow.old = false
+                    this.sysItemShow.old = false
+                    this.noResultShow.old = false
+                    this.sysTableShow.old = true
+                } else if (res._data.data.length > 1) {
+                    this.oldSysItemData = res._data.data
+                    this.defaultShow.old = false
+                    this.sysTableShow.old = false
+                    this.noResultShow.old = false
+                    this.sysItemShow.old = true
+                    //搜索无结果
+                } else {
+                    this.defaultShow.old = false
+                    this.sysItemShow.old = false
+                    this.sysTableShow.old = false
+                    this.noResultShow.old = true
+                }
+            })
+        },
+        handlerNewSys(data) {
+            api.searchNewSystem(data).then((res) => {
+                if (res._data._ret != '0') {
+                    this.$message({
+                        message: res._data._errStr,
+                        type: 'warning'
+                    })
+                    return
+                }
+
+
+                if (res._data.data.length == 1) {
+                    this.newSysData = Object.assign(this.newSysData, res._data.data[0])
+                    this.defaultShow.new = false
+                    this.sysItemShow.new = false
+                    this.noResultShow.new = false
+                    this.sysTableShow.new = true
+                } else if (res._data.data.length > 1) {
+                    this.newSysItemData = res._data.data
+                    this.defaultShow.new = false
+                    this.noResultShow.new = false
+                    this.sysTableShow.new = false
+                    this.sysItemShow.new = true
+                    //搜索无结果
+                } else {
+                    this.defaultShow.new = false
+                    this.sysItemShow.new = false
+                    this.sysTableShow.new = false
+                    this.noResultShow.new = true
+                }
+
+            })
+        },
+        // 显示详细信息
+        showDetail(flag, item) {
+            // console.log(item)
+            if (flag == 'old') {
+                this.sysItemShow.old = false
+                this.oldSysData = item
+                this.sysTableShow.old = true
+            }
+            if (flag == 'new') {
+                this.sysItemShow.new = false
+                this.newSysData = item
+                this.sysTableShow.new = true
             }
         },
         // 信息关联
         msg_Relative() {
-            let name1 = '张三'
-            let name2 = '李四'
+            let name1 = this.oldSysData.username,
+                name2 = this.newSysData.username
             const h = this.$createElement
             this.$msgbox({
                 title: '确认信息关联',
@@ -443,15 +525,41 @@ export default {
                 confirmButtonText: '确认'
             }).then((action) => {
                 console.log('确定，开始接口操作')
+                let data = {
+                    old_user_id: this.oldSysData.user_id,
+                    new_user_id: this.newSysData.user_id
+                }
+                api.msgBind(data).then((res) => {
+                    // console.log(res)
+                    if (res._data._ret != '0') {
+                        this.$message({
+                            message: res._data._errStr,
+                            type: 'warning'
+                        })
+                        return
+                    } else if (res._data._ret == '0') {
+                        this.$message({
+                            message: res._data._errStr,
+                            type: 'warning'
+                        })
+                        //数据关联成功后，若后台无刷新的数据，那么就需要手动修改
+                        this.oldSysData.associated = '是'
+                        this.oldSysData.assocUser = this.newSysData.username
+                        this.newSysData.associated = '是'
+                        this.newSysData.assocUser = this.oldSysData.username
+                    }
+
+                })
             }).catch((res) => { console.log(res) })
         },
+        // 字段验证
         validate(opt) {
             let result = { isPass: false, msg: '', type: '' }
             if (opt.region == '员工姓名') {
-                let reg = /^[\u4e00-\u9fa5]+$/g.test(opt.name) && (opt.name.length < 11 && opt.name.length > 1)
+                let reg = /^[\u4e00-\u9fa5]{2,10}$/g.test(opt.name)
                 if (reg) {
                     result.isPass = true
-                    result.type = 'xm'
+                    result.type = 'username'
                 } else {
                     result.isPass = false
                     result.msg = '请输入2-10位汉字搜索'
@@ -461,27 +569,28 @@ export default {
                 let reg = /^1\d{10}$/.test(opt.name)
                 if (reg) {
                     result.isPass = true
-                    result.type = 'sj'
+                    result.type = 'phone'
                 } else {
                     result.isPass = false
                     result.msg = '请输入11位手机号码'
                 }
             }
             if (opt.region == '员工工号') {
-                let reg = /^[A-Za-z0-9]+$/.test(opt.name) && opt.name.length < 20
+                let reg1 = /^[A-Za-z0-9]{1,20}$/.test(opt.name) 
                 if (reg) {
                     result.isPass = true
-                    result.type = 'yggh'
+                    result.type = 'number'
                 } else {
                     result.isPass = false
-                    result.msg = '请输入20位以内的数字和字母字符'
+                    result.msg = '请输入20位数字或字母组合'
                 }
             }
             if (opt.region == '身份证') {
-                let reg = /\d{18}/.test(opt.name) && (opt.name.length == 18)
-                if (reg) {
+                let reg1 = /^\d{18}$/.test(opt.name)
+                let reg2 = /^\d{17}X$/.test(opt.name)
+                if (reg1||reg2) {
                     result.isPass = true
-                    result.type = 'sfz'
+                    result.type = 'idCard'
                 } else {
                     result.isPass = false
                     result.msg = '请输入18位身份证号码'
@@ -490,22 +599,29 @@ export default {
             return result
         }
     },
-    mounted() {
-        api.getOldImportData({ wd: '你好' }).then((res) => {
-            console.log(res)
-        })
-    }
+    computed: {
+        // 是否可以关联
+        canBind() {
+            return this.sysTableShow.old && this.sysTableShow.new && this.oldSysData.associated == '否' && this.newSysData.associated == '否'
+        },
+        //只有新系统时，显示三列，否则显示两列
+        onlyNewSys() {
+            return this.sysTableShow.old == false ? true : false
+        }
+    },
+    mounted() {}
 }
 
 </script>
 <style scoped lang="scss">
 .data-import {
     .data-import-cont {
-        min-width: 1100px;
-        // max-width: 1500px; 
-        .left-wrap,.right-wrap {
+        min-width: 1100px; // max-width: 1500px; 
+        .left-wrap,
+        .right-wrap {
             height: 450px;
-            .left,.right {
+            .left,
+            .right {
                 height: 435px;
                 overflow-y: auto;
             }
@@ -517,11 +633,12 @@ export default {
             position: relative;
             top: 0;
             left: 50%;
-        } 
+        }
         tr,
         th {
             height: 48px;
             min-height: 48px;
+            text-align: center;
         }
         .result {
             height: 430px;
@@ -534,7 +651,7 @@ export default {
             width: 180px;
         }
         .more-info-wrap {
-            min-height: 130px; 
+            min-height: 130px;
             .more-info-item {
                 min-height: 130px;
                 display: flex;
@@ -570,8 +687,7 @@ export default {
         }
     }
     .msg-relative {
-        min-width: 1100px;
-        // max-width: 1500px;
+        min-width: 1100px; // max-width: 1500px;
         text-align: center;
         height: 60px;
         line-height: 60px;
