@@ -174,10 +174,12 @@ export default {
                     token: token,
                     systemid: util.channelCenterSystemId
                 }
-                this.setTestCookie()  //本地时打开一次即可
+                if (process.env.NODE_ENV == 'development') {
+                    this.setTestCookie()  //本地时打开一次即可
+                } 
 
             if (!userid) {
-                // window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+                window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
             } else {  
                 ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭
                 if (process.env.NODE_ENV == 'production') {
@@ -216,7 +218,7 @@ export default {
         // 测试时，模拟写入cookie,登录信息
         setTestCookie() {
             util.setCookie('userid', '694')
-            util.setCookie('username', 'tianyu')
+            util.setCookie('username', '测试')
             util.setCookie('useruuid', 'c6ed5c8e9830cf9225d078bdde335de7')
         },
         showLoginName() {
