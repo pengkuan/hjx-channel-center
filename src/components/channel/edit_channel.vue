@@ -465,7 +465,7 @@
                     return
                 }
                 this.partnerList = res.data.partnerList
-                this.form.strPartner_id = this.defaultDate.strPartnerId
+                this.form.strPartner_id = this.defaultDate.strPartnerId == '0'?'':this.defaultDate.strPartnerId
 
             })
             api.getAllS1({}).then(res => {

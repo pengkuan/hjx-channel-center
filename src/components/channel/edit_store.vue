@@ -133,8 +133,6 @@
                     <el-col :span="6" class = 'submitRightNoM'>
                         <el-button size="mini" type="primary" v-on:click="del_has_d1(index)"> 删除此项</el-button>
                     </el-col>
-                    
-                    
                 </p>
             </el-tab-pane>
             <el-tab-pane label="BD1列表">

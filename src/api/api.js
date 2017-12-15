@@ -39,7 +39,7 @@ axios.interceptors.response.use((res) =>{
       switch (error.response.status) {
         case 403:  
             let host = encodeURIComponent(util.accessHomeHost)
-            window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.homeSystemId+'&jump_url=' + host 
+            // window.location.href = util.powerCenterLoginPage+'/login?system_id='+util.homeSystemId+'&jump_url=' + host 
       }
     }
     return Promise.reject(error)

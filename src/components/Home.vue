@@ -174,10 +174,10 @@ export default {
                     token: token,
                     systemid: util.channelCenterSystemId
                 }
-                // this.setTestCookie()  //本地时打开一次即可
+                this.setTestCookie()  //本地时打开一次即可
 
             if (!userid) {
-                window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+                // window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
             } else {  
                 ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭  
                 // const loading = this.$loading({
