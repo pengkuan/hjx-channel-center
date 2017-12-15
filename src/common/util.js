@@ -39,7 +39,8 @@ function checkNumber(val) {
 }
 
 export default { 
-    jsonpUrl: process.env.NODE_ENV == 'development' ? 'https://dev-access.huanjixia.com/index/index' : 'https://dev-access.huanjixia.com/index/index',//jsonp207开发环境、开发环境
+    jsonpUrl: process.env.NODE_ENV == 'development' ? 'https://dev-access.huanjixia.com/index/index' : 'https://dev-access.huanjixia.com/index/index',//207开发环境、243测试环境
+    // jsonpUrl: process.env.NODE_ENV == 'development' ? 'https://dev-access.huanjixia.com/index/index' : 'https://access.huanjixia.com',//207开发环境、线上环境
     api: process.env.NODE_ENV == 'development' ? '/pengkuan' : '',  
     apiCross: process.env.NODE_ENV == 'development' ? 'https://dev-amc-server.huanjixia.com' : 'https://dev-amc-server.huanjixia.com', //207开发环境(243测试环境)
     // apiCross :  process.env.NODE_ENV == 'development'?'https://dev-amc-server.huanjixia.com':'https://amc-server.huanjixia.com' ,//207开发环境 、线上环境 

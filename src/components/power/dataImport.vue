@@ -576,7 +576,7 @@ export default {
                 }
             }
             if (opt.region == '员工工号') {
-                let reg1 = /^[A-Za-z0-9]{1,20}$/.test(opt.name) 
+                let reg = /^[A-Za-z0-9]{1,20}$/.test(opt.name) 
                 if (reg) {
                     result.isPass = true
                     result.type = 'number'
