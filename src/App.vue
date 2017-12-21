@@ -7,7 +7,13 @@
 <script>
 
 export default {
-    name: 'app'
+    name: 'app',
+    created() {
+        // console.log('app.vue执行了created')
+    },
+    mounted() {
+    	// console.log('app.vue执行了mounted')
+    }
 }
 </script> 
 <style> 

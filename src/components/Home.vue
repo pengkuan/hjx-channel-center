@@ -20,7 +20,6 @@
                         </el-dropdown-menu>
                     </el-dropdown>
                 </div>
-                
             </el-col>
             <!--中间-->
             <el-col :span="24" class="main">
@@ -35,7 +34,6 @@
                     <el-menu v-show="!collapsed" default-active="0" @open="handleOpen" @close="handleClose" router>
                         <!-- <template v-for="(item,index) in $router.options.routes" v-if="item.menuShow"> -->
                         <template v-for="(item,index) in menuRutes" v-if="item.menuShow">
-
                             <el-submenu v-if="!item.leaf" :index="index+''">
                                 <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
                                 <el-menu-item v-for="term in item.children" :key="term.path" :index="term.path" v-if="term.menuShow" :class="$route.path==term.path?'is-active-add':''">
@@ -79,18 +77,19 @@
         </el-row>
     </div>
 </template>
-
 <script>
 import api from '../api/api'
 import util from '../common/util'
 export default {
-    created() {},
+    created() {
+        console.log('home.vue执行了created')
+    },
     data() {
         return {
             collapsed: false,
             menuRutes: [],
             menuList: [],
-            sysUserName:'',
+            sysUserName: '',
             showDiv: false
         }
     },
@@ -174,13 +173,13 @@ export default {
                     token: token,
                     systemid: util.channelCenterSystemId
                 }
-                if (process.env.NODE_ENV == 'development') {
-                    this.setTestCookie()  //本地时打开一次即可
-                } 
+            if (process.env.NODE_ENV == 'development') {
+                this.setTestCookie() //本地时打开一次即可
+            }
 
             if (!userid) {
                 window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
-            } else {  
+            } else {
                 ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭
                 if (process.env.NODE_ENV == 'production') {
                     const loading = this.$loading({
@@ -203,17 +202,17 @@ export default {
                         this.showLoginName()
                         this.menuList = res.data.menu
                         this.getModule(this.menuList)
-                    }) 
-                }   
+                    })
+                }
 
                 ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭   
                 if (process.env.NODE_ENV == 'development') {
                     this.setTestCookie()
-                    this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, {name: '权限中心'}]
+                    this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, { name: '权限中心' }]
                     this.showDiv = true
                     this.getModule(this.menuList)
-                }    
-            }   
+                }
+            }
         },
         // 测试时，模拟写入cookie,登录信息
         setTestCookie() {
@@ -259,10 +258,23 @@ export default {
 
 </script>
 <style type="text/css" scoped>
-    .icon-down{font-size: 12px}
-    .gohome{font-size: 14px;cursor: pointer;}
-    .gohome>a:hover{color:#409EFF;}
-    .gohome>a{color: #fff}
+.icon-down {
+    font-size: 12px
+}
+
+.gohome {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.gohome>a:hover {
+    color: #409EFF;
+}
+
+.gohome>a {
+    color: #fff
+}
+
 </style>
 <style>
 .el-menu-item,
@@ -327,7 +339,7 @@ export default {
         padding: 0px;
 
         .topbar-btn {
-            color: #fff; 
+            color: #fff;
         }
         .topbar-btn:hover {
             // background-color: #4A5064;
@@ -339,13 +351,13 @@ export default {
             line-height: 26px;
             cursor: pointer;
             a {
-                display: block; 
+                display: block;
             }
         }
         .topbar-title {
             float: left;
             text-align: center;
-            width: 129px; 
+            width: 129px;
         }
         .topbar-account {
             float: right;

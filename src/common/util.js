@@ -39,11 +39,11 @@ function checkNumber(val) {
 }
 
 export default { 
-    // jsonpUrl: process.env.NODE_ENV == 'development' ? 'https://dev-access.huanjixia.com/index/index' : 'https://dev-access.huanjixia.com/index/index',//207开发环境、243测试环境
-    jsonpUrl: process.env.NODE_ENV == 'development' ? 'https://dev-access.huanjixia.com/index/index' : 'https://access.huanjixia.com',//207开发环境、线上环境
+    jsonpUrl: process.env.NODE_ENV == 'development' ? 'https://dev-access.huanjixia.com/index/index' : 'https://dev-access.huanjixia.com/index/index',//207开发环境、243测试环境
+    // jsonpUrl: process.env.NODE_ENV == 'development' ? 'https://dev-access.huanjixia.com/index/index' : 'https://access.huanjixia.com/index/index',//207开发环境、线上环境
     api: process.env.NODE_ENV == 'development' ? '/pengkuan' : '',  
-    // apiCross: process.env.NODE_ENV == 'development' ? 'https://dev-amc-server.huanjixia.com' : 'https://dev-amc-server.huanjixia.com', //207开发环境(243测试环境)
-    apiCross :  process.env.NODE_ENV == 'development'?'https://dev-amc-server.huanjixia.com':'https://amc-server.huanjixia.com' ,//207开发环境 、线上环境 
+    apiCross: process.env.NODE_ENV == 'development' ? 'https://dev-amc-server.huanjixia.com' : 'https://dev-amc-server.huanjixia.com', //207开发环境(243测试环境)
+    // apiCross :  process.env.NODE_ENV == 'development'?'https://dev-amc-server.huanjixia.com':'https://amc-server.huanjixia.com' ,//207开发环境 、线上环境 
     powerCenterLoginPage: 'http://api-amc.huishoubao.com.cn', //权限中心登录页面
     accessChannelHost: 'https://mba.huanjixia.com/channel_center', //登录后，后台跳转到渠道中心页面
     accessHomeHost: 'https://mba.huanjixia.com/login', //登录后，后台跳转到home页面
