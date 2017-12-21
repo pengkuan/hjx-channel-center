@@ -1,6 +1,6 @@
 # huanjixia
 
-> 后��运营后台管理系统
+> 2B运营后台管理系统 - 渠道中心
 
 ## Build Setup
 
