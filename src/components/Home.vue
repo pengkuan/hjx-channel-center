@@ -164,7 +164,9 @@ export default {
         },
         // 获取权限列表数据
         get_user_menu() {
-
+            if (process.env.NODE_ENV == 'development') {
+                this.setTestCookie() //本地时打开一次即可
+            }
             let host = encodeURIComponent(util.accessHomeHost),
                 userid = util.getCookie('userid'),
                 token = util.getCookie('useruuid'),
@@ -173,10 +175,7 @@ export default {
                     token: token,
                     systemid: util.channelCenterSystemId
                 }
-            if (process.env.NODE_ENV == 'development') {
-                this.setTestCookie() //本地时打开一次即可
-            }
-
+            
             if (!userid) {
                 window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
             } else {
@@ -184,7 +183,7 @@ export default {
                 if (process.env.NODE_ENV == 'production') {
                     const loading = this.$loading({
                         lock: true,
-                        text: '玩命加载中......',
+                        text: '玩命加载中...',
                         spinner: 'el-icon-loading',
                         background: 'rgba(0, 0, 0, 0.7)'
                     })
