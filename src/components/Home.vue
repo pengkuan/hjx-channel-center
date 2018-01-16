@@ -9,8 +9,8 @@
                 <div class="topbar-logo topbar-btn">
                     <a href="/"><img src="../assets/images/logo.png" style="margin: 10px 0 0 10px;height:30px;border:0"></a>
                 </div>
-                <div class="topbar-title topbar-btn">
-                    <!-- <span>运营管理后台</span> -->
+                <div class="topbar-btn">
+                    <span style="color:red; ">{{_Config.ENV_MARK}}</span>
                 </div>
                 <div class="topbar-account topbar-btn">
                     <el-dropdown trigger="click">
@@ -142,7 +142,6 @@ export default {
                     }
                 }
             }
-            // console.log(this.$router.options.routes)
             for (let i in menu) {
                 for (let index in routes) {
                     if (menu[i].name == routes[index].name) {
@@ -164,66 +163,47 @@ export default {
         },
         // 获取权限列表数据
         get_user_menu() {
-            if (process.env.NODE_ENV == 'development') {
-                this.setTestCookie() //本地时打开一次即可
-            }
-            let host = encodeURIComponent(util.accessHomeHost),
+            let host = encodeURIComponent(this._Config.RETURN_URL),
                 userid = util.getCookie('userid'),
                 token = util.getCookie('useruuid'),
                 params = {
                     userid: userid,
                     token: token,
-                    systemid: util.channelCenterSystemId
+                    systemid: this._Config.SYSTEM_ID
                 }
-            
             if (!userid) {
-                window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+                window.location.href = this._Config.POWER_CENTER_LOGIN + '/login?system_id=' + this._Config.SYSTEM_HOME_ID + '&jump_url=' + host
             } else {
-                ////////////////////////////////////////////////////////////////////////////////////// 上线时打开,本地服务时关闭
-                if (process.env.NODE_ENV == 'production') {
-                    const loading = this.$loading({
-                        lock: true,
-                        text: '玩命加载中...',
-                        spinner: 'el-icon-loading',
-                        background: 'rgba(0, 0, 0, 0.7)'
-                    })
-                    api.get_user_authority(params).then((res) => {
-                        if (res.ret != '0') {
-                            this.$message({
-                                message: res.retinfo,
-                                type: 'warning'
-                            })
-                            loading.close()
-                            return
-                        }
+                const loading = this.$loading({
+                    lock: true,
+                    text: '玩命加载中...',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                })
+                api.get_user_authority(params).then((res) => {
+                    if (res.ret != '0') {
+                        this.$message({
+                            message: res.retinfo,
+                            type: 'warning'
+                        })
                         loading.close()
-                        this.showDiv = true
-                        this.showLoginName()
-                        this.menuList = res.data.menu
-                        this.getModule(this.menuList)
-                    })
-                }
-
-                ////////////////////////////////////////////////////////////////////////////////////// 本地服务时打开用,上线时关闭 && app.js的403关闭   
-                if (process.env.NODE_ENV == 'development') {
-                    this.setTestCookie()
-                    this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, { name: '权限中心' }]
+                        return
+                    }
+                    loading.close()
                     this.showDiv = true
+                    this.sysUserName = util.getCookie('username') || ''
+                    this.menuList = res.data.menu
                     this.getModule(this.menuList)
-                }
+                })
             }
         },
-        // 测试时，模拟写入cookie,登录信息
-        setTestCookie() {
+        get_user_menu_test(){
             util.setCookie('userid', '694')
             util.setCookie('username', '测试')
             util.setCookie('useruuid', 'c6ed5c8e9830cf9225d078bdde335de7')
-        },
-        showLoginName() {
-            let user = util.getCookie('username')
-            if (user) {
-                this.sysUserName = user || ''
-            }
+            this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, { name: '权限中心' }]
+            this.showDiv = true
+            this.getModule(this.menuList)
         },
         logout() {
             var _this = this;
@@ -245,202 +225,75 @@ export default {
                     util.delCookie('username')
                     util.delCookie('last_connection')
                     util.delCookie('useruuid  ')
-                    window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + encodeURIComponent(util.accessHomeHost)
+                    window.location.href = this._Config.POWER_CENTER_LOGIN + '/login?system_id=' + this._Config.SYSTEM_HOME_ID + '&jump_url=' + encodeURIComponent(this._Config.RETURN_URL)
                 })
             }).catch(() => {})
         }
     },
     mounted() {
-        this.get_user_menu()
+        if (this._Config.IS_NO_DEV) { 
+            this.get_user_menu()
+        } else {
+            this.get_user_menu_test()
+        }
+
+
     }
 }
 
 </script>
-<style type="text/css" scoped>
-.icon-down {
-    font-size: 12px
-}
 
-.gohome {
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.gohome>a:hover {
-    color: #409EFF;
-}
-
-.gohome>a {
-    color: #fff
-}
-
-</style>
 <style>
-.el-menu-item,
-.el-submenu__title {
-    color: #fff;
-}
-
-.el-submenu__title:hover {
-    background-color: #00C1DE;
-}
-
-.el-submenu .el-menu-item {
-    background-color: #333744
-}
-
-.el-submenu .el-menu-item:hover {
-    background-color: #4A5064
-}
-
+.el-menu-item, .el-submenu__title {color: #fff;}
+.el-submenu__title:hover {background-color: #00C1DE;}
+.el-submenu .el-menu-item {background-color: #333744}
+.el-submenu .el-menu-item:hover {background-color: #4A5064}
 .el-submenu .el-menu-item.is-active,
 .el-menu-item.is-active,
 .el-submenu .el-menu-item.is-active:hover,
-.el-menu-item.is-active:hover {
-    background-color: #00C1DE;
-    color: #fff;
-}
-
+.el-menu-item.is-active:hover {background-color: #00C1DE;color: #fff;}
 .el-submenu .el-menu-item.is-active-add,
 .el-menu-item.is-active-add,
 .el-submenu .el-menu-item.is-active-add:hover,
-.el-menu-item.is-active-add:hover {
-    background-color: #00C1DE;
-    color: #fff;
-}
-
-.el-menu .iconfont {
-    vertical-align: baseline;
-    margin-right: 6px;
-}
-
-.warp-breadcrum {
-    padding: 10px 0px;
-    border-bottom: 1px solid #efefef;
-}
-
-.warp-main {
-    padding-top: 20px;
-}
+.el-menu-item.is-active-add:hover {background-color: #00C1DE;color: #fff;}
+.el-menu .iconfont {vertical-align: baseline;margin-right: 6px;}
+.warp-breadcrum {padding: 10px 0px;border-bottom: 1px solid #efefef;}
+.warp-main {padding-top: 20px;}
 
 </style>
 <style scoped lang="scss">
-.container {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    width: 100%;
-
-    .topbar-wrap {
-        height: 50px;
-        line-height: 50px;
-        background: #373d41;
-        padding: 0px;
-
-        .topbar-btn {
-            color: #fff;
+.icon-down {font-size: 12px}
+.gohome {font-size: 14px;cursor: pointer;}
+.gohome>a:hover {color: #409EFF;}
+.gohome>a {color: #fff}
+.container {position: absolute;top: 0px;bottom: 0px;width: 100%;
+    .topbar-wrap {height: 50px;line-height: 50px;background: #373d41;padding: 0px;
+        .topbar-btn {color: #fff;}
+        .topbar-logo {float: left;text-align: center;width: 170px;line-height: 26px;cursor: pointer;
+            a {display: block;}
         }
-        .topbar-btn:hover {
-            // background-color: #4A5064;
-        }
-        .topbar-logo {
-            float: left;
-            text-align: center;
-            width: 170px;
-            line-height: 26px;
-            cursor: pointer;
-            a {
-                display: block;
-            }
-        }
-        .topbar-title {
-            float: left;
-            text-align: center;
-            width: 129px;
-        }
-        .topbar-account {
-            float: right;
-            padding-right: 12px;
-        }
-        .userinfo-inner {
-            cursor: pointer;
-            color: #fff;
-            padding-left: 10px;
+        .topbar-title {float: left;text-align: center;width: 129px;}
+        .topbar-account {float: right;padding-right: 12px;}
+        .userinfo-inner {cursor: pointer;color: #fff;padding-left: 10px;}
+    }
+    .main {display: flex;position: absolute;top: 50px;bottom: 0px;overflow: hidden;}
+    aside {overflow-y: auto;flex: 0 0 200px;background-color: #333744;width: 200px;
+        .el-menu {border-radius: 0px;background-color: #333744;}
+        .collapsed {width: 50px;
+            .submenu {position: absolute;top: 0px;left: 50px;z-index: 9999;height: auto;display: none;}
         }
     }
-    .main {
-        display: flex;
-        position: absolute;
-        top: 50px;
-        bottom: 0px;
-        overflow: hidden;
+    .menu-collapsed {flex: 0 0 50px;width: 50px;}
+    .menu-expanded {flex: 0 0 200px;width: 200px;
+        .el-menu {width: 100%!important}
     }
-    aside {
-        overflow-y: auto;
-        flex: 0 0 200px;
-        background-color: #333744;
-        width: 200px;
-        .el-menu {
-            border-radius: 0px;
-            background-color: #333744;
-        }
-        .collapsed {
-            width: 50px;
-            .submenu {
-                position: absolute;
-                top: 0px;
-                left: 50px;
-                z-index: 9999;
-                height: auto;
-                display: none;
-            }
-        }
-    }
-    .menu-collapsed {
-        flex: 0 0 50px;
-        width: 50px;
-    }
-    .menu-expanded {
-        flex: 0 0 200px;
-        width: 200px;
-        .el-menu {
-            width: 100%!important
-        }
-    }
-    .menu-toggle {
-        background: #4A5064;
-        text-align: center;
-        color: white;
-        height: 26px;
-        line-height: 30px;
-    }
-    .content-container {
-        background: #fff;
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px;
-        .content-wrapper {
-            background-color: #fff;
-            box-sizing: border-box;
-            position: relative;
-            .router-class {
-                position: absolute;
-                width: 100%;
-                left: 0;
-                top: 0;
-            }
-            .fade-enter-active,
-            .fade-leave-active {
-                transition: all .3s;
-            }
-
-            .fade-enter {
-                opacity: 0; // transform: translate3d(10%, 0, 0);
-            }
-
-            .fade-leave-to {
-                opacity: 0; // transform: translate3d(-10%, 0, 0);
-            }
+    .menu-toggle {background: #4A5064;text-align: center;color: white;height: 26px;line-height: 30px;}
+    .content-container {background: #fff;flex: 1; overflow-y: auto;padding: 10px;
+        .content-wrapper {background-color: #fff;box-sizing: border-box;position: relative;
+            .router-class {position: absolute;width: 100%;left: 0;top: 0;}
+            .fade-enter-active,.fade-leave-active {transition: all .3s;}
+            .fade-enter {opacity: 0; }
+            .fade-leave-to {opacity: 0; }
         }
     }
 }

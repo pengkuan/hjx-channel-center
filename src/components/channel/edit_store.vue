@@ -266,7 +266,7 @@
 </div>
     
 </template>
-<style type="text/css" scope>
+<style type="text/css" scoped>
     #Edit-store{width: 1000px}
     .vue-remind{font-size: 12px;color:#999;margin: 8px 0}
     span{font-size: 13px}

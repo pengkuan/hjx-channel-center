@@ -2,18 +2,10 @@ import axios from 'axios'
 import originJsonp from 'jsonp'
 // import qs from 'qs'
 import router from '../router'
-import util from '../common/util'
+import Config from '../config/index'
 
 
 import { Message } from 'element-ui'
-
-
-// import * as _ from '../util/tool'
-
-// axios 配置
-// axios.defaults.timeout = 5000;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-// axios.defaults.baseURL = 'http://10.0.30.51:8002/';
 
 //POST传参序列化
 axios.interceptors.request.use((config) => {
@@ -39,9 +31,9 @@ axios.interceptors.response.use((res) => {
         Message({ message: error.response.data.body.retinfo, type: 'warning' })
         switch (error.response.status) {
             case 403: 
-                if (process.env.NODE_ENV == 'production') {
-                    let host = encodeURIComponent(util.accessHomeHost) 
-                    window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+                if (Config.IS_NO_DEV) {
+                    let host = encodeURIComponent(Config.RETURN_URL) 
+                    window.location.href = Config.POWER_CENTER_LOGIN + '/login?system_id=' + Config.SYSTEM_HOME_ID + '&jump_url=' + host
                 }
                 break
         }
@@ -65,7 +57,7 @@ export function fetch(Interface, params) {
         resParams.params[i] = params[i]
     }
     return new Promise((resolve, reject) => {
-        axios.post(util.api + '/channel_org_interface', resParams)
+        axios.post(Config.API + '/channel_org_interface', resParams)
             .then(response => {
                 resolve(response)
             }, err => {
@@ -117,7 +109,7 @@ export function crossDomain(Interface, params) {
         resParams.params[i] = params[i]
     }
     return new Promise((resolve, reject) => {
-        axios.post(util.apiCross + '/index/index', resParams)
+        axios.post(Config.API_PHP + '/index/index', resParams)
             .then(response => {
                 resolve(response)
             }, err => {
@@ -131,7 +123,7 @@ export function crossDomain(Interface, params) {
 
 /* jsonp接口开始 */ 
 export function jsonp(_interface, params) { 
-    let url = `${util.jsonpUrl}?type=jsonp`, 
+    let url = `${Config.JSONP_URL}?type=jsonp`, 
         token = get_cookie('useruuid'),
         userid = get_cookie('userid') ,
         timestamps = Math.floor(new Date().getTime()/1000) + ''
@@ -147,9 +139,7 @@ export function jsonp(_interface, params) {
         "_param": { 
             "system":"test",          
             "userid": userid, 
-            "token": token, 
-            // "userid": '694', 
-            // "token": '3077a9e5c2c6ea2c21c57c5bd95ccb8e',  
+            "token": token
         }
     }
     // 合并参数 
@@ -168,8 +158,8 @@ export function jsonp(_interface, params) {
                 // 登录超时处理
                 if (process.env.NODE_ENV == 'production') {
                     if (data._data._ret == '1' && data._data._errStr == '登录验证不通过') {
-                        let host = encodeURIComponent(util.accessHomeHost)
-                        window.location.href = util.powerCenterLoginPage + '/login?system_id=' + util.homeSystemId + '&jump_url=' + host
+                        let host = encodeURIComponent(Config.RETURN_URL)
+                        window.location.href = Config.POWER_CENTER_LOGIN + '/login?system_id=' + Config.SYSTEM_HOME_ID + '&jump_url=' + host
                     }
                 } 
                 resolve(data)

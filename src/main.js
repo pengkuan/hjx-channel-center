@@ -8,9 +8,11 @@ import '@/assets/iconfont.css'
 import '@/common/index.css'
 import router from './router'
 import store from './store'
+import Config from '@/config/index.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.prototype._Config = Config
 
 new Vue({
 	el: '#app',

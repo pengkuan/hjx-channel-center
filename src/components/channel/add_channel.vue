@@ -161,7 +161,7 @@
 </div>
 </template>
 
-<style type="text/css" scope>
+<style type="text/css" scoped>
 	.content-containered{width: 1000px}
 </style>
 
