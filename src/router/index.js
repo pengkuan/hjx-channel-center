@@ -6,9 +6,11 @@ import index from '@/views/index'
 import channelIndex from '@/views/channel/index'
 import addChannel from '@/views/channel/add_channel'
 import editChannel from '@/views/channel/edit_channel'
+import detailChannel from '@/views/channel/detail_channel'
 import channelStore from '@/views/channel/store'
 import channelAddStore from '@/views/channel/add_store'
 import channelEditStore from '@/views/channel/edit_store'
+import channelDetailStore from '@/views/channel/detail_store'
 import channelEmployee from '@/views/channel/employee'
 import channelAddEmployee from '@/views/channel/add_employee'
 import channelEditEmployee from '@/views/channel/edit_employee'
@@ -90,10 +92,12 @@ let router = new Router({
                 {path: '/channel/index', component: channelIndex, name: '商户管理', menuShow: true},
                 {path: '/channel/add_channel', component: addChannel},
                 {path: '/channel/edit_channel', component: editChannel , name:'editChannel'},
+                {path: '/channel/detail_channel', component: detailChannel , name:'detailChannel'},
 
                 {path: '/channel/store', component: channelStore, name: '门店管理', menuShow: true},
                 {path: '/channel/add_store', component: channelAddStore},
                 {path: '/channel/edit_store', component: channelEditStore , name:'editStore'},
+                {path: '/channel/detail_store', component: channelDetailStore , name:'detailStore'},
                 
                 {path: '/channel/employee', component: channelEmployee, name: '工号管理', menuShow: true},
                 {path: '/channel/add_employee', component: channelAddEmployee},

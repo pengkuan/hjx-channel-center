@@ -97,18 +97,16 @@
             <el-input v-model="form.strMonth_sales"></el-input>
         </el-form-item>
         <el-form-item label="商户等级：">
-		    <el-select v-model="form.strChannelScore" placeholder="请选择">
-                <el-option label="S" value="0"></el-option>
-		    	<el-option label="A" value="1"></el-option>
-		    	<el-option label="B" value="2"></el-option>
-                <el-option label="C" value="3"></el-option>
-		    	<el-option label="D" value="4"></el-option>  
-		    </el-select>
+            <el-select v-model="form.strChannelScore" placeholder="请选择">
+                <el-option  v-for="item in scoreList"  :label="item.name"  :value="item.id" :key="item.id">
+                </el-option>
+            </el-select>
 		</el-form-item>
 		<el-form-item label="估价模型：">
-		    <el-select v-model="form.strValuationId" placeholder="请选择">
-		    	<el-option label="2B估价模型" value="2"></el-option>
-		    </el-select>
+            <el-select v-model="form.strValuationId" placeholder="请选择">
+                <el-option  v-for="item in valuationList"  :label="item.name"  :value="item.id" :key="item.id">
+                </el-option>
+            </el-select>
 		</el-form-item>
 		<el-form-item label="商户分成：">
             <el-form-item  label="分成比例（%）：" prop='strPercent' >
@@ -127,10 +125,10 @@
 			<el-button type="primary" size="small" v-model="form.strShopAwardId">+设置店员激励方案</el-button>
         </el-form-item>
         <el-form-item label="付款模式：">
-		    <el-select v-model="form.strPayMethodId" placeholder="请请选择付款模式">
-		    	<el-option label="预付" value="1"></el-option>
-		    	<el-option label="垫付" value="0"></el-option>
-		    </el-select>
+            <el-select v-model="form.strPayMethodId" placeholder="请选择">
+                <el-option  v-for="item in payMethodList"  :label="item.name"  :value="item.id" :key="item.id">
+                </el-option>
+            </el-select>
 		</el-form-item>
 		<el-form-item label="店员/用户APP：">
 		    <el-checkbox-group v-model="form.selfFunction">
@@ -150,7 +148,7 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
-import commonData from '../../common/data'
+import { mapGetters, mapActions } from 'vuex'
 export default {
     data() {
         var validateEmployeeNum = (rule, value, callback) => {
@@ -162,7 +160,6 @@ export default {
 	    return {
 	        form: {
 	          strLevelId: '',
-
 	          strFullName: '',
 	          strPartner_id: '',
 	          strSecond_channel:'0',
@@ -172,7 +169,6 @@ export default {
 			  strDetailAddress: '',
 			  strSale_addr:'',
 			  strStatus:'1',
-	          
 	          strLicense_num: '',
 	          strPrefix_str: '',
 	          strConnection_info: '',
@@ -183,7 +179,6 @@ export default {
 	          strPercent: '',
 	          strApplyMax: '',
 	          strShopAwardId: '0',
-
 	          strPayMethodId: '1',
 	          selfFunction: [],
 	          strGreen_recycle:'0',
@@ -196,18 +191,16 @@ export default {
 	        },
 	        channelTemplateList:[],
 	        partnerList:[],
-	        provinces:commonData.addrList,
 	        citys:[],
 	        areas:[],
 	        partnerList:[],
 	        saleAdds:{
-	        	provinces:commonData.addrList,
+	        	provinces:[],
 	        	citys:[],
 	        	areas:[]
 	        },
 	        addSaleList :[],
 	        channelUserList :[],
-
             rules:{
                 'strLevelId': [
                     {  required: true, message: '请选择O关系模型', trigger: 'change' }
@@ -242,6 +235,15 @@ export default {
             }
         }
     },
+    computed:{
+        ...mapGetters({
+            provinces : 'heavyDate/adds',
+            statusList : 'channel/status',
+            scoreList : 'channel/score',
+            payMethodList : 'channel/payMethod',
+            valuationList : 'channel/valuation'
+        }),
+    },
     watch: {
         // 省市区
         'form.strAddr_province_id': function(val, oldVal) {
@@ -266,8 +268,10 @@ export default {
 		this.loadInfo();
 	},
     methods: {
+        ...mapActions({
+            getAddress: 'heavyDate/getAdds' 
+        }),
         submitnow(formName) {
-            
             let self = this
         	for(var i in this.form.selfFunction){
         		if(this.form.selfFunction[i] == '收集用户信息') this.form.strGather_userInfo = '1'
@@ -296,17 +300,9 @@ export default {
             })
         },
         loadInfo: function() {
-            if(commonData.addrList.length == 0){
-                api.getAddress({}).then(res => {
-                    if (res.ret != '0') {
-                        this.$alert(res.retinfo,"提示")
-                        return
-                    }
-                    commonData.addrList = res.data.address
-                    this.provinces = res.data.address
-                    this.saleAdds.provinces = res.data.address
-                })
-            }
+            this.getAddress().then(()=>{
+                this.saleAdds.provinces = this.$store.getters['heavyDate/adds']
+            })
 			api.getChannelTemplate({}).then(res => {
                 if (res.ret != '0') {
                     this.$alert(res.retinfo,"提示")
@@ -321,12 +317,12 @@ export default {
                 }
 				this.partnerList = res.data.partnerList
 			})
-			api.getAllS1({}).then(res => {
+			api.getAllS4({'strChannelId':''}).then(res => {
                 if (res.ret != '0') {
                     this.$alert(res.retinfo,"提示")
                     return
                 }
-				this.channelUserList = res.data.listUsers
+				this.channelUserList = res.data
 			})
 			
 		},
@@ -340,7 +336,6 @@ export default {
                     }
                 }
             }else{
-            	console.log(this.provinces)
                 for (var index in this.provinces) {
                     if (this.provinces[index].strProvinceId == val) {
                         this.citys = this.provinces[index].citys
@@ -368,7 +363,6 @@ export default {
 
         //添加销售区域
         addSaleAddr: function(){
-           
             let provinceName = this.saleAddsId.strSaleProvinceId.split(',')[1] ? this.saleAddsId.strSaleProvinceId.split(',')[1] :'全部'
             let cityName = this.saleAddsId.strSaleCityId.split(',')[1] ? this.saleAddsId.strSaleCityId.split(',')[1] :'全部'
             let areaName = this.saleAddsId.strSaleAreaId.split(',')[1] ? this.saleAddsId.strSaleAreaId.split(',')[1] :'全部'
@@ -394,7 +388,6 @@ export default {
         },
         //删除当前销售区域
         delSaleAddr: function(index){
-            console.log(index)
             this.addSaleList.splice(index,1)
         },
         //取消

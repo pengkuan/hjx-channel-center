@@ -46,8 +46,9 @@
 	    </el-table-column>
 	    <el-table-column  label="操作">
 	        <template slot-scope="scope">
+	        	<el-button class = 'indexFunBtn'  type="primary" @click="showDetail(scope.row.strStoreId)"  size="small">详情</el-button>
+        		<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
 	        	<span v-if="scope.row.strStatus == '1' ">
-	        		<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
 	        		<el-button class = 'indexFunBtn' type="danger" @click="disableStore(scope.row.strStoreId)"  size="small">禁用</el-button>
 	        	</span>
 	        	<span v-else>
@@ -121,6 +122,12 @@ export default {
 			this.$router.push({
 				name:'editStore',
 				query:{id:strStoreId}
+			})
+		},//跳至编辑页面
+		showDetail(id){
+			this.$router.push({
+				name:'detailStore',
+				query:{id:id}
 			})
 		},
 		// 禁用启用

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import heavyDate from './modules/heavyDate'
-import userInfo from './modules/userInfo'
+import channel from './modules/channel'
 
 Vue.use(Vuex)
 
@@ -11,9 +11,9 @@ export default new Vuex.Store({
         	namespaced: true,
         	modules:[heavyDate]
         },
-        userInfo:{
+        channel:{
         	namespaced: true,
-        	modules:[userInfo]
+        	modules:[channel]
         }
     }
 })

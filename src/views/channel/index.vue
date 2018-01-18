@@ -36,17 +36,13 @@
         <el-table-column prop="strChannelManagerName" label="渠道经理" ></el-table-column> -->
         <el-table-column  label="合作状态" >
           <template slot-scope="scope">
-                {{scope.row.strState == 1 ?'合作中':'停止合作'}}
+                <span v-for="item in statusList" v-if="scope.row.strState == item.id">{{item.name}}</span>
             </template>
         </el-table-column>
 
         <el-table-column prop="strChannelScore" label="商户评分" >
             <template slot-scope="scope">
-                <span v-if="scope.row.strChannelScore == '0' ">S</span>
-                <span v-else-if="scope.row.strChannelScore == '1' ">A</span>
-                <span v-else-if="scope.row.strChannelScore == '2' ">B</span>
-                <span v-else-if="scope.row.strChannelScore == '3' ">C</span>
-                <span v-else-if="scope.row.strChannelScore == '4' ">D</span>
+                <span v-for="item in scoreList" v-if="scope.row.strChannelScore == item.id">{{item.name}}</span>
             </template>
         </el-table-column>
         <el-table-column prop="strS4Name" label="S4" ></el-table-column>
@@ -55,7 +51,7 @@
         <el-table-column prop="strCreateTime" label="合作时间" ></el-table-column> -->
         <el-table-column label="操作">
             <template slot-scope="scope">
-                <!-- <el-button type="primary" @click="showChannel(scope.row.strChannelId)"  size="small">详情</el-button> -->
+                <el-button type="primary" @click="showDetail(scope.row.strChannelId)"  size="small">详情</el-button>
                 <el-button type="primary" @click="editChannel(scope.row.strChannelId)"  size="small">编辑</el-button>
             </template>
         </el-table-column>
@@ -76,6 +72,7 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -91,7 +88,12 @@ export default {
             }
         }
     },
-
+    computed:{
+        ...mapGetters({
+            statusList : 'channel/status',
+            scoreList : 'channel/score'
+        })
+    },
     methods:{
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`)
@@ -126,6 +128,13 @@ export default {
                 this.total = res.data.nums
             })
             
+        },
+        //跳至编辑页面
+        showDetail:function(strChannelId){
+            this.$router.push({
+                name:'detailChannel',
+                query:{id:strChannelId}
+            })
         },
         //跳至编辑页面
         editChannel:function(strChannelId){

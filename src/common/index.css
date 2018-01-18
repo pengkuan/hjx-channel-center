@@ -51,12 +51,16 @@ button.indexFunBtn{margin: 8px 8px 8px 0 !important}
 .hjx-fr{float: right}
 .hjx-clear{clear: both}
 .hjx-center{text-align: center}
+.hjx-right{text-align: right}
 /*字体大小配置*/
 .hjx-ft12{font-size: 12px}
 .hjx-ft13{font-size: 13px}
 .hjx-ft14{font-size: 14px}
 .hjx-ft15{font-size: 15px}
 .hjx-ft16{font-size: 16px}
+/*margin*/
+.mrg-r12{margin-right: 12px}
+.mrg-b12{margin-bottom: 12px}
 /*颜色配置*/
 .hjx-black{color:#1F2D3D}
 .hjx-lightblack{color:#324057}

@@ -195,7 +195,7 @@ export default {
     /*渠道相关*/
     getChannelList(params) { return fetch('search_channelorg', params) }, // 获取渠道列表
     getProvince(params) { return fetch('get_province', params) }, // 获取省份
-    addChannelLogic(params) { return fetch('save_ChannelOrg', params) }, // 新增渠道
+    addChannelLogic(params) { return fetch('save_ChannelOrg', params) }, // 新增 or 编辑渠道
     /*渠道相关*/
     getChannelInfo(params) { return fetch('channel_detail', params) }, // 获取渠道信息
     getTemplateList(params) { return fetch('get_channelTemplateList', params) }, // 获取模板列表
@@ -218,7 +218,7 @@ export default {
     getStoreInfo(params) { return fetch('getStoreInfo', params) }, // 获取门店信息
 
     getStoreS(params) { return fetch('get_store_s', params) }, // 获取该门店关联S
-    getAllS1(params) { return fetch('get_all_jobnumber', params) }, // 获取S1列表
+    getAllS4(params) { return fetch('get_can_relate_s4_list', params) }, // 获取S4列表
     addStoreS1(params) { return fetch('add_store_s', params) }, // 门店添加S1
 
     getStoreDS(params) { return fetch('get_related_people_list', params) }, // 获取该门店关联D或S
