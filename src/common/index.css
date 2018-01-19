@@ -70,6 +70,8 @@ button.indexFunBtn{margin: 8px 8px 8px 0 !important}
 .hjx-success{color:#67C23A}
 .hjx-warning{color:#EB9E05}
 /**/
+.hjx-unnecessary.el-form-item.is-required .el-form-item__label:before{content: ''}
+.hjx-show-detail .el-form-item{margin-bottom: 0px}
 .hjx-overflow{overflow: hidden;}
 /*警告条*/
 .hjx-alert{width: 100%;padding: 8px 16px;font-size: 13px;line-height: 18px;margin: 0;box-sizing: border-box;border-radius: 4px;position: relative;background-color: #fff;overflow: hidden;color: #fff;opacity: 1;display: table;transition: opacity .2s;}

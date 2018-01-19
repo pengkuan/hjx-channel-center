@@ -2,89 +2,88 @@
 <div>
     <div class="title">门店 / 编辑</div>
     <div id="Edit-store">
-                <el-form ref="form" :model="form" label-width="100px">
-                    <el-form-item label="商户：" class="mustStar">
-                        <el-select v-model="structAid" filterable placeholder="请输入商户名称">
-                            <el-option  v-for="item in structA"  :label="item.strRelationName"  :value="item.strRelationId+','+item.strLevelId + ',0'" :key="item.strRelationId">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName" :key="index" class="mustStar">
-                        <el-select v-model="modelList['model_'+(index+1)]" placeholder="请选择">
-                            <el-option  v-for="item in option.Relations"  :label="item.strRelationName"  :key="item.strRelationId"  :value="item.strRelationId+','+item.strLevelId+','+(index+1) " >
-                            </el-option>
-                        </el-select>
-                        <el-button type="primary" v-on:click="addGroup(option.upStrRelationId , option.upStrLevelId ,index)" size="small">新增</el-button>
-                    </el-form-item>
-                    <el-form-item label="门店名称：" class="mustStar">
-                        <el-input v-model="strStoreName" placeholder="请输入门店名称"></el-input>
-                    </el-form-item>
+        <el-form label-width="100px">
+            <el-form-item label="商户：" class="mustStar">
+                <el-select v-model="structAid" filterable placeholder="请输入商户名称">
+                    <el-option  v-for="item in structA"  :label="item.strRelationName"  :value="item.strRelationId+','+item.strLevelId + ',0'" :key="item.strRelationId">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName+'：' " :key="index" class="mustStar">
+                <el-select v-model="modelList['model_'+(index+1)]" placeholder="请选择">
+                    <el-option  v-for="item in option.Relations"  :label="item.strRelationName"  :key="item.strRelationId"  :value="item.strRelationId+','+item.strLevelId+','+(index+1) " >
+                    </el-option>
+                </el-select>
+                <el-button type="primary" v-on:click="addGroup(option.upStrRelationId , option.upStrLevelId ,index)" size="small">新增</el-button>
+            </el-form-item>
+            <el-form-item label="门店名称：" class="mustStar">
+                <el-input v-model="strStoreName" placeholder="请输入门店名称"></el-input>
+            </el-form-item>
 
-                    <el-form-item label="门店地址：" class="mustStar">
-                        <el-select v-model="strProvinceId" filterable placeholder="请选择省份">
-                            <el-option  v-for="item in provinces"  :label="item.strProvinceName"  :value="item.strProvinceId" :key="item.strProvinceId" >
-                            </el-option>
-                        </el-select>
-                        <el-select v-model="strCityId" filterable placeholder="请选择城市">
-                            <el-option  v-for="item in citys"  :label="item.strCityName"  :value="item.strCityId" :key="item.strCityId" >
-                            </el-option>
-                        </el-select>
-                        <el-select v-model="strAreaId" filterable placeholder="请选择区县">
-                            <el-option  v-for="item in areas"  :label="item.strAreaName"  :value="item.strAreaId" :key="item.strAreaId">
-                            </el-option>
-                        </el-select>
-                        <br><br>
-                        <el-input v-model="strAddress" placeholder="请输入详细地址"></el-input>
-                    </el-form-item>
+            <el-form-item label="门店地址：" class="mustStar">
+                <el-select v-model="strProvinceId" filterable placeholder="请选择省份">
+                    <el-option  v-for="item in provinces"  :label="item.strProvinceName"  :value="item.strProvinceId" :key="item.strProvinceId" >
+                    </el-option>
+                </el-select>
+                <el-select v-model="strCityId" filterable placeholder="请选择城市">
+                    <el-option  v-for="item in citys"  :label="item.strCityName"  :value="item.strCityId" :key="item.strCityId" >
+                    </el-option>
+                </el-select>
+                <el-select v-model="strAreaId" filterable placeholder="请选择区县">
+                    <el-option  v-for="item in areas"  :label="item.strAreaName"  :value="item.strAreaId" :key="item.strAreaId">
+                    </el-option>
+                </el-select>
+                <br><br>
+                <el-input v-model="strAddress" placeholder="请输入详细地址"></el-input>
+            </el-form-item>
 
-                    <el-form-item label="销售区域：" class="mustStar">
-                        <el-select v-model="saleAddsId.strSaleProvinceId" filterable placeholder="请选择省份">
-                            <el-option label="全部" value="" ></el-option>
-                            <el-option  v-for="item in saleAdds.provinces"  :label="item.strProvinceName"  :value="item.strProvinceId +','+ item.strProvinceName"  :key="item.strProvinceId">
-                            </el-option>
-                        </el-select>
-                        <el-select v-model="saleAddsId.strSaleCityId" filterable placeholder="请选择城市">
-                            <el-option label="全部" value="" ></el-option>
-                            <el-option  v-for="item in saleAdds.citys"  :label="item.strCityName"  :value="item.strCityId +','+ item.strCityName" :key="item.strCityId">
-                            </el-option>
-                        </el-select>
-                        <el-select v-model="saleAddsId.strSaleAreaId" filterable placeholder="请选择区县">
-                            <el-option label="全部" value="" ></el-option>
-                            <el-option  v-for="item in saleAdds.areas"  :label="item.strAreaName"  :value="item.strAreaId +','+ item.strAreaName"
-                            :key="item.strAreaId">
-                            </el-option>
-                        </el-select>
-                        <el-button type="primary" icon="plus" size="small" v-on:click = "addSaleAddr()">添加</el-button>
-                        <div >
-                            <p class="add-addr-title">已添加地址：</p>
-                            <div class="addr-remind" v-show = 'addSaleList.length == 0'>当前未添加地址，请点击上方按钮添加！</div>
-                            <div class="addr-container">
-                                <div class='hjx-overflow' v-for = "(item , index) in addSaleList" v:key="index">
-                                    <el-col :span="18">
-                                        <span >{{ item.saleName }}</span>
-                                    </el-col>
-                                    <el-col :span="6" class = 'submitRightNoM'>
-                                        <el-button size="mini" v-on:click="delSaleAddr(index)"> 删除此行</el-button>
-                                    </el-col>
-                                </div>
-                            </div>
+            <el-form-item label="销售区域：" class="mustStar">
+                <el-select v-model="saleAddsId.strSaleProvinceId" filterable placeholder="请选择省份">
+                    <el-option label="全部" value="" ></el-option>
+                    <el-option  v-for="item in saleAdds.provinces"  :label="item.strProvinceName"  :value="item.strProvinceId +','+ item.strProvinceName"  :key="item.strProvinceId">
+                    </el-option>
+                </el-select>
+                <el-select v-model="saleAddsId.strSaleCityId" filterable placeholder="请选择城市">
+                    <el-option label="全部" value="" ></el-option>
+                    <el-option  v-for="item in saleAdds.citys"  :label="item.strCityName"  :value="item.strCityId +','+ item.strCityName" :key="item.strCityId">
+                    </el-option>
+                </el-select>
+                <el-select v-model="saleAddsId.strSaleAreaId" filterable placeholder="请选择区县">
+                    <el-option label="全部" value="" ></el-option>
+                    <el-option  v-for="item in saleAdds.areas"  :label="item.strAreaName"  :value="item.strAreaId +','+ item.strAreaName"
+                    :key="item.strAreaId">
+                    </el-option>
+                </el-select>
+                <el-button type="primary" icon="plus" size="small" v-on:click = "addSaleAddr()">添加</el-button>
+                <div >
+                    <p class="add-addr-title">已添加地址：</p>
+                    <div class="addr-remind" v-show = 'addSaleList.length == 0'>当前未添加地址，请点击上方按钮添加！</div>
+                    <div class="addr-container">
+                        <div class='hjx-overflow' v-for = "(item , index) in addSaleList" v:key="index">
+                            <el-col :span="18">
+                                <span >{{ item.saleName }}</span>
+                            </el-col>
+                            <el-col :span="6" class = 'submitRightNoM'>
+                                <el-button size="mini" v-on:click="delSaleAddr(index)"> 删除此行</el-button>
+                            </el-col>
                         </div>
-                    </el-form-item>
+                    </div>
+                </div>
+            </el-form-item>
 
-                    <el-form-item label="渠道经理：" style='display:none'>
-                        <el-select v-model="strChannelManagerId" filterable placeholder="请选择渠道经理">
-                            <el-option  v-for="item in ChannelManager"  :label="item.strChannelManagerName"  :value="item.strChannelManagerId" :key="item.strChannelManagerId">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+            <el-form-item label="渠道经理：" style='display:none'>
+                <el-select v-model="strChannelManagerId" filterable placeholder="请选择渠道经理">
+                    <el-option  v-for="item in ChannelManager"  :label="item.strChannelManagerName"  :value="item.strChannelManagerId" :key="item.strChannelManagerId">
+                    </el-option>
+                </el-select>
+            </el-form-item>
 
-                    <el-form-item class='submitRight'>
-                        <el-button type="primary" @click="submitnow">确认更新</el-button>
-                        <el-button @click="cancelnow">取消</el-button>
-                    </el-form-item>
+            <el-form-item class='submitRight'>
+                <el-button type="primary" @click="submitnow">确认更新</el-button>
+                <el-button @click="cancelnow">取消</el-button>
+            </el-form-item>
 
-                </el-form>
-            
+        </el-form>
     </div>
     <el-dialog title="新增门店或门店组" :visible.sync="dialogFormVisible">
         <el-input v-model="addGroupName" placeholder="请输入门店或门店组名"></el-input>
@@ -99,7 +98,6 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
-import commonData from '../../common/data'
 import { mapGetters, mapActions } from 'vuex'
 export default {
 	data() {
@@ -110,7 +108,6 @@ export default {
             S1Type : '1',
             S2Type : '2',
             channelorgs:[],
-            // provinces:commonData.addrList,
             citys:[],
             areas:[],
             ChannelManager:[],
@@ -161,7 +158,6 @@ export default {
             setTrue : 10 ,
             // 顶层
             structAid:'',
-            // structA:commonData.channelList,
             ifValidateNext:false,//是否验证次级渠道
             // 接口入参
             strAddress:'',
@@ -172,7 +168,6 @@ export default {
             strChannelManagerId:'',
             strRelationId:"", //最末层关系节点Id
             strLevelId:""//最末层关系节点层级id
-
         }
 	},
     computed:{

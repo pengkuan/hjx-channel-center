@@ -14,6 +14,7 @@ import channelDetailStore from '@/views/channel/detail_store'
 import channelEmployee from '@/views/channel/employee'
 import channelAddEmployee from '@/views/channel/add_employee'
 import channelEditEmployee from '@/views/channel/edit_employee'
+import channelDetailEmployee from '@/views/channel/detail_employee'
 import channelTemplate from '@/views/channel/template'
 import channelAddTemplate from '@/views/channel/add_template'
 import channelEditTemplate from '@/views/channel/edit_template'
@@ -99,9 +100,10 @@ let router = new Router({
                 {path: '/channel/edit_store', component: channelEditStore , name:'editStore'},
                 {path: '/channel/detail_store', component: channelDetailStore , name:'detailStore'},
                 
-                {path: '/channel/employee', component: channelEmployee, name: '工号管理', menuShow: true},
+                {path: '/channel/employee', component: channelEmployee, name: 'S管理', menuShow: true},
                 {path: '/channel/add_employee', component: channelAddEmployee},
                 {path: '/channel/edit_employee', component: channelEditEmployee , name:'editEmployee'},
+                {path: '/channel/detail_employee', component: channelDetailEmployee , name:'detailEmployee'},
 
                 {path: '/channel/template', component: channelTemplate, name: 'O模板管理', menuShow: true} ,  
                 {path: '/channel/add_template', component: channelAddTemplate, name: '新增渠道模板'}   ,

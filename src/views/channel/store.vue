@@ -41,21 +41,15 @@
         </el-table-column>
 	    <el-table-column  label="合作状态" >
 	    	<template slot-scope="scope">
-	            {{scope.row.strStatus == 1 ?'正常':'停止'}}
+	            <span v-for="item in statusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
 	        </template>
 	    </el-table-column>
 	    <el-table-column  label="操作">
 	        <template slot-scope="scope">
 	        	<el-button class = 'indexFunBtn'  type="primary" @click="showDetail(scope.row.strStoreId)"  size="small">详情</el-button>
         		<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
-	        	<span v-if="scope.row.strStatus == '1' ">
-	        		<el-button class = 'indexFunBtn' type="danger" @click="disableStore(scope.row.strStoreId)"  size="small">禁用</el-button>
-	        	</span>
-	        	<span v-else>
-	        		<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
-	        		<el-button class = 'indexFunBtn' type="primary" @click="enableStore(scope.row.strStoreId)"  size="small">启用</el-button>
-	        	</span>
-
+        		<el-button v-if="scope.row.strStatus == '1' " class = 'indexFunBtn' type="danger" @click="disableStore(scope.row.strStoreId)"  size="small">禁用</el-button>
+        		<el-button v-else class = 'indexFunBtn' type="primary" @click="enableStore(scope.row.strStoreId)"  size="small">启用</el-button>
 	        </template>
 	    </el-table-column>
 	</el-table>
@@ -75,6 +69,7 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
+import { mapGetters} from 'vuex'
 export default {
 	data() {
 	    return {
@@ -87,10 +82,13 @@ export default {
         		'strStoreId':'',
         		'strStoreName':''
         	}
-	        
 	    }
 	},
-
+	computed:{
+        ...mapGetters({
+            statusList : 'store/status'
+        })
+    },
 	methods:{
 		handleSizeChange(val) {
 	        console.log(`每页 ${val} 条`)
@@ -117,13 +115,12 @@ export default {
 				this.total = res.data.nums
 			})
 		},
-		//跳至编辑页面
 		editStore:function(strStoreId){
 			this.$router.push({
 				name:'editStore',
 				query:{id:strStoreId}
 			})
-		},//跳至编辑页面
+		},
 		showDetail(id){
 			this.$router.push({
 				name:'detailStore',

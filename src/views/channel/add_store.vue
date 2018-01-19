@@ -12,7 +12,7 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName" :key="index" class="mustStar">
+            <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName+'：' " :key="index" class="mustStar">
                 <el-select v-model="modelList['model_'+(index+1)]" placeholder="请选择">
                     <el-option  v-for="item in option.Relations"  :label="item.strRelationName"  :key="item.strRelationId"  :value="item.strRelationId+','+item.strLevelId+','+(index+1) " >
                     </el-option>

@@ -22,21 +22,17 @@
 	    <el-table-column prop="strUserTel" label="手机号码" ></el-table-column>
 	    <el-table-column  label="合作状态" >
 	    	<template slot-scope="scope">
-	            {{scope.row.strStatus == 1 ?'正常':'停止'}}
+	            <span v-for = "item in statusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
 	        </template>
 	    </el-table-column>
 	    <el-table-column
 	        label="操作"
 	        >
 	        <template slot-scope="scope">
-	        	<span v-if="scope.row.strStatus == '1' ">
-	        		<el-button class = 'indexFunBtn' type="primary" @click="editEmployee(scope.row.strUserId)"  size="small">编辑</el-button>
-	        		<el-button class = 'indexFunBtn' type="danger" @click="setEmployee(scope.row.strUserId , 0)"  size="small">禁用</el-button>
-	        	</span>
-	        	<span v-else>
-	        		<el-button class = 'indexFunBtn' type="primary" @click="editEmployee(scope.row.strUserId)"  size="small">编辑</el-button>
-	        		<el-button class = 'indexFunBtn' type="primary" @click="setEmployee(scope.row.strUserId , 1)"  size="small">启用</el-button>
-	        	</span>
+	        	<el-button class = 'indexFunBtn'  type="primary" @click="showDetail(scope.row.strUserId)"  size="small">详情</el-button>
+        		<el-button class = 'indexFunBtn' type="primary" @click="editEmployee(scope.row.strUserId)"  size="small">编辑</el-button>
+        		<el-button v-if="scope.row.strStatus == '1' " class = 'indexFunBtn' type="danger" @click="setEmployee(scope.row.strUserId , 0)"  size="small">禁用</el-button>
+        		<el-button v-else class = 'indexFunBtn' type="primary" @click="setEmployee(scope.row.strUserId , 1)"  size="small">启用</el-button>
 	        </template>
 	    </el-table-column>
 	</el-table>
@@ -56,6 +52,7 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
+import {mapGetters} from 'vuex'
 export default {
 	data() {
 	    return {
@@ -70,7 +67,11 @@ export default {
 	        
 	    }
 	},
-
+	computed:{
+		...mapGetters({
+			'statusList':'employee/status'
+		})
+	},
 	methods:{
 		handleSizeChange(val) {
 	        console.log(`每页 ${val} 条`);
@@ -80,7 +81,7 @@ export default {
 	    	this.currentPage = val
 	        this.showList()
 	    },
-		showList:function(){
+		showList(){
 			let data ={
 				pageIndex:String(this.pageIndex),
 				pageSize:this.pageSize,
@@ -97,14 +98,20 @@ export default {
 			})
 		},
 		//跳至编辑页面
-		editEmployee:function(strUserId){
+		editEmployee(strUserId){
 			this.$router.push({
 				name:'editEmployee',
 				query:{id:strUserId}
 			})
 		},
+		showDetail(id){
+			this.$router.push({
+				name:'detailEmployee',
+				query:{id:id}
+			})
+		},
 		// 禁用启用
-		setEmployee:function(userId , status){
+		setEmployee(userId , status){
 			api.setEmployee({strUserId:userId , strStatus: status}).then(res => {
 				if (res.ret != '0') {
                     this.$alert(res.retinfo,"提示")
@@ -116,7 +123,7 @@ export default {
 			})
 		},
 		//search
-		search:function(){
+		search(){
 			this.filters.searchkey = util.Trim(this.filters.searchkey)
 			this.currentPage = 1
             this.pageIndex = '0'

@@ -84,7 +84,7 @@
         <el-form-item label="营业执照号码：" prop = 'strLicense_num'>
             <el-input v-model="form.strLicense_num" placeholder='请输入商户营业执照号码'></el-input>
         </el-form-item>
-        <el-form-item label="工号前缀：" prop = 'strPrefix_str'>
+        <el-form-item label="工号前缀：" prop = 'strPrefix_str' class="hjx-unnecessary">
             <el-input v-model="form.strPrefix_str" placeholder='2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)'></el-input>
         </el-form-item>
         <el-form-item label="商户负责S4：">
@@ -152,6 +152,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
     data() {
         var validateEmployeeNum = (rule, value, callback) => {
+            if(!value) callback()
             if(!/^(([a-zA-Z]{2})|([a-zA-Z]{4}))\d{2,4}$/g.test(value)){
                 callback(new Error('请输入正确工号（2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)）'))
             }

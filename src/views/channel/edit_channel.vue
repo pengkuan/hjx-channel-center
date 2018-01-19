@@ -84,7 +84,7 @@
         <el-form-item label="营业执照号码：" prop = 'strLicense_num'>
             <el-input v-model="form.strLicense_num" placeholder='请输入商户营业执照号码' disabled></el-input>
         </el-form-item>
-        <el-form-item label="工号前缀：" prop = 'strPrefix_str'>
+        <el-form-item label="工号前缀：" prop = 'strPrefix_str' class="hjx-unnecessary">
             <el-input v-model="form.strPrefix_str" placeholder='2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)'></el-input>
         </el-form-item>
         <el-form-item label="商户负责S4：">
@@ -99,16 +99,14 @@
         </el-form-item>
         <el-form-item label="商户等级：">
             <el-select v-model="form.strChannelScore" placeholder="请选择">
-                <el-option label="S" value="0"></el-option>
-                <el-option label="A" value="1"></el-option>
-                <el-option label="B" value="2"></el-option>
-                <el-option label="C" value="3"></el-option>
-                <el-option label="D" value="4"></el-option>
+                <el-option  v-for="item in scoreList"  :label="item.name"  :value="item.id" :key="item.id">
+                </el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="估价模型：">
             <el-select v-model="form.strValuationId" placeholder="请选择">
-                <el-option label="2B估价模型" value="2"></el-option>
+                <el-option  v-for="item in valuationList"  :label="item.name"  :value="item.id" :key="item.id">
+                </el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="商户分成：">
@@ -128,9 +126,9 @@
             <el-button type="primary" size="small" v-model="form.strShopAwardId">+设置店员激励方案</el-button>
         </el-form-item>
         <el-form-item label="付款模式：">
-            <el-select v-model="form.strPayMethodId" placeholder="请选择付款模式">
-                <el-option label="预付" value="1"></el-option>
-                <el-option label="垫付" value="0"></el-option>
+            <el-select v-model="form.strPayMethodId" placeholder="请选择">
+                <el-option  v-for="item in payMethodList"  :label="item.name"  :value="item.id" :key="item.id">
+                </el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="店员/用户APP：">
@@ -142,8 +140,8 @@
 
         <el-form-item label="合作状态：">
             <el-select v-model="form.strStatus" placeholder="请选择合作状态">
-                <el-option label="合作中" value="1"></el-option>
-                <el-option label="停止合作" value="2"></el-option>
+                <el-option  v-for="item in statusList"  :label="item.name"  :value="item.id" :key="item.id">
+                </el-option>
             </el-select>
         </el-form-item>
 
@@ -159,15 +157,12 @@
 <script>
     import api from '../../api/api'
     import util from '../../common/util'
-    import commonData from '../../common/data'
     import { mapGetters, mapActions } from 'vuex'
   export default {
     data() {
         var validateEmployeeNum = (rule, value, callback) => {
-            if(!value){
-                callback()
-            }
-            if( !/^(([a-zA-Z]{2})|([a-zA-Z]{4}))\d{2,4}$/g.test(value)){
+            if(!value) callback()
+            if(!/^(([a-zA-Z]{2})|([a-zA-Z]{4}))\d{2,4}$/g.test(value)){
                 callback(new Error('请输入正确工号（2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)）'))
             }
             callback()

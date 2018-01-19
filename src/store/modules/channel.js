@@ -20,7 +20,7 @@ const state = {
     ],
     status:[//合作状态
         {id:'1',name:'合作中'},
-        {id:'2',name:'停止合作'}
+        {id:'0',name:'停止合作'}
     ]
 }
 

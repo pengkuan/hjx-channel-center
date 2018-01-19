@@ -1,6 +1,6 @@
 <template>
-<div>
-<div class="title">商户 / 详情</div>
+<div class="hjx-show-detail">
+<div class="title ">商户 / 详情</div>
     <el-row class="mrg-b12">
         <el-col :span="12"><div class="hjx-black">{{form.strFullName}}</div></el-col>
         <el-col :span="12"><div class="hjx-right "><el-button type="primary" size="small" @click="goEdit(form.strChannelId)">编辑</el-button></div></el-col>
@@ -90,7 +90,9 @@
                     </template>
                 </el-table-column>
                 <el-table-column  label="合作状态" >
-                    <template slot-scope="scope">{{scope.row.strStatus == '1' ?'正常':'停止'}}</template>
+                    <template slot-scope="scope">
+                        <span v-for="item in storeStatusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
@@ -115,6 +117,9 @@
         <el-tab-pane label="产品价格配置">
         </el-tab-pane>
     </el-tabs>
+    <div class="tool">
+        <router-link to="index"><el-button size="small">返回</el-button></router-link>
+    </div>
 </div>
 </template>
 <script>
@@ -189,6 +194,7 @@
         ...mapGetters({
             provinces : 'heavyDate/adds',
             statusList : 'channel/status',
+            storeStatusList : 'store/status',
             scoreList : 'channel/score',
             payMethodList : 'channel/payMethod',
             valuationList : 'channel/valuation'
@@ -384,5 +390,4 @@
 </script>
 <style type="text/css" scoped>
     .channelInfo{width: 1000px}
-    .el-form-item{margin-bottom: 0px}
 </style>

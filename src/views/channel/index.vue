@@ -48,7 +48,7 @@
         <el-table-column prop="strS4Name" label="S4" ></el-table-column>
         <el-table-column prop="strS4Tel" label="S4手机号" ></el-table-column>
 
-        <el-table-column prop="strCreateTime" label="合作时间" ></el-table-column> -->
+        <el-table-column prop="strCreateTime" label="创建时间" ></el-table-column> -->
         <el-table-column label="操作">
             <template slot-scope="scope">
                 <el-button type="primary" @click="showDetail(scope.row.strChannelId)"  size="small">详情</el-button>

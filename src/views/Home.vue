@@ -236,13 +236,9 @@ export default {
         } else {
             this.get_user_menu_test()
         }
-
-
     }
 }
-
 </script>
-
 <style>
 .el-menu-item, .el-submenu__title {color: #fff;}
 .el-submenu__title:hover {background-color: #00C1DE;}
