@@ -1,80 +1,34 @@
 <template>
 <div>
-	<div class="title">Dealer列表</div>
-	
+	<hjx-header label="Dealer管理 / 列表">
+        <router-link to="add"><el-button type="primary" size="small">创建Dealer</el-button></router-link>
+    </hjx-header>
 	<!--工具条-->
-    <el-form :model="filters" ref='filters' class = 'searchTool' style='overflow:hidden'>
-    	<el-row :gutter="20">
-    		<el-col :span="3">
-	    		<p class='searchTitle'>状态：</p>
-		    	<el-form-item prop='strStatus' >
-		            <el-select v-model="filters.strStatus" placeholder="请选择" >
-		            	<el-option label="全部" value=""></el-option>
-		                <el-option label="待审核" value="1"></el-option>
-		                <el-option label="资料不全" value="2"></el-option>
-		                <el-option label="合作中" value="3"></el-option>
-		                <el-option label="暂停合作" value="4"></el-option>
-		            </el-select>
-		        </el-form-item>
-		    </el-col>
-		    <el-col :span="4">
-		    	<p class='searchTitle'>公司全称：</p>
-		        <el-form-item prop='strDealerName' >
-		          	<el-input v-model="filters.strDealerName" @keyup.13.native="search($event)" placeholder="请输入公司全称" style="min-width: 240px;"></el-input>
-		        </el-form-item>
-	        </el-col>
-
-	        <el-col :span="4">
-	        	<p class='searchTitle'>D4姓名：</p>
-		        <el-form-item prop='strUserName' >
-		          	<el-input v-model="filters.strUserName" @keyup.13.native="search($event)" placeholder="请输入D4姓名" style="min-width: 240px;"></el-input>
-		        </el-form-item>
-	        </el-col>
-	        <el-col :span="9">
-	        	<p class='searchTitle'>地址区域：</p>
-	        	<el-col :span='8'>
-	        		<el-form-item prop='strAddrProvinceId'>
-		                <el-select v-model="filters.strAddrProvinceId" filterable placeholder="请选择省份">
-		                    <el-option  v-for="item in searchAddr.provinces"  :label="item.strProvinceName"  :value="item.strProvinceId" :key="item.strProvinceId">
-		                    </el-option>
-		                </el-select>
-		            </el-form-item>
-	        	</el-col>
-
-	        	<el-col :span='8'>
-	        		<el-form-item prop='strAddrCityId'>
-		                <el-select v-model="filters.strAddrCityId" filterable placeholder="请选择城市">
-		                    <el-option  v-for="item in searchAddr.citys"  :label="item.strCityName"  :value="item.strCityId" :key="item.strCityId">
-		                    </el-option>
-		                </el-select>
-		            </el-form-item>
-	        	</el-col>
-
-	        	<el-col :span='8'>
-	        		<el-form-item prop='strAddrAreaId'>
-		                <el-select v-model="filters.strAddrAreaId" filterable placeholder="请选择区县">
-		                    <el-option  v-for="item in searchAddr.areas"  :label="item.strAreaName"  :value="item.strAreaId" :key="item.strAreaId">
-		                    </el-option>
-		                </el-select>
-		            </el-form-item>
-	        	</el-col>
-	            
-	        </el-col>
-
-		    <el-col :span="4">
-		    	<p class='searchTitle'>&nbsp;</p>
-		    	<el-form-item class='textRight' >
-	          		<el-button @click="search">搜索</el-button>
-	          		<el-button @click="clearForm('filters')">清空</el-button>
-	          	</el-form-item>
-		    </el-col>
-    	</el-row>
-    	
+	<el-form :inline="true" :model="searchkeys" ref="searchkeys" label-position="top">
+        <el-form-item label="地址：">
+            <el-cascader :options="addrList" :props="selectAddrSetting" placeholder="请选择地址" v-model="addrIds" change-on-select></el-cascader>
+        </el-form-item>
+        <el-form-item prop="strStatus" label="状态：">
+            <el-select v-model="searchkeys.strStatus" placeholder="请选择">
+                <el-option label="全部" value=""></el-option>
+                <el-option label="待审核" value="1"></el-option>
+                <el-option label="资料不全" value="2"></el-option>
+                <el-option label="合作中" value="3"></el-option>
+                <el-option label="暂停合作" value="4"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item prop='strDealerName' label="公司全称：">
+          	<el-input v-model="searchkeys.strDealerName" @keyup.13.native="search($event)" placeholder="请输入公司全称" style="min-width: 240px;"></el-input>
+        </el-form-item>
+        <el-form-item prop='strUserName' label="D4姓名：">
+          	<el-input v-model="searchkeys.strUserName" @keyup.13.native="search($event)" placeholder="请输入D4姓名" style="min-width: 240px;"></el-input>
+        </el-form-item>
+        
+        <el-form-item label="handle" class="hjx-search-handle">
+            <el-button type="primary" @click="search">查询</el-button>
+            <el-button @click="clearForm('searchkeys')">清空</el-button>
+        </el-form-item>
     </el-form>
-    
-    <div class="tool">
-    	<router-link to="add"><el-button type="primary" size="small">创建Dealer</el-button></router-link>
-    </div>
 	<el-table
 	    :data="dataList"
 	    border
@@ -128,43 +82,39 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
-import commonData from '../../common/data'
+import { mapGetters , mapActions} from 'vuex'
 export default {
 	data() {
 	    return {
-	    	searchAddr:{provinces:commonData.addrList},
+	    	addrIds:[],
 	    	dataList:[],
 	    	pageIndex:'0',
         	pageSize:'10',
         	currentPage:1,
         	total:0,
-        	filters:{
+        	searchkeys:{
         		strStatus:'',
         		strDealerName:'',
-        		strUserName:'',
-        		strAddrProvinceId:'',
-        		strAddrCityId:'',
-        		strAddrAreaId:''
+        		strUserName:''
         	}
 	        
 	    }
 	},
-	watch:{
-		'filters.strAddrProvinceId': function(val, oldVal) {
-            this.filters.strAddrCityId = ''
-            util.getCitys(val , this.searchAddr)
-        },
-        'filters.strAddrCityId': function(val) {
-        	this.filters.strAddrAreaId = ''
-            util.getAreas(val, this.searchAddr)
-        }
-	},
+	computed:{
+        ...mapGetters({
+            addrList : 'heavyDate/adds',
+            selectAddrSetting : 'heavyDate/selectAddrSetting'
+        })
+    },
 	mounted()  {
+		this.getAddress()
 		this.showList()
-		this.searchInfo()
 	},
 
 	methods:{
+		...mapActions({
+            getAddress: 'heavyDate/getAdds' 
+        }),
 		handleSizeChange(val) {
 	        console.log(`每页 ${val} 条`);
 	    },
@@ -180,14 +130,15 @@ export default {
 	    	return util.formatDate.format(time , "yy-MM-dd")
 	    },
 		showList:function(){
-			this.filters.strDealerName = util.Trim(this.filters.strDealerName)
-			this.filters.strUserName = util.Trim(this.filters.strUserName)
+			let [strProvinceId='', strCityId='', strAreaId=''] = this.addrIds
+			this.searchkeys.strDealerName = util.Trim(this.searchkeys.strDealerName)
+			this.searchkeys.strUserName = util.Trim(this.searchkeys.strUserName)
 			let data ={
 				'pageinfo':{
 					'pageIndex':String(this.pageIndex),
 					'pageSize':this.pageSize,
 				},
-				'searchkeys':this.filters
+				'searchkeys':Object.assign(this.searchkeys , {'strAddrProvinceId':strProvinceId,strAddrCityId:strCityId,strAddrAreaId:strAreaId})
 			}
 			api.getDealerList(data).then(res => {
 				if (res.ret != '0') {
@@ -202,18 +153,7 @@ export default {
 				this.total = Number(res.data.nums)
 			})
 		},
-		searchInfo(){
-            if(commonData.addrList.length == 0){
-                api.getAddress({}).then(res => {
-                    if (res.ret != '0') {
-                        this.$alert(res.retinfo,"提示")
-                        return
-                    }
-                    commonData.addrList = res.data.address
-                    this.searchAddr.provinces = res.data.address
-                })
-            }
-		},
+		
 		//跳至详情页面
 		detailDealer:function(strDealerId){
 			this.$router.push({
@@ -244,8 +184,8 @@ export default {
 			this.showList()
 		},
 		clearForm(){
-			this.$refs['filters'].resetFields()
-			// this.filters.strAddrProvinceId = ''
+			this.$refs['searchkeys'].resetFields()
+			this.addrIds = []
 			this.showList()
 		}
 	}

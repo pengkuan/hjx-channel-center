@@ -1,6 +1,10 @@
 <template>
 <div>
-	<div class="title">权限管理</div>
+	<hjx-header label="权限管理 / 列表">
+	    <router-link to="module"><el-button size="small">模块管理</el-button></router-link>
+    	<router-link to="page"><el-button size="small">页面管理</el-button></router-link>
+    	<router-link to="add"><el-button type="primary" size="small">新增权限</el-button></router-link>
+	</hjx-header>
 	<!--工具条-->
 	<div style='overflow:hidden'>
 		<el-row :gutter="20">
@@ -63,12 +67,6 @@
 			</el-col>
     	</el-row>
 	</div><br>
-
-    <div class="tool">
-    	<router-link to="module"><el-button size="small">模块管理</el-button></router-link>
-    	<router-link to="page"><el-button size="small">页面管理</el-button></router-link>
-    	<router-link to="add"><el-button type="primary" size="small">新增权限</el-button></router-link>
-    </div>
     <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0">
     <tr>
     	<th width="10%" class="is-leaf"><div class="cell">系统</div></th>

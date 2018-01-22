@@ -1,14 +1,9 @@
 <template>
 <div>
-	<div class="title">
-		<el-col :span="12">分类管理</el-col>
-		<el-col :span="12" class="textRight"><router-link to="user"><el-button size="small">返回角色管理</el-button></router-link></el-col>
-	</div>
-
-    <div class="tool">
-    	<el-button type="primary" size="small" @click="addCateRole()">新增分类</el-button>
-    </div>
-
+	<hjx-header label="分类管理 / 新增">
+	    <router-link to="user"><el-button size="small">返回角色管理</el-button></router-link>
+	    <el-button type="primary" size="small" @click="addCateRole">新增分类</el-button>
+	</hjx-header>
 	<el-table
 	    :data="dataList"
 	    border

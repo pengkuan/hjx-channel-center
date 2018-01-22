@@ -1,10 +1,9 @@
 <template>
 <div>
-	<div class="title">
-		<el-col :span="12">页面管理</el-col>
-		<el-col :span="12" class="textRight"><router-link to="index"><el-button size="small">返回权限管理</el-button></router-link></el-col>
-	</div>
-	
+	<hjx-header label="页面管理 / 列表">
+    	<router-link to="index"><el-button size="small">返回权限管理</el-button></router-link>
+    	<el-button type="primary" size="small" @click="Add">新增页面</el-button>
+	</hjx-header>
 	<!--工具条-->
 	<div style='overflow:hidden'>
 		<el-row :gutter="20">
@@ -50,13 +49,7 @@
 				</div>
 			</el-col>
     	</el-row>
-	</div>
-
-    <div class="tool">
-    	
-    	<el-button type="primary" size="small" @click="Add()">新增页面</el-button>
-    </div>
-
+	</div><br>
 
     <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0">
     <tr>

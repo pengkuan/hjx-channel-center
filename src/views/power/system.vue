@@ -1,11 +1,8 @@
 <template>
 <div>
-    <div class="title">系统管理</div>
-
-    <div class="tool">
-        <el-button type="primary" size="small" @click="addSystem()">新增系统</el-button>
-    </div>
-
+    <hjx-header label="系统管理 / 列表">
+        <el-button type="primary" size="small" @click="addSystem">新增系统</el-button>
+    </hjx-header>
     <el-table
         :data="dataList"
         border

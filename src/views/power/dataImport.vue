@@ -1,6 +1,6 @@
 <template>
     <div class="data-import">
-        <div class="title">数据导入</div>
+        <hjx-header label="数据导入"></hjx-header>
         <div class="data-import-cont">
             <div class="search-box">
                 <el-form ref="form" :model="oldForm" label-width="60px" inline style="display:inline-block">

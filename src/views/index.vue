@@ -1,15 +1,10 @@
 <template>
-    <el-row class="warp">
-        <el-col :span="24" class="warp-breadcrum">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ path: '/' }"><b>欢迎页</b></el-breadcrumb-item>
-            </el-breadcrumb>
-        </el-col>
+<div>
+    <hjx-header label="欢迎页"></hjx-header>
+    <p class="warp-main">欢迎来到运营后台！</p>
+</div>
+    <!-- <el-row class="warp">
         <el-col :span="24" class="warp-main">
-            欢迎来到运营后台！
-        </el-col>
-
-        <!-- <el-col :span="24" class="warp-main">
             <section class="chart-container">
                 <el-row>
                     <el-col :span="8">
@@ -47,66 +42,8 @@
                     </el-col>
                 </el-row>
             </section>
-        </el-col>  -->
-    </el-row>
+        </el-col> 
+   </el-row> -->
 </template>
-<script>
-import api from '../api/api' 
-// import { mapMutations } from 'vuex'
-export default {
-    data() {
-        return {
-            currentDate: new Date(),
-            chartColumn: null,
-            chartBar: null,
-            chartLine: null,
-            chartPie: null, 
-        }
-    },
-    mounted: function() {},
-    methods: { 
-        // ...mapMutations(['SET_MENU_LIST'])
-    }
-}
 
-</script>
-<style scoped>
-.time {
-    font-size: 13px;
-    color: #999;
-}
-
-.bottom {
-    margin-top: 13px;
-    line-height: 12px;
-}
-
-.welcome {
-    margin-top: 16px
-}
-
-.image {
-    width: 100%;
-    display: block;
-}
-
-.clearfix:before,
-.clearfix:after {
-    display: table;
-    content: "";
-}
-
-.clearfix:after {
-    clear: both
-}
-
-.chart-container {
-    width: 100%;
-}
-
-.chart-container .el-col {
-    padding: 30px 20px;
-}
-
-</style>
 

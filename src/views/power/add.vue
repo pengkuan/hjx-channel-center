@@ -1,9 +1,8 @@
 <template>
 <div>
-	<div class="title">
-		<el-col :span="12">新增权限</el-col>
-		<el-col :span="12" class="textRight"><router-link to="index"><el-button size="small">返回权限管理</el-button></router-link></el-col>
-	</div>
+	<hjx-header label="权限管理 / 新增">
+	    <router-link to="index"><el-button size="small">返回权限管理</el-button></router-link></hjx-header>
+	</hjx-header>
 	<div class="tool textRight">
     </div>
 	<el-form  :model="addData" :rules="rules" ref="addData" label-width="0">

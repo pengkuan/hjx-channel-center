@@ -1,11 +1,11 @@
 <template>
 <div class="hjx-show-detail">
-    <div class="title">门店 / 详情</div>
+    <hjx-header label="门店 / 详情">
+        <router-link to="store"><el-button size="small">返回门店列表</el-button></router-link>
+        <el-button type="primary" size="small" @click="goEdit(id)">编辑</el-button>
+    </hjx-header>
     <div id="Edit-store">
-        <el-row class="mrg-b12">
-            <el-col :span="12"><div class="hjx-black">{{strStoreName}}</div></el-col>
-            <el-col :span="12"><div class="hjx-right "><el-button type="primary" size="small" @click="goEdit(id)">编辑</el-button></div></el-col>
-        </el-row>
+        <div class="hjx-black mrg-b12">{{strStoreName}}</div>
         <el-tabs type="border-card">
             <el-tab-pane label="POS信息">
                 <el-form label-width="100px">
@@ -26,6 +26,7 @@
                     <el-form-item label="销售区域：">
                         <p class='hjx-overflow' v-for = "(item , index) in addSaleList" v:key="index">{{ item.saleName }}</p>
                     </el-form-item>
+                    <el-form-item label="合作状态：" >{{strStatusName}}</el-form-item>
 
                 </el-form>
             </el-tab-pane>
@@ -83,17 +84,10 @@
                     </el-col>
                     <el-col :span="6" class = 'submitRightNoM'>
                         <el-button size="mini" type="primary" v-on:click="del_has_bd1(index)"> 删除此项</el-button>
-                    </el-col>
-                    
-                    
+                    </el-col>                   
                 </p>
             </el-tab-pane>
-            
         </el-tabs>
-        <div class="tool">
-            <router-link to="store"><el-button size="small">返回</el-button></router-link>
-        </div>
-
         <el-dialog title="关联S1" :visible.sync="SList.showS1">
             <div class="content">
                 <template>
@@ -219,6 +213,7 @@ export default {
             channelorgs:[],
             citys:[],
             areas:[],
+            strStatusName:'',
             ChannelManager:[],
             defaultDate:'',//初始默认数据
             provinceChange : false ,
@@ -391,6 +386,7 @@ export default {
                 this.defaultDate = res.data
                 this.strAddress = this.defaultDate.storeInfo.strAddress
                 this.strStoreName = this.defaultDate.storeInfo.strStoreName
+                this.strStatusName = this.defaultDate.storeInfo.strStatusName
                 this.setTrue = res.data.relationUp.length - 1
 
                 this.strProvinceId = this.defaultDate.storeInfo.strProvinceId

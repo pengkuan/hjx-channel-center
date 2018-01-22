@@ -1,6 +1,9 @@
 <template>
 <div>
-	<div class="title">角色管理</div>
+	<hjx-header label="角色管理 / 列表">
+    	<router-link to="category"><el-button size="small">分类管理</el-button></router-link>
+    	<el-button type="primary" size="small" @click="addRole">创建角色</el-button>
+	</hjx-header>
 	<!--工具条-->
 	<div style='overflow:hidden'>
 		<div class="searchItem">
@@ -18,13 +21,7 @@
 			<el-button @click="search">搜索</el-button>
       		<el-button @click="clearForm('searchkeys')">清空</el-button>
 		</div>
-	</div>
-
-    <div class="tool">
-    	<router-link to="category"><el-button size="small">分类管理</el-button></router-link>
-    	<el-button type="primary" size="small" @click="addRole()">创建角色</el-button>
-    </div>
-
+	</div><br>
 	<el-table
 	    :data="dataList"
 	    border

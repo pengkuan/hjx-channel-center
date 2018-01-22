@@ -81,9 +81,6 @@
 import api from '../api/api'
 import util from '../common/util'
 export default {
-    created() {
-        console.log('home.vue执行了created')
-    },
     data() {
         return {
             collapsed: false,

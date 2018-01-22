@@ -1,15 +1,10 @@
 <template>
     <div id="d-detailD">
-        <div class="title">
-		    <el-col :span="12">D管理 > 详情</el-col>
-		    <el-col :span="12" class="textRight">
-		        <router-link to="index"><el-button size="small">返回D列表</el-button></router-link>
-		    </el-col>
-		</div>
+        <hjx-header label="D管理 / 详情">
+            <router-link to="index"><el-button size="small">返回D列表</el-button></router-link>
+            <el-button type="primary" size="small" @click="editD(strUserId)">编辑D</el-button>
+        </hjx-header>
         <div style='width:900px;margin:auto'>
-            <div class="tool">
-                <el-button type="primary" size="small" @click="editD(strUserId)">编辑D</el-button>
-            </div>
             <el-tabs type="border-card">
                 <el-tab-pane label="账号详情">
                     <el-form label-width="150px">

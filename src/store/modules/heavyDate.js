@@ -4,12 +4,20 @@ import * as types from '../mutation-types'
 // initial state
 const state = {
     adds: [],
+    selectAddrSetting:{ //级联选择地址时的配置
+        label:'strAreaName',
+        value:'strAreaId',
+        children:'areas'
+    },
+    searchAdds: [],
     channel:[]
 }
 
 // getters
 const getters = {
     adds: state => state.adds,
+    selectAddrSetting: state => state.selectAddrSetting,
+    searchAdds: state => state.searchAdds,
     channel: state => state.channel
 }
 
@@ -31,6 +39,15 @@ const actions = {
 // mutations
 const mutations = {
     [types.ADDRS_LIST](state,  list ) {
+        list.forEach(item=>{ //级联选择地址时的配置（使数据字段整齐）
+            item.strAreaName = item.strProvinceName
+            item.strAreaId = item.strProvinceId
+            item.areas = item.citys
+            item.areas.forEach(option=>{
+                option.strAreaName = option.strCityName
+                option.strAreaId = option.strCityId
+            })
+        })
         state.adds = list
     },
     [types.CHANNEL_LIST](state,  list ) {

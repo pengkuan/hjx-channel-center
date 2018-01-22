@@ -1,12 +1,8 @@
 <template>
 	<div>
-		<div class="title">
-	        <el-col :span="12">Dealer管理 > 关联D4</el-col>
-	        <el-col :span="12" class="textRight">
-	            <router-link to="index"><el-button size="small">返回Dealer列表</el-button></router-link>
-	        </el-col>
-	    </div>
-		
+		<hjx-header label="Dealer管理 / 关联D4">
+	        <router-link to="index"><el-button size="small">返回Dealer列表</el-button></router-link>
+	    </hjx-header>
 		<div v-if ='ifD4' class="haveD4">
 			<br><br><br><br><br>
         	<p class="hjx-black">{{D4Name + ' / ' + D4Tel}}</p>

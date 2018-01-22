@@ -1,24 +1,35 @@
 <template>
 <div>
-    <div class="title">门店 / 列表</div>
+    <hjx-header label="门店 / 列表">
+        <router-link to="add_store"><el-button type="primary" size="small">添加</el-button></router-link>
+    </hjx-header>
 	<!--工具条-->
-    <el-form :inline="true" :model="filters">
-        <el-form-item>
-          <el-input v-model="filters.strStoreId" @keyup.13.native="search($event)" placeholder="请输入门店ID" style="min-width: 240px;"></el-input>
+    <el-form :inline="true" :model="filters" ref="filters" label-position="top">
+    	<el-form-item label="地址：">
+            <el-cascader :options="addrList" :props="selectAddrSetting" placeholder="请选择地址" v-model="addrIds" change-on-select></el-cascader>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="filters.strStoreName" @keyup.13.native="search($event)" placeholder="请输入门店名称" style="min-width: 240px;"></el-input>
+        <el-form-item prop="strStatus" label="合作状态：">
+            <el-select v-model="filters.strStatus" placeholder="请选择合作状态">
+                <el-option label="全部" value=""></el-option>
+                <el-option  v-for="item in statusList"  :label="item.name" :value="item.id" :key="item.id">
+                </el-option>
+            </el-select>
         </el-form-item>
-        <el-form-item>
+
+        <el-form-item label="门店ID：">
+          <el-input v-model="filters.strStoreId" @keyup.13.native="search($event)" placeholder="请输入门店ID" ></el-input>
+        </el-form-item>
+        <el-form-item label="门店名称：">
+          <el-input v-model="filters.strStoreName" @keyup.13.native="search($event)" placeholder="请输入门店名称" ></el-input>
+        </el-form-item>
+        <el-form-item label="所属商户：">
+          <el-input v-model="filters.strChannelKey" @keyup.13.native="search($event)" placeholder="请输入门店名称" ></el-input>
+        </el-form-item>
+        <el-form-item label="handle" class="hjx-search-handle">
           <el-button type="primary" @click="search">查询</el-button>
-          <el-button @click="clearForm()">清空</el-button>
+          <el-button @click="clearForm('filters')">清空</el-button>
         </el-form-item>
     </el-form>
-
-    <div class="tool">
-    	<router-link to="add_store"><el-button type="primary" size="small">添加</el-button></router-link>
-    </div>
-
 	<el-table :data="dataList" border style="width: 100% ; min-height:300px">
 	    <el-table-column prop="strStoreId" label="门店ID" ></el-table-column>
 	    <el-table-column prop="strStoreName" label="门店名称" ></el-table-column>
@@ -48,8 +59,6 @@
 	        <template slot-scope="scope">
 	        	<el-button class = 'indexFunBtn'  type="primary" @click="showDetail(scope.row.strStoreId)"  size="small">详情</el-button>
         		<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
-        		<el-button v-if="scope.row.strStatus == '1' " class = 'indexFunBtn' type="danger" @click="disableStore(scope.row.strStoreId)"  size="small">禁用</el-button>
-        		<el-button v-else class = 'indexFunBtn' type="primary" @click="enableStore(scope.row.strStoreId)"  size="small">启用</el-button>
 	        </template>
 	    </el-table-column>
 	</el-table>
@@ -69,7 +78,7 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
-import { mapGetters} from 'vuex'
+import { mapGetters , mapActions} from 'vuex'
 export default {
 	data() {
 	    return {
@@ -78,18 +87,26 @@ export default {
         	pageSize:'10',
         	currentPage:1,
         	total:0,
+        	addrIds:[],
         	filters:{
         		'strStoreId':'',
-        		'strStoreName':''
+        		'strStoreName':'',
+        		'strChannelKey':'',
+        		'strStatus': ''
         	}
 	    }
 	},
 	computed:{
         ...mapGetters({
-            statusList : 'store/status'
+            statusList : 'store/status',
+            addrList : 'heavyDate/adds',
+            selectAddrSetting : 'heavyDate/selectAddrSetting'
         })
     },
 	methods:{
+		...mapActions({
+            getAddress: 'heavyDate/getAdds' 
+        }),
 		handleSizeChange(val) {
 	        console.log(`每页 ${val} 条`)
 	    },
@@ -98,13 +115,17 @@ export default {
 	    	this.currentPage = val
 	        this.showList()
 	    },
+	    init(){
+            this.getAddress()
+        },
 		showList:function(){
+			let [strProvinceId='', strCityId='', strAreaId=''] = this.addrIds
 			let data ={
 				pageinfo:{
 					'pageIndex':String(this.pageIndex),
 					'pageSize':this.pageSize,
 				},
-				'searchkeys':this.filters
+				'searchkeys':Object.assign(this.filters , {'strProvinceId':strProvinceId,strCityId:strCityId,strAreaId:strAreaId})
 			}
 			api.getStoreList(data).then(res => {
 				if (res.ret != '0') {
@@ -127,35 +148,7 @@ export default {
 				query:{id:id}
 			})
 		},
-		// 禁用启用
-		disableStore:function(strStoreId){
-			api.disableStore({strStoreId:strStoreId}).then(res => {
-				if (res.ret != '0') {
-                    this.$alert(res.retinfo,"提示")
-                    return
-                }
-				this.$message({
-	                message: '禁用成功',
-	                type: 'success'
-	            });
-	            this.showList()
-			})
-
-		},
-		enableStore:function(strStoreId){
-			api.enableStore({strStoreId:strStoreId}).then(res => {
-				if (res.ret != '0') {
-                    this.$alert(res.retinfo,"提示")
-                    return
-                }
-				this.$message({
-	                message: '启用成功',
-	                type: 'success'
-	            });
-	            this.showList()
-			})
-
-		},
+		
 		//search
 		search:function(){
 			this.filters.strStoreId = util.Trim(this.filters.strStoreId)
@@ -164,14 +157,15 @@ export default {
             this.pageIndex = '0'
 			this.showList()
 		},
-		clearForm(){
-			this.filters.strStoreId = ''
-			this.filters.strStoreName = ''
+		clearForm(formName){
+			this.$refs[formName].resetFields()
+			this.addrIds= []
 			this.showList()
 		},
 		// 添加门店
 	},
 	mounted()  {
+		this.init()
 		this.showList()
 	}
 }

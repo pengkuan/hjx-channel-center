@@ -1,7 +1,8 @@
 <template>
 <div>
-    <div class="title">门店 / 新增</div>
-    
+    <hjx-header label="门店 / 新增">
+        <router-link to="store"><el-button size="small">返回门店列表</el-button></router-link>
+    </hjx-header>
 	<div id="Add-store">
 
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">

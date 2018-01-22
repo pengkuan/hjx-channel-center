@@ -1,7 +1,9 @@
 <template>
 	<div class="hjx-show-detail">
-		<div class="title">工号 / 详情</div>
-		<div class="hjx-right "><el-button type="primary" size="small" @click="goEdit(ruleForm.strUserId)">编辑</el-button></div>
+		<hjx-header label="S / 详情">
+		    <router-link to="employee"><el-button size="small">返回S列表</el-button></router-link>
+		    <el-button type="primary" size="small" @click="goEdit(ruleForm.strUserId)">编辑</el-button>
+		</hjx-header>
 		<div class="content-container">
 		    <el-form ref="ruleForm" label-width="100px">
 		        <el-form-item label="姓名：" prop='strUserName'>{{ruleForm.strUserName}}</el-form-item>

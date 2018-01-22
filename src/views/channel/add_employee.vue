@@ -1,6 +1,8 @@
 <template>
 <div>
-    <div class="title">工号 / 新增</div>
+    <hjx-header label="S / 新增">
+        <router-link to="employee"><el-button size="small">返回S列表</el-button></router-link>
+    </hjx-header>
     <div class="content-container">
         <el-form  :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
             <el-form-item label="姓名：" prop='strUserName'>

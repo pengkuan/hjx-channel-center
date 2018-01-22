@@ -9,10 +9,12 @@ import '@/common/index.css'
 import router from './router'
 import store from './store'
 import Config from '@/config/index.js'
+import hjxHeader from '@/base/hjx_header'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.prototype._Config = Config
+Vue.component('hjxHeader',hjxHeader)
 
 new Vue({
 	el: '#app',

@@ -1,6 +1,8 @@
 <template>
 <div>
-<div class="title">商户 / 编辑</div>
+<hjx-header label="商户 / 编辑">
+    <router-link to="index"><el-button size="small">返回商户列表</el-button></router-link>
+</hjx-header>
 <div class="channelInfo">
     <el-form ref="form" :model="form" label-width="180px" :rules="rules">
         <el-form-item label="O关系模型：" prop="strLevelId">

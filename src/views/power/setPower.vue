@@ -1,48 +1,8 @@
 <template>
 <div>
-	<div class="title">设置权限</div>
-	<!--工具条-->
-	<!-- <p>{{dataList}}</p> -->
-	
-	<!-- <div style='overflow:hidden'>
-		<el-row :gutter="20">
-    		<el-col :span="4">
-				<div class="searchItem">
-					<p class="searchTitle">所属系统：</p>
-					<el-select v-model="searchkeys.s_system_id" placeholder="请选择">
-		                <el-option label="全部" value=""></el-option>
-		                <el-option v-for="item in systemList" :label="item.name" :value="item.system_id" :key="item.system_id"></el-option>
-		            </el-select>
-				</div>
-			</el-col>
-			<el-col :span="4">
-				<div class="searchItem">
-					<p class="searchTitle">所属模块：</p>
-					<el-select v-model="searchkeys.s_module_id" placeholder="请选择">
-		                <el-option label="全部" value=""></el-option>
-		                <el-option v-for="item in moduleList.Search" :label="item.Fname" :value="item.Fauthority_id" :key="item.Fauthority_id"></el-option>
-		            </el-select>
-				</div>
-			</el-col>
-			<el-col :span="4">
-				<div class="searchItem">
-					<p class="searchTitle">页面名称：</p>
-					<el-input v-model="searchkeys.s_page_name" :maxlength="40" placeholder="请输入页面名称"></el-input>
-				</div>
-			</el-col>
-			<el-col :span="4">
-				<p class='searchTitle'>&nbsp;</p>
-				<div class="goSearch ">
-					<el-button @click="search">搜索</el-button>
-		      		<el-button @click="clearForm('searchkeys')">清空</el-button>
-				</div>
-			</el-col>
-    	</el-row>
-	</div> -->
-
-    <div class="tool">
+	<hjx-header label="角色管理 / 设置权限">
     	<router-link to="user"><el-button size="small">返回角色管理</el-button></router-link>
-    </div>
+	</hjx-header>
 
     <p style="font-size: 15px; color: #1f2d3d;font-weight: 500">角色：{{strUserName}}</p>
     <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0">

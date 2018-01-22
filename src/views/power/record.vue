@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="title">操作日志</div>
+    <hjx-header label="操作日志 / 列表"></hjx-header>
     <el-table
         :data="dataList"
         border

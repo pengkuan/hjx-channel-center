@@ -1,9 +1,10 @@
 <template>
 <div>
-	<div class="title">
-		<el-col :span="12">模块管理</el-col>
-		<el-col :span="12" class="textRight"><router-link to="index"><el-button size="small">返回权限管理</el-button></router-link></el-col>
-	</div>
+	<hjx-header label="模块管理 / 列表">
+    	<router-link to="index"><el-button size="small">返回权限管理</el-button></router-link>
+    	<el-button type="primary" size="small" @click="Add">新增模块</el-button>
+	</hjx-header>
+	
 	<!--工具条-->
 	<div style='overflow:hidden'>
 		<div class="searchItem">
@@ -21,12 +22,7 @@
 			<el-button @click="search">搜索</el-button>
       		<el-button @click="clearForm('searchkeys')">清空</el-button>
 		</div>
-	</div>
-
-    <div class="tool">
-    	<el-button type="primary" size="small" @click="Add()">新增模块</el-button>
-    </div>
-
+	</div><br>
     <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0">
     <tr>
     	<th width="15%" class="is-leaf"><div class="cell">系统</div></th>

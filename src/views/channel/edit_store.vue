@@ -1,6 +1,8 @@
 <template>
 <div>
-    <div class="title">门店 / 编辑</div>
+    <hjx-header label="门店 / 编辑">
+        <router-link to="store"><el-button size="small">返回门店列表</el-button></router-link>
+    </hjx-header>
     <div id="Edit-store">
         <el-form label-width="100px">
             <el-form-item label="商户：" class="mustStar">
@@ -74,6 +76,13 @@
             <el-form-item label="渠道经理：" style='display:none'>
                 <el-select v-model="strChannelManagerId" filterable placeholder="请选择渠道经理">
                     <el-option  v-for="item in ChannelManager"  :label="item.strChannelManagerName"  :value="item.strChannelManagerId" :key="item.strChannelManagerId">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item  label="合作状态" >
+                <el-select v-model="strStatus"  placeholder="请选择合作状态">
+                    <el-option  v-for="item in statusList"  :label="item.name"  :value="item.id" :key="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -160,6 +169,7 @@ export default {
             structAid:'',
             ifValidateNext:false,//是否验证次级渠道
             // 接口入参
+            strStatus:'',
             strAddress:'',
             strProvinceId:'',
             strCityId:'',
@@ -173,7 +183,8 @@ export default {
     computed:{
         ...mapGetters({
             provinces : 'heavyDate/adds',
-            structA : 'heavyDate/channel'
+            structA : 'heavyDate/channel',
+            statusList : 'store/status'
         })
     },
 	watch: {
@@ -274,6 +285,7 @@ export default {
                 this.defaultDate = res.data
                 this.strAddress = this.defaultDate.storeInfo.strAddress
                 this.strStoreName = this.defaultDate.storeInfo.strStoreName
+                this.strStatus = this.defaultDate.storeInfo.strStatus
                 this.setTrue = res.data.relationUp.length - 1
                 var saleAdds = this.defaultDate.storeInfo.saleAddrList
                 for(var i in saleAdds){
@@ -460,6 +472,7 @@ export default {
                 strRelationId:this.strRelationId, //最末层关系节点Id
                 strLevelId:this.strLevelId,//最末层关系节点层级id
                 saleAddrList  :  JSON.stringify(saleList), 
+                strStatus:this.strStatus
             }
             var _validateList = [
                 {val:msgData.strRelationId , msg : "请选择商户"} ,

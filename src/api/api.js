@@ -193,7 +193,7 @@ export default {
     getDStatus(params) { return fetch('get_channelstatus_list', params) }, // 获取D相关状态
 
     /*渠道相关*/
-    getChannelList(params) { return fetch('search_channelorg', params) }, // 获取渠道列表
+    getChannelList(params) { return fetch('get_channel_list', params) }, // 获取渠道列表
     getProvince(params) { return fetch('get_province', params) }, // 获取省份
     addChannelLogic(params) { return fetch('save_ChannelOrg', params) }, // 新增 or 编辑渠道
     /*渠道相关*/

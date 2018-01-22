@@ -1,12 +1,9 @@
 <template>
     <div id="bd-adds">
-        <div class="title">
-            <el-col :span="12"> BD管理 > 批量创建BD {{pageDescribe}}</el-col>
-            <el-col :span="12" class="textRight">
-                <router-link to="index" v-if="steps.step_1"><el-button size="small">返回BD列表</el-button></router-link>
-                <el-button size="small" v-else @click="reChooseFile">返回批量创建BD</el-button>
-            </el-col>
-        </div>
+        <hjx-header :label=" 'BD管理 > 批量创建BD '+pageDescribe">
+            <router-link to="index" v-if="steps.step_1"><el-button size="small">返回BD列表</el-button></router-link>
+            <el-button size="small" v-else @click="reChooseFile">返回批量创建BD</el-button>
+        </hjx-header>
         <div class="step-1" v-if="steps.step_1">
             <div class="hjx-fl">
                 <el-steps :space='150' direction="vertical" :active="active">
@@ -147,51 +144,7 @@
         
     </div>
 </template>
-<style type="text/css">
-    #bd-adds .el-upload-list.el-upload-list--text{width:53%;}
-</style>
-<style scoped lang="scss">
-    .instructions {
-        color: #666;
-        font-size: 13px
-    }
-    .icon-duigou1{font-size:26px}
-    .icon-duigou1.table-icon{font-size:20px;margin-left:18px}
-    .el-upload__tip .iconfont{
-        margin-left:12px;
-        font-size:20px;
-        vertical-align:sub;
 
-    }
-    .instructions-limit {
-        color: #999;
-        font-size: 12px;
-        line-height: 20px
-    }
-
-    .step-download{height: 153px;}
-    .step-choose-file {height: 150px;}
-
-    .download-btn {
-        padding: 7px 9px;
-        font-size: 12px;
-        border-radius: 4px;
-        display: inline-block;
-        line-height: 1;
-        white-space: nowrap;
-        cursor: pointer;
-        background: #fff;
-        border: 1px solid #c4c4c4;
-        color: #1f2d3d;
-        margin: 0;
-    }
-
-    .download-btn:hover {
-        color: #20a0ff;
-        border-color: #20a0ff;
-    }
-
-</style>
 <script type="text/javascript">
 import api from '../../api/api'
 export default {
@@ -352,3 +305,48 @@ export default {
 }
 
 </script>
+<style type="text/css">
+    #bd-adds .el-upload-list.el-upload-list--text{width:53%;}
+</style>
+<style scoped lang="scss">
+    .instructions {
+        color: #666;
+        font-size: 13px
+    }
+    .icon-duigou1{font-size:26px}
+    .icon-duigou1.table-icon{font-size:20px;margin-left:18px}
+    .el-upload__tip .iconfont{
+        margin-left:12px;
+        font-size:20px;
+        vertical-align:sub;
+
+    }
+    .instructions-limit {
+        color: #999;
+        font-size: 12px;
+        line-height: 20px
+    }
+
+    .step-download{height: 153px;}
+    .step-choose-file {height: 150px;}
+
+    .download-btn {
+        padding: 7px 9px;
+        font-size: 12px;
+        border-radius: 4px;
+        display: inline-block;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #c4c4c4;
+        color: #1f2d3d;
+        margin: 0;
+    }
+
+    .download-btn:hover {
+        color: #20a0ff;
+        border-color: #20a0ff;
+    }
+
+</style>

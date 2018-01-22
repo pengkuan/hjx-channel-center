@@ -1,6 +1,8 @@
 <template>
     <div>
-        <div class="title">商户 / 模板列表</div>
+        <hjx-header label="商户 / 模板列表">
+            <router-link to="add_template"><el-button type="primary" size="small">添加</el-button></router-link>
+        </hjx-header>
         <!--工具条-->
         <el-form :inline="true" :model="filters">
             <el-form-item>
@@ -11,11 +13,6 @@
                 <el-button @click="clearForm()">清空</el-button>
             </el-form-item>
         </el-form>
-        <div class="tool">
-            <router-link to="add_template">
-                <el-button type="primary" size="small">添加</el-button>
-            </router-link>
-        </div>
         <el-table :data="dataList" border style="width: 100% ; min-height:300px">
             <el-table-column prop="strTemplateId" label="模板ID">
             </el-table-column>

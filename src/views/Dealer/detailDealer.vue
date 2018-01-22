@@ -1,15 +1,10 @@
 <template>
     <div id="detailDealer">
-        <div class="title">
-            <el-col :span="12">Dealer管理 > 详情</el-col>
-            <el-col :span="12" class="textRight">
-                <router-link to="index"><el-button size="small">返回Dealer列表</el-button></router-link>
-            </el-col>
-        </div>
+        <hjx-header label="Dealer管理 / 详情">
+            <router-link to="index"><el-button size="small">返回Dealer列表</el-button></router-link>
+            <el-button type="primary" size="small" @click="editDealer(dealerid)">编辑Dealer</el-button>
+        </hjx-header>
         <div style='width:900px;margin:auto'>
-            <div class="tool">
-                <el-button type="primary" size="small" @click="editDealer(dealerid)">编辑Dealer</el-button>
-            </div>
             <el-tabs type="border-card">
                 <el-tab-pane label="Dealer详情">
                     <el-form :model="ruleForm" ref="ruleForm" label-width="150px">

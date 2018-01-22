@@ -1,6 +1,8 @@
 <template>
 <div>
-	<div class="title">工号 / 列表</div>
+	<hjx-header label="工号 / 列表">
+        <router-link to="add_employee"><el-button type="primary" size="small">添加</el-button></router-link>
+    </hjx-header>
 	<!--工具条-->
     <el-form :inline="true" :model="filters">
         <el-form-item>
@@ -11,9 +13,6 @@
           <el-button @click="clearForm()">清空</el-button>
         </el-form-item>
     </el-form>
-    <div class="tool">
-    	<router-link to="add_employee"><el-button type="primary" size="small">添加</el-button></router-link>
-    </div>
 	<el-table
 	    :data="dataList" border style="width: 100% ; min-height:300px">
 	    <el-table-column prop="strUserNum" label="工号ID" ></el-table-column>

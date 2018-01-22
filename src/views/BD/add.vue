@@ -1,11 +1,8 @@
 <template>
 <div>
-<div class="title">
-    <el-col :span="12"> BD管理 > 创建BD用户</el-col>
-    <el-col :span="12" class="textRight">
-        <router-link to="index"><el-button size="small">返回BD列表</el-button></router-link>
-    </el-col>
-</div>
+<hjx-header label="BD管理 / 创建BD用户">
+    <router-link to="index"><el-button size="small">返回BD列表</el-button></router-link>
+</hjx-header>
 <div class="content-container">
     <el-form  :model="ruleForm"  :rules="rules" ref="ruleForm" label-width="100px" id="loading-area">
         <el-form-item label="姓名：" prop='strUserName' >

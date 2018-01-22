@@ -1,65 +1,39 @@
 <template>
 <div>
-	<div class="title">BD列表</div>
-	<!--工具条-->
-    <el-form :model="searchkeys" ref='searchkeys' class = 'searchTool' style='overflow:hidden'>
-        <el-row :gutter="14">
-	    	<el-col :span="5">
-	        	<p class='searchTitle'>组织身份：</p>
-	        	<el-form-item prop='strLevelCode' >
-		    		<el-checkbox-group v-model="searchkeys.strLevelCode">
-					    <el-checkbox label="BD1"></el-checkbox>
-					    <el-checkbox label="BD2"></el-checkbox>
-					    <el-checkbox label="BD3"></el-checkbox>
-					    <el-checkbox label="BD4"></el-checkbox>
-					</el-checkbox-group>
-				</el-form-item>
-	    	</el-col>
-	    	<el-col :span="3">
-	    		<p class='searchTitle'>状态：</p>
-		    	<el-form-item prop='strStatus' >
-		            <el-select v-model="searchkeys.strStatus" placeholder="请选择">
-		                <el-option label="全部" value=""></el-option>
-		                <el-option v-for="item in statusList" :label="item.strStatudName" :value="item.strStatusId" :key="item.strStatusId"></el-option>
-		            </el-select>
-		        </el-form-item>
-		    </el-col>
-		    <el-col :span="4">
-		    	<p class='searchTitle'>姓名：</p>
-		        <el-form-item prop='strBDUserName' >
-		          	<el-input v-model="searchkeys.strBDUserName" @keyup.13.native="search($event)" placeholder="请输入姓名" style="min-width: 240px;"></el-input>
-		        </el-form-item>
-	        </el-col>
-
-	        <el-col :span="4">
-	        	<p class='searchTitle'>手机号：</p>
-		        <el-form-item prop='strPhoneNum' >
-		          	<el-input v-model="searchkeys.strPhoneNum" @keyup.13.native="search($event)" placeholder="请输入手机号" style="min-width: 240px;"></el-input>
-		        </el-form-item>
-	        </el-col>
-
-	        <el-col :span="4">
-	        	<p class='searchTitle'>身份证号码：</p>
-		        <el-form-item prop='strCardNum' >
-		          	<el-input v-model="searchkeys.strCardNum" @keyup.13.native="search($event)" placeholder="请输入身份证号码" style="min-width: 240px;"></el-input>
-		        </el-form-item>
-	        </el-col>
-
-	        <el-col :span="4">
-		    	<p class='searchTitle'>&nbsp;</p>
-		    	<el-form-item class='textRight' >
-	          		<el-button @click="search">搜索</el-button>
-	          		<el-button @click="clearForm('searchkeys')">清空</el-button>
-	          	</el-form-item>
-		    </el-col>
-		</el-row>
-    </el-form>
-
-    <div class="tool">
-    	<router-link to="adds"><el-button size="small">批量创建</el-button></router-link>
+	<hjx-header label="BD管理 / BD列表">
+	    <router-link to="adds"><el-button size="small">批量创建</el-button></router-link>
     	<router-link to="add"><el-button type="primary" size="small">创建BD用户</el-button></router-link>
-    </div>
-
+	</hjx-header>
+	<!--工具条-->
+	<el-form :inline="true" :model="searchkeys" ref="searchkeys" label-position="top">
+        <el-form-item prop="strLevelCode" label="组织身份：">
+            <el-checkbox-group v-model="searchkeys.strLevelCode">
+			    <el-checkbox label="BD1"></el-checkbox>
+			    <el-checkbox label="BD2"></el-checkbox>
+			    <el-checkbox label="BD3"></el-checkbox>
+			    <el-checkbox label="BD4"></el-checkbox>
+			</el-checkbox-group>
+        </el-form-item>
+        <el-form-item prop="strStatus" label="状态：">
+            <el-select v-model="searchkeys.strStatus" placeholder="请选择">
+                <el-option label="全部" value=""></el-option>
+                <el-option v-for="item in statusList" :label="item.strStatudName" :value="item.strStatusId" :key="item.strStatusId"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item prop='strBDUserName' label="姓名：">
+          	<el-input v-model="searchkeys.strBDUserName" @keyup.13.native="search($event)" placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item prop='strPhoneNum' label="手机号：">
+          	<el-input v-model="searchkeys.strPhoneNum" @keyup.13.native="search($event)" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+        <el-form-item prop='strCardNum' label="身份证号码：">
+          	<el-input v-model="searchkeys.strCardNum" @keyup.13.native="search($event)" placeholder="请输入身份证号码"></el-input>
+        </el-form-item>
+        <el-form-item label="handle" class="hjx-search-handle">
+            <el-button type="primary" @click="search">查询</el-button>
+            <el-button @click="clearForm('searchkeys')">清空</el-button>
+        </el-form-item>
+    </el-form>
 	<el-table
 	    :data="dataList"
 	    border

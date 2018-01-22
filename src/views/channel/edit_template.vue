@@ -1,6 +1,6 @@
 <template>
 <div>
-	<div class="title">商户 / 编辑模板</div>
+    <hjx-header label="商户 / 编辑模板"></hjx-header>
 	<el-form  label-width="180px" class="content-width">
         <el-form-item label="O关系模板ID：" prop='strTemplateId'>
             <el-input v-model="dict.strTemplateId" disabled></el-input>

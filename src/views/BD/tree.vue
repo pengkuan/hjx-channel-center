@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="title">BD tree管理</div>
+    <hjx-header label="BD管理 / tree"></hjx-header>
     <el-form :inline="true">
         <el-form-item label="请选择BD4：">
             <el-select v-model="strRelationId" filterable placeholder="请选择BD4">
