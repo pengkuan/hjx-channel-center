@@ -38,7 +38,7 @@
                 <p v-show = "get_store_s1_list.length == 0" class="vue-remind">未关联S1，请点击上方按钮添加S1</p>
                 <p class='add-people-item' v-for = "(item , index) in get_store_s1_list">
                     <el-col :span="18">
-                        <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strUserTel }}</span>
+                        <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strPhoneNum }}</span>
                     </el-col>
                     <el-col :span="6" class = 'submitRightNoM'>
                         <el-button size="mini" type="primary" v-on:click="del_has_s1(index)"> 删除此项</el-button>
@@ -46,18 +46,18 @@
                 </p>
             </el-tab-pane>
             <el-tab-pane label="S2列表">
-                <br>
-                <span class="vue-title  vue-M-R30">已关联S2：</span><el-button type="primary" icon="plus" size="small" v-on:click = "add_s2_btn()">添加</el-button>
-                <br><br>
-                <p v-show = "get_store_s2_list.length == 0" class="vue-remind">未关联S2，请点击上方按钮添加S2</p>
-                <p class='add-people-item' v-for = "(item , index) in get_store_s2_list">
-                    <el-col :span="18">
-                        <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strUserTel }}</span>
-                    </el-col>
-                    <el-col :span="6" class = 'submitRightNoM'>
-                        <el-button size="mini" type="primary" v-on:click="del_has_s2(index)"> 删除此项</el-button>
-                    </el-col>
-                </p>
+                <div v-if="!s2Info.toChoose">
+                    <span class='sale_addr_name'>{{s2Info.choosed}}</span>&nbsp;&nbsp;&nbsp;
+                    <el-button size="small" @click="s2Info.toChoose = true"> 替换</el-button>
+                </div>
+                <div v-else  >
+                    <el-select v-model="s2Info.toChooseId" filterable placeholder="请选择S2">
+                        <el-option  v-for="item in s2Info.preChooseList"  :label="item.strUserName + ' / ' + item.strPhoneNum"  :value="item.strUserId" :key="item.strUserId">
+                        </el-option>
+                    </el-select>
+                    <el-button size="small" @click="submitAddS2">确认关联</el-button>
+                    <el-button v-show="s2Info.choosed" size="small" @click="s2Info.toChoose = false">取消</el-button>
+                </div>
             </el-tab-pane>
             <el-tab-pane label="D1列表">
                 <br>
@@ -74,25 +74,25 @@
                 </p>
             </el-tab-pane>
             <el-tab-pane label="BD1列表">
-                <br>
-                <span class="vue-title  vue-M-R30">已关联BD1：</span><el-button type="primary" icon="plus" size="small" v-on:click = "add_bd1_btn()">添加</el-button>
-                <br><br>
-                <p v-show = "get_store_bd1_list.length == 0" class="vue-remind">未关联BD1，请点击上方按钮添加BD1</p>
-                <p class='add-people-item' v-for = "(item , index) in get_store_bd1_list">
-                    <el-col :span="18">
-                        <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strPhoneNum }}</span>
-                    </el-col>
-                    <el-col :span="6" class = 'submitRightNoM'>
-                        <el-button size="mini" type="primary" v-on:click="del_has_bd1(index)"> 删除此项</el-button>
-                    </el-col>                   
-                </p>
+                <div v-if="!bd1Info.toChoose">
+                    <span class='sale_addr_name'>{{bd1Info.choosed}}</span>&nbsp;&nbsp;&nbsp;
+                    <el-button size="small" @click="bd1Info.toChoose = true"> 替换</el-button>
+                </div>
+                <div v-else  >
+                    <el-select v-model="bd1Info.toChooseId" filterable placeholder="请选择BD1">
+                        <el-option  v-for="item in bd1Info.preChooseList"  :label="item.strUserName + ' / ' + item.strPhoneNum"  :value="item.strUserId" :key="item.strUserId">
+                        </el-option>
+                    </el-select>
+                    <el-button size="small" @click="submitAddBD1">确认关联</el-button>
+                    <el-button v-show="bd1Info.choosed" size="small" @click="bd1Info.toChoose = false">取消</el-button>
+                </div>
             </el-tab-pane>
         </el-tabs>
         <el-dialog title="关联S1" :visible.sync="SList.showS1">
             <div class="content">
                 <template>
                   <el-select v-model="choose_s1_id" filterable placeholder="请选择S1">
-                    <el-option  v-for="item in choose_s1_list"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserName + '/' + item.strUserTel+ ','+item.strUserId" :key="item.strUserId">
+                    <el-option  v-for="item in choose_s1_list"  :label="item.strUserName + '/' + item.strPhoneNum"  :value="item.strUserName + '/' + item.strPhoneNum+ ','+item.strUserId" :key="item.strUserId">
                     </el-option>
                   </el-select>
                 </template>
@@ -110,31 +110,6 @@
                 </div>
                 <el-button type="primary" size="small" v-on:click = "final_add_S1('add')">提交</el-button>
                 <el-button type="primary" size="small" v-on:click="SList.showS1 = false">取消</el-button>
-            </div>
-        </el-dialog>
-
-        <el-dialog title="关联S2" :visible.sync="SList.showS2">
-            <div class="content">
-                <template>
-                  <el-select v-model="choose_s2_id" filterable placeholder="请选择S2">
-                    <el-option  v-for="item in choose_s2_list"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserName + '/' + item.strUserTel+ ','+item.strUserId" :key="item.strUserId">
-                    </el-option>
-                  </el-select>
-                </template>
-                <el-button type="primary" icon="plus" size="small" v-on:click = "add_s2_list()">添加</el-button>
-                <p v-show = "addS2List.length == 0" class="vue-remind">请点击上方按钮添加预关联S2</p>
-                <div class="people-container">
-                    <p   v-for = "(item , index) in addS2List">
-                        <el-col :span="18">
-                            <span class='sale_addr_name'>{{ item }}</span>
-                        </el-col>
-                        <el-col :span="6" class = 'submitRightNoM'>
-                            <el-button size="mini" v-on:click="del_preChoose_s2(index)"> 删除此项</el-button>
-                        </el-col>
-                    </p>
-                </div>
-                <el-button type="primary" size="small" v-on:click = "final_add_S2('add')">提交</el-button>
-                <el-button type="primary" size="small" v-on:click="SList.showS2 = false">取消</el-button>
             </div>
         </el-dialog>
 
@@ -162,39 +137,8 @@
                 <el-button type="primary" size="small" v-on:click="SList.showD1 = false">取消</el-button>
             </div>
         </el-dialog>
-
-        <el-dialog title="关联BD1" :visible.sync="SList.showBD1">
-            <div class="content">
-                <template>
-                  <el-select v-model="choose_bd1_id" filterable placeholder="请选择BD1">
-                    <el-option  v-for="item in choose_bd1_list"  :label="item.strUserName + '/' + item.strPhoneNum"  :value="item.strUserName + '/' + item.strPhoneNum+ ','+item.strUserId" :key="item.strUserId">
-                    </el-option>
-                  </el-select>
-                </template>
-                <el-button type="primary" icon="plus" size="small" v-on:click = "add_bd1_list()">添加</el-button>
-                <p v-show = "addBD1List.length == 0" class="vue-remind">请点击上方按钮添加预关联BD1</p>
-                <div class="people-container">
-                    <p class="haveRelated"  v-for = "(item , index) in addBD1List">
-                        <el-col :span="18">
-                        <span class='sale_addr_name'>{{ item }}</span>
-                        </el-col>
-                        <el-col :span="6" class = 'submitRightNoM'>
-                            <el-button size="mini" v-on:click="del_preChoose_bd1(index)"> 删除此项</el-button>
-                        </el-col>
-                    </p>
-                </div>
-                <el-button type="primary" size="small" v-on:click = "final_add_BD1('add')">提交</el-button>
-                <el-button type="primary" size="small" v-on:click="SList.showBD1 = false">取消</el-button>
-            </div>
-        </el-dialog>
     </div>
-    <el-dialog title="新增门店" :visible.sync="dialogFormVisible">
-        <el-input v-model="addGroupName" placeholder="请输入门店名"></el-input>
-        <br><br>
-        <div class = 'textRight'>
-            <el-button type="primary" icon="plus" size="small" v-on:click = "submitAddGroup()">提交</el-button>
-        </div>
-    </el-dialog>
+   
     
 </div>
 </template>
@@ -206,21 +150,13 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
 	data() {
 	    return {
-            dialogFormVisible:false,
             id:'',
-            S1Type : '1',
-            S2Type : '2',
-            channelorgs:[],
             citys:[],
             areas:[],
             strStatusName:'',
-            ChannelManager:[],
             defaultDate:'',//初始默认数据
-            provinceChange : false ,
-            cityChange : false ,
             structAChange : false,
             tempList:[],
-            // 
             modelList:{
                 model_1:'',
                 model_2:'',
@@ -236,77 +172,45 @@ export default {
                 change_4:false,
                 change_5:false
             },
-            SList:{
-                showS1 : false,
-                showS2 : false,
-                showD1 : false,
-                showBD1 : false
-            },
-            // 新增次级组名
-            getGroupRelationId : '',
-            getGroupLevelId : '',
-            addGroupName: '',
-            strIndex: '',
-
-            D1:{  //D1列表相关
-                defaultList:[],    //已关联列表
-                defaultIdList:[],  //已关联ID列表
-                chooseList:[],     //可添加列表
-                chooseId:'',       //下来列表选中项ID
-            },
-            BD1:{  //D1列表相关
-                defaultList:[],    //已关联列表
-                defaultIdList:[],  //已关联ID列表
-                chooseList:[],     //可添加列表
-                chooseId:'',       //下来列表选中项ID
-            },
-
-            // 已关联S列表
-            get_store_s1_list:[],
-            get_store_s1Id_list:[],
-            get_store_s2_list:[],
-            get_store_s2Id_list:[],
-            get_store_d1_list:[],
-            get_store_d1Id_list:[],
-            get_store_bd1_list:[],
-            get_store_bd1Id_list:[],
-
-            // S选项列表
-            choose_s1_list:[],
-            choose_s1_id:'',
-            choose_s2_list:[],
-            choose_s2_id:'',
-            choose_d1_list:[],
-            choose_d1_id:'',
-            choose_bd1_list:[],
-            choose_bd1_id:'',
-            // 新增S
-            showAddS1:[],
-            addS1Id : [],
-            addS1List :[],
-            showAddS2:[],
-            addS2Id : [],
-            addS2List :[],
-            showAddD1:[],
-            addD1Id : [],
-            addD1List :[],
-            showAddBD1:[],
-            addBD1Id : [],
-            addBD1List :[],
-
-            setTrue : 10 ,
-            // 顶层
+            setTrue : 10 ,// 顶层
             structAid:'',
-            ifValidateNext:false,//是否验证次级渠道
-            // 接口入参
             strAddress:'',
             strProvinceId:'',
             strCityId:'',
             strAreaId:'',
             strStoreName:'',
-            strChannelManagerId:'',
             strRelationId:"", //最末层关系节点Id
-            strLevelId:""//最末层关系节点层级id
+            strLevelId:"",//最末层关系节点层级id
+            /****** S2 / BD1 /S1 /D1 *******/
+            s2Info:{
+                preChooseList:[], //可选or可替换
+                choosed:'', //已选
+                toChoose:false, //是否要选择or替换
+                toChooseId:'', //将要提交的ID
+            },
+            bd1Info:{
+                preChooseList:[], //可选or可替换
+                choosed:'', //已选
+                toChoose:false, //是否要选择or替换
+                toChooseId:'', //将要提交的ID
+            },
+            SList:{
+                showS1 : false,
+                showD1 : false
+            },
+            get_store_s1_list:[],
+            get_store_s1Id_list:[],
+            addS1Id : [],
+            addS1List :[],
+            choose_s1_list:[],
+            choose_s1_id:'',
+            
+            get_store_d1_list:[],
+            get_store_d1Id_list:[],
+            choose_d1_list:[],
+            choose_d1_id:'',
+            addD1Id : [],
+            addD1List :[],
         }
 	},
     computed:{
@@ -320,36 +224,30 @@ export default {
         structAid: function(val, oldVal) {
             this.getNextList(val , 0)
             this.structAChange = true
-            this.ifValidateNext = false
         },
         'modelList.model_1' : function(val, oldVal) {
             if(val) this.getNextList(val , 1) , this.changeList['change_1'] = true
-            this.ifValidateNext = false
         },
         'modelList.model_2' : function(val, oldVal) {
             if(val) this.getNextList(val , 2) , this.changeList['change_2'] = true
-            this.ifValidateNext = false
         },
         'modelList.model_3' : function(val, oldVal) {
             if(val) this.getNextList(val , 3) , this.changeList['change_3'] = true
-            this.ifValidateNext = false
         },
         'modelList.model_4' : function(val, oldVal) {
             if(val) this.getNextList(val , 4) , this.changeList['change_4'] = true
-            this.ifValidateNext = false
         },
         'modelList.model_5' : function(val, oldVal) {
             if(val) this.getNextList(val , 5) , this.changeList['change_5'] = true
-            this.ifValidateNext = false
         }
     },
     mounted()  {
         this.getStoreId()
         this.getDefaultDate(this.id)
+        this.getRelationData("S2",this.s2Info ,'s2list')
+        this.getRelationData("BD1",this.bd1Info ,'bdxlist')
         this.getS1()
-        this.getS2()
         this.getD1()
-        this.getBD1()
     },
 
 	methods:{
@@ -432,7 +330,6 @@ export default {
                     return
                 }
                 if(res.data) {
-                    this.ifValidateNext = true //存在下级，所以需要验证
                     var obj = res.data
                     obj.upStrRelationId = this.strRelationId
                     obj.upStrLevelId = this.strLevelId
@@ -477,7 +374,78 @@ export default {
         cancelnow: function() {
             this.$router.push({ path: '/channel/store' })
         },
-        
+        // 获取门店已关联数据 及 可关联数据
+        async getRelationData(strPeopleType,obj,preChooseList){ 
+            var sendData = {
+                strStoreId:this.id,
+                "strPeopleType": strPeopleType,
+            }
+            let res = await api.getStoreDS(sendData)
+            if(res.ret != '0'){
+                this.$message(res.retinfo)
+                return
+            } 
+            if(!res.data) {
+                obj.toChoose = true
+                this.getCanRelationData(strPeopleType,obj,preChooseList)
+                return
+            }else{
+                const choosedInfo = res.data[0]
+                obj.choosed = choosedInfo.strUserName +' / '+choosedInfo.strPhoneNum
+            }
+            this.getCanRelationData(strPeopleType,obj,preChooseList)
+        },
+        async getCanRelationData(strPeopleType,obj,preChooseList){
+            let res = await api.getAllDS({"strStoreId": this.id, "strPeopleType": strPeopleType, "strLevelCode":strPeopleType})
+            if(res.ret != '0'){
+                this.$message(res.retinfo)
+                return
+            }
+            obj.preChooseList = res[preChooseList]
+        },
+
+        // 添加S2 
+        submitAddS2:function(handle){ 
+            if(!this.s2Info.toChooseId){
+                this.$message('请选择S2')
+                return
+            }
+            var sendData = {
+                strPeopleType : 'S2',
+                strStoreId:this.id,
+                strPeopleIdList : [this.s2Info.toChooseId],//(现改为只能绑定一个)
+            }
+            api.addStoreDS(sendData).then(res => {
+                if(res.ret != '0'){
+                    this.$message(res.retinfo)
+                    return false
+                }
+                this.s2Info.toChoose = false
+                this.getRelationData("S2",this.s2Info ,'s2list')
+                this.s2Info.toChooseId = ''
+            })
+        },
+        // 添加BD1 
+        submitAddBD1:function(handle){ 
+            if(!this.bd1Info.toChooseId){
+                this.$message('请选择BD1')
+                return
+            }
+            var sendData = {
+                strPeopleType : 'BD1',
+                strStoreId:this.id,
+                strPeopleIdList : [this.bd1Info.toChooseId],//(现改为只能绑定一个)
+            }
+            api.addStoreDS(sendData).then(res => {
+                if(res.ret != '0'){
+                    this.$message(res.retinfo)
+                    return false
+                }
+                this.bd1Info.toChoose = false
+                this.getRelationData("BD1",this.bd1Info ,'bdxlist')
+                this.bd1Info.toChooseId = ''
+            })
+        },
         /************************* 添加S1 **********************/ 
         // 获取门店已关联S1
         getS1:function(){
@@ -579,109 +547,8 @@ export default {
                 this.SList.showS1 = false
             })
         },
-        /************************* 添加S2 **********************/ 
-        // 获取门店已关联S2
-        getS2:function(){
-            var sendData = {
-                strStoreId:this.id,
-                "strPeopleType": "S2",
-            }
-            // 获取该门店关联工号
-            api.getStoreDS(sendData).then(res => {
-                if(res.ret != '0'){
-                    this.$message(res.retinfo)
-                    return
-                } 
-                if(!res.data) return
-                var getStoreS2 = res.data
-                this.get_store_s2_list = res.data
-                this.get_store_s2Id_list = []
-                for(var i in getStoreS2){
-                    this.get_store_s2Id_list.push(String(getStoreS2[i].strUserId))
-                }
-            })
-        },
-        // 删除已关联S2
-        del_has_s2:function(index){
-            this.get_store_s2_list.splice(index,1)
-            this.get_store_s2Id_list.splice(index,1)
-            this.final_add_S2('del')
-        },
-        // 获取s2选项列表
-        add_s2_btn:function() {
-            this.addS2List = []
-            this.SList.showS2 = true
-            api.getAllDS({"strStoreId": this.id, "strPeopleType": "S2", "strLevelCode":"S2"}).then(res => {
-                if(res.ret != '0'){
-                    this.$message(res.retinfo)
-                    return
-                }
-                this.choose_s2_list = res.s2list
-            })
-        },
-        // 添加将要添加S2列表
-        add_s2_list:function(){
-            if(!this.choose_s2_id) {
-                this.$message('请选择要关联S2')
-                return
-            }
-            for(var i in this.get_store_s2Id_list){
-                if(this.choose_s2_id.split(',')[1] == this.get_store_s2Id_list[i]){
-                    this.$message('该项已绑定或已添加！')
-                    return
-                }
-            }
-            if(this.addS2List.length == 0){
-                this.addS2List.push(this.choose_s2_id.split(',')[0])
-                this.addS2Id.push(this.choose_s2_id.split(',')[1])
-            }else{
-                for(var i in this.addS2Id){
-                    if(this.choose_s2_id.split(',')[1] == this.addS2Id[i]){
-                        this.$message('该项已绑定或已添加！')
-                        return
-                    }
-                }
-                this.addS2List.push(this.choose_s2_id.split(',')[0])
-                this.addS2Id.push(this.choose_s2_id.split(',')[1])
-            }
-        },
-        // 删除将要添加的S2列表
-        del_preChoose_s2:function(index){
-            this.addS2Id.splice(index,1)
-            this.addS2List.splice(index,1)
-        },
-        // 提交添加的S2列表
-        final_add_S2:function(handle){
-            if(handle == 'add' && this.addS2Id.length == 0){
-                this.$message('请选择要关联S2')
-                return
-            }else if(handle == 'del'){
-                this.addS2Id = []
-            }
-            var hasList = [] 
-            for(var i in this.get_store_s2_list){
-                hasList.push(String(this.get_store_s2_list[i].strUserId))
-            }
-            var userList = hasList.length != 0 ? hasList.concat(this.addS2Id): this.addS2Id
-
-            var sendData = {
-                strPeopleType : 'S2',
-                strStoreId:this.id,
-                strPeopleIdList : userList,
-            }
-            api.addStoreDS(sendData).then(res => {
-                if(res.ret != '0'){
-                    this.$message(res.retinfo)
-                    return false
-                }
-                this.addS2Id = []
-                return true
-            }).then((res) => {
-                // 重新生成已关联S2
-                if(res) this.getS2()
-                this.SList.showS2 = false
-            })
-        },
+        
+        
         /************************* 添加D1 **********************/ 
         // 获取门店已关联d1
         getD1:function(){
@@ -782,107 +649,8 @@ export default {
                 if(res) this.getD1()
                 this.SList.showD1 = false
             })
-        },
-        /************************* 添加BD1 **********************/ 
-        // 获取门店已关联bd1
-        getBD1:function(){
-            let self = this
-            var sendData = {
-                strStoreId:this.id,
-                "strPeopleType": "BD1",
-            }
-            // 获取该门店关联工号
-            api.getStoreDS(sendData).then(res => {
-                if(res.ret != '0'){
-                    this.$message(res.retinfo)
-                    return
-                }
-                if(!res.data) return
-                var getStoreBD1 = res.data
-                this.get_store_bd1_list = res.data
-                this.get_store_bd1Id_list = []
-                for(var i in getStoreBD1){
-                    this.get_store_bd1Id_list.push(String(getStoreBD1[i].strUserId))
-                }
-            })
-        },
-        // 删除已关联bd1
-        del_has_bd1:function(index){
-            this.get_store_bd1_list.splice(index,1)
-            this.get_store_bd1Id_list.splice(index,1)
-            this.final_add_BD1('del')
-        },
-        // 获取bd1选项列表
-        add_bd1_btn:function() {
-            this.addBD1List = []
-            this.SList.showBD1 = true
-            api.getAllDS({"strStoreId": this.id, "strPeopleType": "BD1", "strLevelCode":"BD1"}).then(res => {
-                if(res.ret != '0'){
-                    this.$message(res.retinfo)
-                    return
-                }
-                this.choose_bd1_list = res.bdxlist
-            })
-        },
-        // 添加将要添加BD1列表
-        add_bd1_list:function(){
-            if(!this.choose_bd1_id) {
-                this.$message('请选择要关联BD1')
-                return
-            }
-            for(var i in this.get_store_bd1Id_list){
-                if(this.choose_bd1_id.split(',')[1] == this.get_store_bd1Id_list[i]){
-                    this.$message('该项已绑定或已添加！')
-                    return
-                }
-            }
-            if(this.addBD1List.length == 0){
-                this.addBD1List.push(this.choose_bd1_id.split(',')[0])
-                this.addBD1Id.push(this.choose_bd1_id.split(',')[1])
-            }else{
-                for(var i in this.addBD1Id){
-                    if(this.choose_bd1_id.split(',')[1] == this.addBD1Id[i]){
-                        this.$message('该项已绑定或已添加！')
-                        return
-                    }
-                }
-                this.addBD1List.push(this.choose_bd1_id.split(',')[0])
-                this.addBD1Id.push(this.choose_bd1_id.split(',')[1])
-            }
-        },
-        // 删除将要添加的bd1列表
-        del_preChoose_bd1:function(index){
-            this.addBD1Id.splice(index,1)
-            this.addBD1List.splice(index,1)
-        },
-        // 提交添加的BD1列表
-        final_add_BD1:function(handle){
-            if(handle == 'add' && this.addBD1Id.length == 0){
-                this.$message('请选择要关联BD1')
-                return
-            }else if(handle == 'del'){
-                this.addBD1Id = []
-            }
-            var hasList = this.get_store_bd1Id_list
-            var userList = hasList.length != 0 ? hasList.concat(this.addBD1Id): this.addBD1Id
-            var sendData = {
-                strPeopleType : 'BD1',
-                strStoreId:this.id,
-                strPeopleIdList : userList,
-            }
-            api.addStoreDS(sendData).then(res => {
-                if(res.ret != '0'){
-                    this.$message(res.retinfo)
-                    return false
-                }
-                this.addBD1Id = []
-                return true
-            }).then((res) => {
-                // 重新生成已关联BD1
-                if(res) this.getBD1()
-                this.SList.showBD1 = false
-            })
         }
+        
 	}
 }
 </script>

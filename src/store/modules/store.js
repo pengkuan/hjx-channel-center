@@ -9,12 +9,18 @@ const state = {
         {id:'0',name:'停止合作'},
         // {id:'2',name:'待审批'},
         // {id:'3',name:'资料不全'}
+    ],
+    relatedStatus:[//门店关联状态
+        {id:'1',name:'正常'},
+        {id:'0',name:'异常'}
     ]
+
 }
 
 // getters
 const getters = {
-    status: state => state.status
+    status: state => state.status,
+    relatedStatus: state => state.relatedStatus
 }
 
 // actions

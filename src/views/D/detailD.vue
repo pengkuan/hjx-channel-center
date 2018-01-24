@@ -93,11 +93,6 @@
                     </el-table>
                 </el-tab-pane>
             </el-tabs>
-            <div class="tool">
-                <router-link to="index">
-                    <el-button size="small">关闭</el-button>
-                </router-link>
-            </div>
         </div>
     </div>
 </template>
@@ -182,7 +177,7 @@ export default {
         },
         storeDetail: function(strStoreId) {
             this.$router.push({
-                name: 'editStore',
+                name: 'detailStore',
                 query: { id: strStoreId }
             })
         }

@@ -77,7 +77,7 @@
                             <span >{{ item.saleName }}</span>
                         </el-col>
                         <el-col :span="6" class = 'submitRightNoM'>
-                            <el-button size="mini" v-on:click="delSaleAddr(index)"> 删除此行</el-button>
+                            <el-button size="mini" v-on:click="delSaleAddr(index)"> 删除此项</el-button>
                         </el-col>
                     </p>
                 </div>
@@ -89,7 +89,7 @@
         <el-form-item label="工号前缀：" prop = 'strPrefix_str' class="hjx-unnecessary">
             <el-input v-model="form.strPrefix_str" placeholder='2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)'></el-input>
         </el-form-item>
-        <el-form-item label="商户负责S4：">
+        <el-form-item label="商户负责S4：" prop='strConnection_info'>
             <el-select v-model="form.strConnection_info" filterable placeholder="请选择">
                 <el-option  v-for="item in channelUserList"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserId" :key="item.strUserId">
                 </el-option>
@@ -112,17 +112,15 @@
             </el-select>
         </el-form-item>
         <el-form-item label="商户分成：">
-                <el-form-item  label="分成比例（%）：" prop='strPercent' >
-                    <el-col :span="4">
-                        <el-input type="number" v-model="form.strPercent"></el-input>
-                    </el-col>
+            <div style="width:300px;border:1px dashed #ddd;padding:10px 10px 10px 0">
+                <el-form-item  label="分成比例（%）" prop='strPercent' >
+                    <el-input type="number" v-model="form.strPercent"></el-input>
                 </el-form-item>
                 <div style="height:16px"></div>
-                <el-form-item label="苹果机型封顶（元）：" prop='strApplyMax'>
-                    <el-col :span="4">
-                        <el-input type="number"  v-model="form.strApplyMax"></el-input>
-                    </el-col>
+                <el-form-item label="苹果机型封顶（元）" prop='strApplyMax' >
+                    <el-input type="number"  v-model="form.strApplyMax"></el-input>
                 </el-form-item>
+            </div>
         </el-form-item>
         <el-form-item label="店员激励：">
             <el-button type="primary" size="small" v-model="form.strShopAwardId">+设置店员激励方案</el-button>
@@ -223,6 +221,9 @@
             rules:{
                 'strLevelId': [
                     {  required: true, message: '请选择O关系模型', trigger: 'change' }
+                ],
+                'strConnection_info': [
+                    {  required: true, message: '请选择S4', trigger: 'change' }
                 ],
                 'strAddr_province_id': [
                     {  required: true, message: '请选择省份', trigger: 'change' }
@@ -351,8 +352,7 @@
                     return
                 }
                 this.channelUserList = res.data
-                this.channelUserList.push({strUserName :'无' ,strUserTel:'' , strUserId:'0'})
-                if(this.addS4Item.strUserId) {
+                if(this.addS4Item.strUserId) { //因为获取的列表是不包含当前自己，所以将自己加入列表
                     this.channelUserList.push(this.addS4Item)
                     this.form.strConnection_info =  this.addS4Item.strUserId
                 }

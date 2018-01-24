@@ -55,6 +55,11 @@
 	            <span v-for="item in statusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
 	        </template>
 	    </el-table-column>
+	    <el-table-column  label="关联状态" >
+	    	<template slot-scope="scope">
+	            <span v-for = "item in relatedStatusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
+	        </template>
+	    </el-table-column>
 	    <el-table-column  label="操作">
 	        <template slot-scope="scope">
 	        	<el-button class = 'indexFunBtn'  type="primary" @click="showDetail(scope.row.strStoreId)"  size="small">详情</el-button>
@@ -99,6 +104,7 @@ export default {
 	computed:{
         ...mapGetters({
             statusList : 'store/status',
+            relatedStatusList : 'store/relatedStatus',
             addrList : 'heavyDate/adds',
             selectAddrSetting : 'heavyDate/selectAddrSetting'
         })
@@ -111,7 +117,7 @@ export default {
 	        console.log(`每页 ${val} 条`)
 	    },
 	    handleCurrentChange(val) {
-	    	this.pageIndex = (val- 1) * 10
+	    	this.pageIndex = val- 1
 	    	this.currentPage = val
 	        this.showList()
 	    },

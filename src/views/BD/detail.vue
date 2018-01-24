@@ -73,6 +73,37 @@
                     </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="负责门店">
+                    <!-- <el-table :data="dataList" border style="width: 100% ; min-height:300px">
+                        <el-table-column prop="strStoreId" label="门店ID" ></el-table-column>
+                        <el-table-column prop="strStoreName" label="门店名称" ></el-table-column>
+                        <el-table-column prop="strProvinceName" label="门店地址">
+                            <template slot-scope="scope">
+                                {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName +scope.row.strAddress}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="strChannelName" label="商户" ></el-table-column>
+                        <el-table-column prop="strRelationD1List" label="D1" >
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.strRelationD1List.length == 1">
+                                    {{scope.row.strRelationD1List[0].strUserName+' / '+scope.row.strRelationD1List[0].strPhoneNum}}
+                                </span>
+                                <span v-else-if="scope.row.strRelationD1List.length>1">
+                                    {{scope.row.strRelationD1List[0].strUserName+' / '+scope.row.strRelationD1List[0].strPhoneNum}}  ...
+                                </span>
+                                <span v-else>暂无</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column  label="合作状态" >
+                            <template slot-scope="scope">
+                                <span v-for="item in statusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column  label="关联状态" >
+                            <template slot-scope="scope">
+                                <span v-for = "item in relatedStatusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
+                            </template>
+                        </el-table-column>
+                    </el-table> -->
                     <el-table :data="dataList" border style="width: 100% ; min-height:300px">
                         <el-table-column prop="strStoreId" label="门店ID">
                         </el-table-column>
@@ -96,18 +127,13 @@
                     </el-table>
                 </el-tab-pane>
             </el-tabs>
-            <div class="tool">
-                <br>
-                <router-link to="index">
-                    <el-button size="small">关闭</el-button>
-                </router-link>
-            </div>
         </div>
     </div>
 </template>
 
 <script type="text/javascript">
 import api from '../../api/api'
+import { mapGetters , mapActions} from 'vuex'
 import util from '../../common/util'
 export default {
     data() {
@@ -136,6 +162,12 @@ export default {
                 saleareaList: []
             },
         }
+    },
+    computed:{
+        ...mapGetters({
+            statusList : 'store/status',
+            relatedStatusList : 'store/relatedStatus',
+        })
     },
     mounted() {
         this.getId()
@@ -189,7 +221,7 @@ export default {
         },
         storeBDetail: function(strStoreId) {
             this.$router.push({
-                name: 'editStore',
+                name: 'detailStore',
                 query: { id: strStoreId }
             })
         }

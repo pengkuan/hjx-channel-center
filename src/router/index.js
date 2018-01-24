@@ -169,25 +169,4 @@ let router = new Router({
     ]
 })
 
-// router.beforeEach((to, from, next) => {
-//     if (typeof String.prototype.startsWith != 'function') { 
-//         String.prototype.startsWith = function (prefix){ 
-//           return this.slice(0, prefix.length) === prefix
-//         }
-//     }  
-//     if (to.path.startsWith('/login')) {
-//         window.sessionStorage.removeItem('access-user')
-//         next()
-//     } else {
-//         let user = window.document.cookie.match('(^|;) ?' + 'username' + '=([^;]*)(;|$)')
-//         let session = window.sessionStorage.getItem('access-user')
-//         if (!user || !session) {
-//           // next({path: '/login'})
-//           next()
-//         } else {
-//           next()
-//         }
-//     }
-// })
-
 export default router
