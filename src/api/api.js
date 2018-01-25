@@ -3,6 +3,7 @@ import originJsonp from 'jsonp'
 // import qs from 'qs'
 import router from '../router'
 import Config from '../config/index'
+import util from '@/common/util'
 
 
 import { Message } from 'element-ui'
@@ -51,6 +52,8 @@ export function fetch(Interface, params) {
         },
         "params": {        
             "system": "HJXMBA",
+            'strOperatorId' : util.getCookie('userid'), //记录操作流水
+            'strOperatorName' : util.getCookie('username') //记录操作流水
         }
     }
     for (var i in params) {
@@ -184,6 +187,8 @@ export default {
 
     getAddress(params) { return fetch('get_addressInfo', params) }, // 获取地址
     getBank(params) { return fetch('get_bank', params) }, // 获取银行
+    getPipelineList(params) { return fetch('get_pipeline_list', params) }, // 获取操作流水记录
+    setComment(params) { return fetch('set_comment', params) }, // 添加备注
     getAllChannels(params) { return fetch('get_allChannels', params) }, // 获取商户
     getChannelsChild(params) { return fetch('get_Orgs', params) }, // 获取商户下级
     getChannelManager(params) { return fetch('get_channelManager', params) }, // 获取渠道经理
@@ -276,6 +281,8 @@ export default {
     delBDLeafNode(params) { return fetch('del_leaf_BDcode', params) }, //删除节点
     getAddNextBDList(params) { return fetch('get_junior_bdx_list', params) }, //获取新增下级list
     setAddBDNext(params) { return fetch('add_junior_code', params) }, //添加下级
+
+
 
     /*******   权限中心     *******/
     getSystemList(params) { return crossDomain('getSystemList', params) }, // 系统列表

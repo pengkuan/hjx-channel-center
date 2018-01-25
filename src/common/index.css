@@ -49,6 +49,7 @@ button.indexFunBtn{margin: 8px 8px 8px 0 !important}
 
 .hjx-fl{float: left}
 .hjx-fr{float: right}
+.hjx-overflow{overflow: hidden;}
 .hjx-clear{clear: both}
 .hjx-center{text-align: center}
 .hjx-right{text-align: right}

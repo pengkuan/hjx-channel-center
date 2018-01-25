@@ -9,7 +9,11 @@ const state = {
         value:'strAreaId',
         children:'areas'
     },
-    searchAdds: [],
+    pipeType: { //操作流水及备注对应各线ID
+        s:'1',
+        bd:'2',
+        o:'3'
+    },
     channel:[]
 }
 
@@ -17,7 +21,7 @@ const state = {
 const getters = {
     adds: state => state.adds,
     selectAddrSetting: state => state.selectAddrSetting,
-    searchAdds: state => state.searchAdds,
+    pipeType: state => state.pipeType,
     channel: state => state.channel
 }
 

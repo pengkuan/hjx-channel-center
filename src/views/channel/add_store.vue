@@ -168,8 +168,8 @@ export default {
             strAreaId: '',
             strStoreName: '',
             strChannelManagerId: '',
-            strRelationId : '', //最末层关系节点Id
-            strLevelId: "" ,//最末层关系节点层级id
+            strRelationId : '', //最末层关系节点Id(门店的上一级)
+            strLevelId: "" ,//最末层关系节点层级id(门店的上一级)
             ruleForm:{
                 'structAid':'',
                 'strStoreName':'',

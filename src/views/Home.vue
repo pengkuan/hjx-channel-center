@@ -195,8 +195,8 @@ export default {
             }
         },
         get_user_menu_test(){
-            util.setCookie('userid', '694')
-            util.setCookie('username', '测试')
+            util.setCookie('userid', '514')
+            util.setCookie('username', 'pengkuan')
             util.setCookie('useruuid', 'c6ed5c8e9830cf9225d078bdde335de7')
             this.menuList = [{ name: 'O/S管理' }, { name: 'D管理' }, { name: 'BD管理' }, { name: '权限中心' }]
             this.showDiv = true

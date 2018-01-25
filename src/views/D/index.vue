@@ -53,8 +53,8 @@
 	    </el-table-column>
 	    <el-table-column label="操作">
 	        <template slot-scope="scope">
-	        	<el-button type="primary" @click="detailD(scope.row.strUserId)"  size="small">详情</el-button>
-	        	<el-button type="primary" @click="editD(scope.row.strUserId)"  size="small">编辑</el-button>
+	        	<el-button type="text" @click="detailD(scope.row.strUserId)"  size="small">详情</el-button>
+	        	<el-button type="text" @click="editD(scope.row.strUserId)"  size="small">编辑</el-button>
 	        </template>
 	    </el-table-column>
 	</el-table>

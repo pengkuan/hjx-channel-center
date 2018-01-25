@@ -176,14 +176,14 @@ export default {
             strAreaId:'',
             strStoreName:'',
             strChannelManagerId:'',
-            strRelationId:"", //最末层关系节点Id
-            strLevelId:""//最末层关系节点层级id
+            strRelationId:"", //最末层关系节点Id(门店的上一级)
+            strLevelId:""//最末层关系节点层级id(门店的上一级)
         }
 	},
     computed:{
         ...mapGetters({
-            provinces : 'heavyDate/adds',
-            structA : 'heavyDate/channel',
+            provinces : 'commonData/adds',
+            structA : 'commonData/channel',
             statusList : 'store/status'
         })
     },
@@ -243,8 +243,8 @@ export default {
 
 	methods:{
         ...mapActions({
-            getChannel: 'heavyDate/getChannel' ,
-            getAddress: 'heavyDate/getAdds' 
+            getChannel: 'commonData/getChannel' ,
+            getAddress: 'commonData/getAdds' 
         }),
         getStoreId:function(){
             this.id= this.$route.query.id
@@ -272,7 +272,7 @@ export default {
             */
             this.getAddress().then(()=>{
                 this.strProvinceId = this.defaultDate.storeInfo.strProvinceId
-                this.saleAdds.provinces = this.$store.getters['heavyDate/adds']
+                this.saleAdds.provinces = this.$store.getters['commonData/adds']
             })
         },
         // 获取默认数据

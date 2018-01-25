@@ -38,11 +38,7 @@
 	    :data="dataList"
 	    border
 	    style="width: 100% ; min-height:300px">
-	    <el-table-column label="ID" >
-	    	<template slot-scope="scope">
-	    		{{scope.row.strPrefixUserId}}
-	        </template>
-	    </el-table-column>
+	    <el-table-column label="ID" prop="strPrefixUserId" ></el-table-column>
 	    <el-table-column prop="strUserName" label="姓名" ></el-table-column>
 	    <el-table-column prop="strPhoneNum" label="手机号码" ></el-table-column>
 	    <el-table-column prop="strCardNum" label="身份证号码"></el-table-column>
@@ -52,8 +48,8 @@
 	        label="操作"
 	        >
 	        <template slot-scope="scope">
-	        	<el-button type="primary" @click="detailBD(scope.row.strUserId)"  size="small">详情</el-button>
-	        	<el-button type="primary" @click="eidtBD(scope.row.strUserId)"  size="small">编辑</el-button>
+	        	<el-button type="text" @click="detailBD(scope.row.strUserId)"  size="small">详情</el-button>
+	        	<el-button type="text" @click="eidtBD(scope.row.strUserId)"  size="small">编辑</el-button>
 	        	<!-- <el-button type="primary" @click="addNext(scope.row.strUserId)"  size="small">添加下级</el-button> -->
 	        </template>
 	    </el-table-column>

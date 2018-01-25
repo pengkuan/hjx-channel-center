@@ -61,8 +61,8 @@
         <el-table-column prop="strCreateTime" label="创建时间" ></el-table-column> -->
         <el-table-column label="操作">
             <template slot-scope="scope">
-                <el-button type="primary" @click="showDetail(scope.row.strChannelId)"  size="small">详情</el-button>
-                <el-button type="primary" @click="editChannel(scope.row.strChannelId)"  size="small">编辑</el-button>
+                <el-button type="text" @click="showDetail(scope.row.strChannelId)"  size="small">详情</el-button>
+                <el-button type="text" @click="editChannel(scope.row.strChannelId)"  size="small">编辑</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -103,15 +103,15 @@ export default {
     },
     computed:{
         ...mapGetters({
-            addrList : 'heavyDate/adds',
-            selectAddrSetting : 'heavyDate/selectAddrSetting',
+            addrList : 'commonData/adds',
+            selectAddrSetting : 'commonData/selectAddrSetting',
             statusList : 'channel/status',
             scoreList : 'channel/score'
         })
     },
     methods:{
         ...mapActions({
-            getAddress: 'heavyDate/getAdds' 
+            getAddress: 'commonData/getAdds' 
         }),
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`)

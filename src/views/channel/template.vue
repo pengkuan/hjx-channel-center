@@ -23,12 +23,12 @@
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <span v-if="scope.row.strStatus == '有效' ">
-	        		<el-button class = 'indexFunBtn' type="primary" @click="edit(scope.row.strTemplateId)"  size="small">编辑</el-button>
-	        		<el-button class = 'indexFunBtn' type="danger" @click="delchnn(scope.row.strTemplateId)"  size="small">禁用</el-button>
+	        		<el-button class = 'indexFunBtn' type="text" @click="edit(scope.row.strTemplateId)"  size="small">编辑</el-button>
+	        		<el-button class = 'indexFunBtn' type="text" @click="delchnn(scope.row.strTemplateId)"  size="small">禁用</el-button>
 	        	</span>
                     <span v-else>
-	        		<el-button class = 'indexFunBtn' type="primary" @click="edit(scope.row.strTemplateId)"  size="small">编辑</el-button>
-	        		<el-button class = 'indexFunBtn' type="primary" @click="upchnn(scope.row.strTemplateId)"  size="small">启用</el-button>
+	        		<el-button class = 'indexFunBtn' type="text" @click="edit(scope.row.strTemplateId)"  size="small">编辑</el-button>
+	        		<el-button class = 'indexFunBtn' type="text" @click="upchnn(scope.row.strTemplateId)"  size="small">启用</el-button>
 	        	</span>
                 </template>
             </el-table-column>

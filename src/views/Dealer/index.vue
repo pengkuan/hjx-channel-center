@@ -102,8 +102,8 @@ export default {
 	},
 	computed:{
         ...mapGetters({
-            addrList : 'heavyDate/adds',
-            selectAddrSetting : 'heavyDate/selectAddrSetting'
+            addrList : 'commonData/adds',
+            selectAddrSetting : 'commonData/selectAddrSetting'
         })
     },
 	mounted()  {
@@ -113,7 +113,7 @@ export default {
 
 	methods:{
 		...mapActions({
-            getAddress: 'heavyDate/getAdds' 
+            getAddress: 'commonData/getAdds' 
         }),
 		handleSizeChange(val) {
 	        console.log(`每页 ${val} 条`);

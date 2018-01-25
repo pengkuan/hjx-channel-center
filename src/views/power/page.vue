@@ -76,11 +76,11 @@
 	    </td>
 	    <td>
 	    	<div class="cell" v-if="item.Fstatus == 1">
-	        	<el-button class='indexFunBtn' type="primary" @click="getEditData(index)"  size="small">编辑</el-button>
-	        	<el-button class='indexFunBtn' type="danger" @click="setStatusConfirm(item.Fauthority_id , item.Fstatus)"  size="small">禁用</el-button>
+	        	<el-button class='indexFunBtn' type="text" @click="getEditData(index)"  size="small">编辑</el-button>
+	        	<el-button class='indexFunBtn' type="text" @click="setStatusConfirm(item.Fauthority_id , item.Fstatus)"  size="small">禁用</el-button>
         	</div>
         	<div class="cell" v-else>
-        		<el-button  type="primary" @click="setStatusConfirm(item.Fauthority_id , item.Fstatus)" :disabled="item.upStatus" size="small">启用</el-button>
+        		<el-button  type="text" @click="setStatusConfirm(item.Fauthority_id , item.Fstatus)" :disabled="item.upStatus" size="small">启用</el-button>
         	</div>
 	    </td>
 	    

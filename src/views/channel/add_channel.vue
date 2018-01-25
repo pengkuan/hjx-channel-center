@@ -6,7 +6,7 @@
 <div class="content-containered">
 	<el-form ref="form" :model="form" label-width="180px" :rules="rules">
 		<el-form-item label="O关系模型：" prop="strLevelId">
-		    <el-select v-model="form.strLevelId" placeholder="请选择">
+		    <el-select v-model="form.strLevelId" filterable placeholder="请选择">
 		      	<el-option  v-for="item in channelTemplateList"  :label="item.strTemplateName"  :value="item.strTemplateId" :key="item.strTemplateId" >
                 </el-option>
 		    </el-select>
@@ -15,7 +15,7 @@
             <el-input v-model="form.strFullName" placeholder="请输入合同乙方营业执照名称"></el-input>
         </el-form-item>
 		<el-form-item label="所属品牌商/合作方：">
-		    <el-select v-model="form.strPartner_id" placeholder="请选择">
+		    <el-select v-model="form.strPartner_id" filterable placeholder="请选择">
 		      	<el-option  v-for="item in partnerList"  :label="item.strPartnerName"  :value="item.strPartnerId" :key="item.strPartnerId">
                 </el-option>
 		    </el-select>
@@ -90,7 +90,7 @@
             <el-input v-model="form.strPrefix_str" placeholder='2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)'></el-input>
         </el-form-item>
         <el-form-item label="商户负责S4：" prop="strConnection_info">
-		    <el-select v-model="form.strConnection_info" placeholder="请选择">
+		    <el-select v-model="form.strConnection_info" filterable placeholder="请选择">
 		      	<el-option  v-for="item in channelUserList"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserId" :key="item.strUserId">
                 </el-option>
 		    </el-select>
@@ -241,7 +241,7 @@ export default {
     },
     computed:{
         ...mapGetters({
-            provinces : 'heavyDate/adds',
+            provinces : 'commonData/adds',
             statusList : 'channel/status',
             scoreList : 'channel/score',
             payMethodList : 'channel/payMethod',
@@ -273,7 +273,7 @@ export default {
 	},
     methods: {
         ...mapActions({
-            getAddress: 'heavyDate/getAdds' 
+            getAddress: 'commonData/getAdds' 
         }),
         submitnow(formName) {
             let self = this
@@ -305,7 +305,7 @@ export default {
         },
         loadInfo: function() {
             this.getAddress().then(()=>{
-                this.saleAdds.provinces = this.$store.getters['heavyDate/adds']
+                this.saleAdds.provinces = this.$store.getters['commonData/adds']
             })
 			api.getChannelTemplate({}).then(res => {
                 if (res.ret != '0') {

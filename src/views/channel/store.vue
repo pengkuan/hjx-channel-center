@@ -15,15 +15,14 @@
                 </el-option>
             </el-select>
         </el-form-item>
-
-        <el-form-item label="门店ID：">
+        <el-form-item label="门店ID：" prop="strStoreId">
           <el-input v-model="filters.strStoreId" @keyup.13.native="search($event)" placeholder="请输入门店ID" ></el-input>
         </el-form-item>
-        <el-form-item label="门店名称：">
+        <el-form-item label="门店名称：" prop="strStoreName">
           <el-input v-model="filters.strStoreName" @keyup.13.native="search($event)" placeholder="请输入门店名称" ></el-input>
         </el-form-item>
-        <el-form-item label="所属商户：">
-          <el-input v-model="filters.strChannelKey" @keyup.13.native="search($event)" placeholder="请输入门店名称" ></el-input>
+        <el-form-item label="所属商户：" prop="strChannelKey">
+          <el-input v-model="filters.strChannelKey" @keyup.13.native="search($event)" placeholder="请输入商户名或id" ></el-input>
         </el-form-item>
         <el-form-item label="handle" class="hjx-search-handle">
           <el-button type="primary" @click="search">查询</el-button>
@@ -57,13 +56,13 @@
 	    </el-table-column>
 	    <el-table-column  label="关联状态" >
 	    	<template slot-scope="scope">
-	            <span v-for = "item in relatedStatusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
+	            <span v-for = "item in relatedStatusList" v-if="scope.row.strRelatedStatus == item.id">{{item.name}}</span>
 	        </template>
 	    </el-table-column>
 	    <el-table-column  label="操作">
 	        <template slot-scope="scope">
-	        	<el-button class = 'indexFunBtn'  type="primary" @click="showDetail(scope.row.strStoreId)"  size="small">详情</el-button>
-        		<el-button class = 'indexFunBtn' type="primary" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
+	        	<el-button class = 'indexFunBtn'  type="text" @click="showDetail(scope.row.strStoreId)"  size="small">详情</el-button>
+        		<el-button class = 'indexFunBtn' type="text" @click="editStore(scope.row.strStoreId)"  size="small">编辑</el-button>
 	        </template>
 	    </el-table-column>
 	</el-table>
@@ -105,13 +104,13 @@ export default {
         ...mapGetters({
             statusList : 'store/status',
             relatedStatusList : 'store/relatedStatus',
-            addrList : 'heavyDate/adds',
-            selectAddrSetting : 'heavyDate/selectAddrSetting'
+            addrList : 'commonData/adds',
+            selectAddrSetting : 'commonData/selectAddrSetting'
         })
     },
 	methods:{
 		...mapActions({
-            getAddress: 'heavyDate/getAdds' 
+            getAddress: 'commonData/getAdds' 
         }),
 		handleSizeChange(val) {
 	        console.log(`每页 ${val} 条`)
@@ -124,7 +123,7 @@ export default {
 	    init(){
             this.getAddress()
         },
-		showList:function(){
+		showList(){
 			let [strProvinceId='', strCityId='', strAreaId=''] = this.addrIds
 			let data ={
 				pageinfo:{
@@ -142,7 +141,7 @@ export default {
 				this.total = res.data.nums
 			})
 		},
-		editStore:function(strStoreId){
+		editStore(strStoreId){
 			this.$router.push({
 				name:'editStore',
 				query:{id:strStoreId}
@@ -154,9 +153,7 @@ export default {
 				query:{id:id}
 			})
 		},
-		
-		//search
-		search:function(){
+		search(){
 			this.filters.strStoreId = util.Trim(this.filters.strStoreId)
 			this.filters.strStoreName = util.Trim(this.filters.strStoreName)
 			this.currentPage = 1

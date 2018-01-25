@@ -19,12 +19,12 @@
 	    <el-table-column label="操作" >
 	        <template slot-scope="scope" >
 	        	<div v-if="scope.row.Fstatus == 1">
-		        	<el-button class='indexFunBtn' type="primary" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
-		        	<el-button class='indexFunBtn' type="danger" @click="setStatusConfirm(scope.row.Fcate_id , scope.row.Fstatus)"  size="small">禁用</el-button>
+		        	<el-button class='indexFunBtn' type="text" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
+		        	<el-button class='indexFunBtn' type="text" @click="setStatusConfirm(scope.row.Fcate_id , scope.row.Fstatus)"  size="small">禁用</el-button>
 	        	</div>
 	        	<div v-else>
-	        		<el-button class='indexFunBtn' type="primary" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
-	        		<el-button class='indexFunBtn'  type="primary" @click="setStatusConfirm(scope.row.Fcate_id , scope.row.Fstatus)"  size="small">启用</el-button>
+	        		<el-button class='indexFunBtn' type="text" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
+	        		<el-button class='indexFunBtn'  type="text" @click="setStatusConfirm(scope.row.Fcate_id , scope.row.Fstatus)"  size="small">启用</el-button>
 	        	</div>
 	        </template>
 	    </el-table-column>

@@ -4,34 +4,41 @@
 		    <router-link to="employee"><el-button size="small">返回S列表</el-button></router-link>
 		    <el-button type="primary" size="small" @click="goEdit(ruleForm.strUserId)">编辑</el-button>
 		</hjx-header>
-		<div class="content-container">
-		    <el-form ref="ruleForm" label-width="100px">
-		        <el-form-item label="姓名：" prop='strUserName'>{{ruleForm.strUserName}}</el-form-item>
-	            <el-form-item label="手机号码："  prop='strUserTel'>{{ruleForm.strUserTel}}</el-form-item>
-	            <el-form-item label="身份证："  prop='strCardNum'>{{ruleForm.strCardNum}} </el-form-item>
-	            <el-form-item label="邮箱："  >{{ruleForm.strEmail}}</el-form-item>
-		        <el-form-item label="状态：">
-				    <span v-for="item in statusList" v-if="ruleForm.strStatus == item.id">{{item.name}}</span>
-				</el-form-item>
-				<el-form-item label="所属商户：">{{S4_list}}</el-form-item>
-		        <el-form-item label="二级子公司：">{{S3_list}}</el-form-item>
-		        <el-form-item label="所在门店：">{{S2_list}}</el-form-item>
-		        <el-form-item label="门店工号：">{{strUserNum}}</el-form-item>
-		        <el-form-item label="组织身份：">{{strIdentityList}}</el-form-item>
-		    </el-form>
-		</div>
-		<div class="tool">
-	        <router-link to="employee"><el-button size="small">返回</el-button></router-link>
-	    </div>
+		<el-alert title="基本信息" type="info" :closable="false"></el-alert><br>
+	    <el-form ref="ruleForm" label-width="120px">
+	        <el-form-item label="姓名：" prop='strUserName'>{{ruleForm.strUserName}}</el-form-item>
+            <el-form-item label="手机号码："  prop='strUserTel'>{{ruleForm.strUserTel}}</el-form-item>
+            <el-form-item label="身份证："  prop='strCardNum'>{{ruleForm.strCardNum}} </el-form-item>
+            <el-form-item label="邮箱："  >{{ruleForm.strEmail}}</el-form-item>
+	        <el-form-item label="状态：">
+			    <span v-for="item in statusList" v-if="ruleForm.strStatus == item.id">{{item.name}}</span>
+			</el-form-item>
+			<el-form-item label="所属商户：">{{S4_list}}</el-form-item>
+	        <el-form-item label="二级子公司：">{{S3_list}}</el-form-item>
+	        <el-form-item label="所在门店：">{{S2_list}}</el-form-item>
+	        <el-form-item label="门店工号：">{{strUserNum}}</el-form-item>
+	        <el-form-item label="组织身份：">{{strIdentityList}}</el-form-item>
+	    </el-form>
+		<!-- 操作流水 -->
+		<br>
+		<el-alert title="操作流水" type="info" :closable="false"></el-alert><br>
+		<hjx-pipe v-for="item in pipeList" :strF1="item.strF1" :strF2="item.strF2">{{item.strF3+' '+item.strF4}}</hjx-pipe>
+		<br>
+	    <div class="comment"><el-input  v-model="comment" placeholder="在此输入备注内容"></el-input></div>
+	    <el-button  @click="setComment">确认备注</el-button><br><br>
 	</div>
 </template>
 <script type="text/javascript">
 	import api from '../../api/api'
 	import util from '../../common/util'
+	import hjxPipe from '@/base/hjx_pipe'
 	import {mapGetters} from 'vuex'
 	export default {
+		components:{hjxPipe},
 		data() {
 		    return {
+		    	comment:'', //备注
+		    	pipeList:[],//操作流水
 	            strUserNum:'',//工号
 	            strIdentityList:'',
 	            S4_list:'',//商户
@@ -64,7 +71,8 @@
 		},
 		computed:{
 			...mapGetters({
-				'statusList':'employee/status'
+				'statusList':'employee/status',
+				'pipeType':'commonData/pipeType'
 			})
 		},
 		mounted()  {
@@ -72,47 +80,78 @@
 			this.loadInfo()
 		},
 		methods:{
-			getEmployeeId:function(){
+			getEmployeeId(){
 	            this.ruleForm.strUserId= this.$route.query.id
 	        },
             //跳至编辑页面
-	        goEdit:function(id){
+	        goEdit(id){
 	            this.$router.push({
 	                name:'editEmployee',
 	                query:{id:id}
 	            })
 	        },
-            loadInfo: function() {
-                api.getEmployeeInfo({strUserId:this.ruleForm.strUserId}).then(res => {
-                	if (res.ret != '0') {
-                        this.$message(res.retinfo)
-                        return
+            async loadInfo() {
+                let res = await api.getEmployeeInfo({strUserId:this.ruleForm.strUserId})
+            	if (res.ret != '0') {
+                    this.$message(res.retinfo)
+                    return
+                }
+				let msg = res.data
+                this.strUserNum = msg.strUserNum
+                this.strIdentityList = msg.strIdentityList
+                this.ruleForm.strStatus = msg.strStatus
+                this.ruleForm.strUserName = msg.strUserName
+                this.ruleForm.strUserTel = msg.strUserTel
+                this.ruleForm.strCardNum = msg.strCardNum
+                this.ruleForm.strEmail = msg.strEmail
+                this.relationInfo = msg.relationInfo
+                for(var i in this.relationInfo){
+                    if(this.relationInfo[i].strRelationCode == 'REL002'){
+                        this.S4_list +=this.relationInfo[i].strRelationNmae+'    '
                     }
-					let msg = res.data
-                    this.strUserNum = msg.strUserNum
-                    this.strIdentityList = msg.strIdentityList
-                    this.ruleForm.strStatus = msg.strStatus
-                    this.ruleForm.strUserName = msg.strUserName
-                    this.ruleForm.strUserTel = msg.strUserTel
-                    this.ruleForm.strCardNum = msg.strCardNum
-                    this.ruleForm.strEmail = msg.strEmail
-                    this.relationInfo = msg.relationInfo
-                    for(var i in this.relationInfo){
-                        if(this.relationInfo[i].strRelationCode == 'REL002'){
-                            this.S4_list +=this.relationInfo[i].strRelationNmae+'    '
-                        }
-                        if(this.relationInfo[i].strRelationCode == 'REL003'){
-                            this.S3_list +=this.relationInfo[i].strRelationNmae+'    '
-                        }
-                        if(this.relationInfo[i].strRelationCode == 'REL004'){
-                            this.S2_list +=this.relationInfo[i].strRelationNmae+'    '
-                        }
+                    if(this.relationInfo[i].strRelationCode == 'REL003'){
+                        this.S3_list +=this.relationInfo[i].strRelationNmae+'    '
                     }
-				})
+                    if(this.relationInfo[i].strRelationCode == 'REL004'){
+                        this.S2_list +=this.relationInfo[i].strRelationNmae+'    '
+                    }
+                }
+				//获取操作流水
+				this.getPipeline()
+            },
+            async getPipeline(){
+            	const reqData = {
+					strPipeUserId:this.ruleForm.strUserId,
+					strPipeType : this.pipeType.s
+				}
+				let res = await api.getPipelineList(reqData)
+				if (res.ret != '0') {
+                    this.$message(res.retinfo)
+                    return
+                }
+				this.pipeList = res.data
+            },
+            async setComment(){
+            	if(!this.comment) {
+            		this.$message('请输入备注信息！')
+            		return
+            	}
+            	const reqData = {
+            		strComment : this.comment,
+            		strPipeType:this.pipeType.s,
+            		strPipeUserId:this.ruleForm.strUserId
+            	}
+            	let res = await api.setComment(reqData)
+            	if (res.ret != '0') {
+                    this.$message(res.retinfo)
+                    return
+                }
+                this.getPipeline()
+                this.comment = ''
             }
 		}
 	}
 </script>
 <style type="text/css" scoped="scoped">
-    .content-container{width: 800px}
+    .comment{display: inline-block;width: 500px;}
 </style>

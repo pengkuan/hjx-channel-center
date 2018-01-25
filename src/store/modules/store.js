@@ -6,7 +6,7 @@ import * as types from '../mutation-types.js'
 const state = {
     status:[//合作状态
         {id:'1',name:'合作中'},
-        {id:'0',name:'停止合作'},
+        {id:'0',name:'暂停合作'},
         // {id:'2',name:'待审批'},
         // {id:'3',name:'资料不全'}
     ],

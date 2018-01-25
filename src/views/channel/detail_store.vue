@@ -8,6 +8,7 @@
         <div class="hjx-black mrg-b12">{{strStoreName}}</div>
         <el-tabs type="border-card">
             <el-tab-pane label="POS信息">
+                <el-alert title="基本信息" type="info" :closable="false"></el-alert><br>
                 <el-form label-width="100px">
                     <el-form-item label="商户：">
                         <span v-for="item in structA" v-if="structAid == item.strRelationId+','+item.strLevelId + ',0' ">{{item.strRelationName}}</span>
@@ -27,8 +28,14 @@
                         <p class='hjx-overflow' v-for = "(item , index) in addSaleList" v:key="index">{{ item.saleName }}</p>
                     </el-form-item>
                     <el-form-item label="合作状态：" >{{strStatusName}}</el-form-item>
-
                 </el-form>
+                <!-- 操作流水 -->
+                <br>
+                <el-alert title="操作流水" type="info" :closable="false"></el-alert><br>
+                <hjx-pipe v-for="item in pipeList" :strF1="item.strF1" :strF2="item.strF2">{{item.strF3+' '+item.strF4}}</hjx-pipe>
+                <br>
+                <div class="comment"><el-input  v-model="comment" placeholder="在此输入备注内容"></el-input></div>
+                <el-button  @click="setComment">确认备注</el-button><br><br>
             </el-tab-pane>
 
             <el-tab-pane label="S1列表">
@@ -145,11 +152,15 @@
 
 <script>
 import api from '../../api/api'
+import hjxPipe from '@/base/hjx_pipe'
 import util from '../../common/util'
 import { mapGetters, mapActions } from 'vuex'
 export default {
-	data() {
+    components:{hjxPipe},
+    data() {
 	    return {
+            comment:'', //备注
+            pipeList:[],//操作流水
             id:'',
             citys:[],
             areas:[],
@@ -179,8 +190,8 @@ export default {
             strCityId:'',
             strAreaId:'',
             strStoreName:'',
-            strRelationId:"", //最末层关系节点Id
-            strLevelId:"",//最末层关系节点层级id
+            strRelationId:"", //最末层关系节点Id(门店的上一级)
+            strLevelId:"",//最末层关系节点层级id(门店的上一级)
             /****** S2 / BD1 /S1 /D1 *******/
             s2Info:{
                 preChooseList:[], //可选or可替换
@@ -215,8 +226,9 @@ export default {
 	},
     computed:{
         ...mapGetters({
-            provinces : 'heavyDate/adds',
-            structA : 'heavyDate/channel'
+            provinces : 'commonData/adds',
+            structA : 'commonData/channel',
+            'pipeType':'commonData/pipeType'
         })
     },
 	watch: {
@@ -252,8 +264,8 @@ export default {
 
 	methods:{
         ...mapActions({
-            getChannel: 'heavyDate/getChannel' ,
-            getAddress: 'heavyDate/getAdds' 
+            getChannel: 'commonData/getChannel' ,
+            getAddress: 'commonData/getAdds' 
         }),
         getStoreId:function(){
             this.id= this.$route.query.id
@@ -273,6 +285,8 @@ export default {
                 this.getCitys(this.strProvinceId)
                 this.getAreas(this.strCityId)
             })
+            //获取操作流水
+            this.getPipeline()
         },
         // 获取默认数据
         getDefaultDate : function(strStoreId){
@@ -291,9 +305,9 @@ export default {
                 this.strCityId = this.defaultDate.storeInfo.strCityId
                 this.strAreaId = this.defaultDate.storeInfo.strAreaId
 
-                var saleAdds = this.defaultDate.storeInfo.saleAddrList
+                var saleAdds = this.defaultDate.storeInfo.saleAddrList //新建时销售区域为必传字段，此处不用做兼容处理
 
-                for(var i in saleAdds){
+                for(var i in saleAdds){ //新建时销售区域选择为全部时 对应 id='',所以获取详情时
                     if(!saleAdds[i].strProvinceName) saleAdds[i].strProvinceName = '全部'
                     if(!saleAdds[i].strCityName) saleAdds[i].strCityName = '全部'
                     if(!saleAdds[i].strAreaName) saleAdds[i].strAreaName = '全部'
@@ -361,6 +375,36 @@ export default {
                     this.areas = this.citys[index].areas
                 }
             }
+        },
+        async getPipeline(){
+            const reqData = {
+                strPipeUserId:this.$route.query.id,
+                strPipeType : this.pipeType.o
+            }
+            let res = await api.getPipelineList(reqData)
+            if (res.ret != '0') {
+                this.$message(res.retinfo)
+                return
+            }
+            this.pipeList = res.data
+        },
+        async setComment(){
+            if(!this.comment) {
+                this.$message('请输入备注信息！')
+                return
+            }
+            const reqData = {
+                strComment : this.comment,
+                strPipeType:this.pipeType.o,
+                strPipeUserId:this.$route.query.id
+            }
+            let res = await api.setComment(reqData)
+            if (res.ret != '0') {
+                this.$message(res.retinfo)
+                return
+            }
+            this.getPipeline()
+            this.comment = ''
         },
         //跳至编辑页面
         goEdit:function(id){
@@ -655,11 +699,12 @@ export default {
 }
 </script>
 <style type="text/css" scoped>
-    #Edit-store{width: 1000px}
+    /*#Edit-store{width: 1000px}*/
     .vue-remind{font-size: 12px;color:#999;margin: 8px 0}
     span{font-size: 13px}
     .people-container>p{overflow: hidden;}
     .people-container{padding: 10px 0}
     .addr-container>p{overflow: hidden;}
     .add-people-item{overflow: hidden;margin: 6px}
+    .comment{display: inline-block;width: 500px;}
 </style>

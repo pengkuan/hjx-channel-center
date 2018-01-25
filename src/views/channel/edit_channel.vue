@@ -15,7 +15,7 @@
             <el-input v-model="form.strFullName" placeholder="请输入合同乙方营业执照名称"></el-input>
         </el-form-item>
         <el-form-item label="所属品牌商/合作方：">
-            <el-select v-model="form.strPartner_id" placeholder="请选择">
+            <el-select v-model="form.strPartner_id" filterable placeholder="请选择">
                 <el-option  v-for="item in partnerList"  :label="item.strPartnerName"  :value="item.strPartnerId" :key="item.strPartnerId">
                 </el-option>
             </el-select>
@@ -257,7 +257,7 @@
     },
     computed:{
         ...mapGetters({
-            provinces : 'heavyDate/adds',
+            provinces : 'commonData/adds',
             statusList : 'channel/status',
             scoreList : 'channel/score',
             payMethodList : 'channel/payMethod',
@@ -292,7 +292,7 @@
     },
     methods: {
         ...mapActions({
-            getAddress: 'heavyDate/getAdds' 
+            getAddress: 'commonData/getAdds' 
         }),
         getChannelId:function(){
             this.form.strChannelId= this.$route.query.id
@@ -326,7 +326,7 @@
         },
         loadInfo: function() {
             this.getAddress().then(()=>{
-                this.saleAdds.provinces = this.$store.getters['heavyDate/adds']
+                this.saleAdds.provinces = this.$store.getters['commonData/adds']
                 this.form.strAddr_province_id = this.defaultDate.strAddrProvinceId
             })
             api.getChannelTemplate({}).then(res => {

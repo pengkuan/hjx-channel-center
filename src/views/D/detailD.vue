@@ -4,100 +4,88 @@
             <router-link to="index"><el-button size="small">返回D列表</el-button></router-link>
             <el-button type="primary" size="small" @click="editD(strUserId)">编辑D</el-button>
         </hjx-header>
-        <div style='width:900px;margin:auto'>
-            <el-tabs type="border-card">
-                <el-tab-pane label="账号详情">
-                    <el-form label-width="150px">
-                        <p>1.基本信息</p>
-                        <el-form-item label="用户ID：">
-                            <span>{{ruleForm.baseinfo.strUserId}}</span>
-                        </el-form-item>
-                        <el-form-item label="用户姓名：">
-                            <span>{{ruleForm.baseinfo.strUserName}}</span>
-                        </el-form-item>
-                        <el-form-item label="手机号：">
-                            <span>{{ruleForm.baseinfo.strPhoneNum}}</span>
-                        </el-form-item>
-                        <el-form-item label="身份证号：">
-                            <span>{{ruleForm.baseinfo.strCardNum}}</span>
-                        </el-form-item>
-                        <el-form-item label="身份证照片正面：" class='pic'>
-                            <img v-if="ruleForm.baseinfo.strCardPicFront" :src=" _Config.API + '/static/upload/' + ruleForm.baseinfo.strCardPicFront">
-                            <img v-else src="../../assets/images/no_img.png">
-                        </el-form-item>
-                        <el-form-item label="身份证照片背面：" class='pic'>
-                            <img v-if="ruleForm.baseinfo.strCardPicBack"  :src=" _Config.API+'/static/upload/' + ruleForm.baseinfo.strCardPicBack">
-                            <img v-else src="../../assets/images/no_img.png">
-                        </el-form-item>
-                        <el-form-item label="头像照片：" class='pic'>
-                            <img v-if="ruleForm.baseinfo.strHeadPic"  :src=" _Config.API+ '/static/upload/' + ruleForm.baseinfo.strHeadPic">
-                            <img v-else src="../../assets/images/no_img.png">
-                        </el-form-item>
-                        <p>2.数据范围</p>
-                        <el-form-item label="">
-                            <el-table :data="ruleForm.identityList" style="width: 402px">
-                                <el-table-column prop="strLevelName" label="组织身份" width="180">
-                                </el-table-column>
-                                <el-table-column prop="strLevelName" label="对应上级" width="220">
-                                    <template slot-scope="scope">
-                                        {{scope.row.strUserName + ' / ' + scope.row.strPhoneNum }}
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </el-form-item>
-                        <el-form-item label="销售区域：">
-                            <div v-for="item in ruleForm.saleareaList">
-                                {{item}}
-                            </div>
-                        </el-form-item>
-                        <p>3.收款信息</p>
-                        <el-form-item label="微信昵称：">
-                            <span v-if="ruleForm.accountInfo.strWechatName">{{ruleForm.accountInfo.strWechatName}}</span>
-                            <span v-else>暂无</span>
-                        </el-form-item>
-                        <el-form-item label="微信openid：">
-                            <span v-if="ruleForm.accountInfo.strWechatOpenId">{{ruleForm.accountInfo.strWechatOpenId}}</span>
-                            <span v-else>暂无</span>
-                        </el-form-item>
-                        <el-form-item label="微信头像：" class="pic">
-                            <img v-if="ruleForm.accountInfo.strWechatHeadPic"  :src="ruleForm.accountInfo.strWechatHeadPic">
-                            <img v-else src="../../assets/images/no_img.png">
-                        </el-form-item>
-                        <p>4.合作状态</p>
-                        <el-form-item label="状态：">
-                            <span>{{ruleForm.baseinfo.strStatusName}}</span>
-                        </el-form-item>
-                    </el-form>
-                </el-tab-pane>
-                <el-tab-pane label="负责门店">
-                    <el-table :data="dataList" border style="width: 100% ; min-height:300px">
-                        <el-table-column prop="strStoreId" label="门店ID">
-                        </el-table-column>
-                        <el-table-column prop="strStoreName" label="名称"></el-table-column>
-                        <el-table-column prop="strChannelName" label="所属商户"></el-table-column>
-                        <el-table-column label="地址">
-                            <template slot-scope="scope">
-                                {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName +scope.row.strAddress}}
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="合作状态">
-                            <template slot-scope="scope">{{scope.row.strStatus == '1' ?'正常':'停止'}}</template>
-                        </el-table-column>
-                        <el-table-column prop="strCreateTime" label="生效时间"></el-table-column>
-                        <el-table-column prop="strUpdateTime" label="截止时间"></el-table-column>
-                        <el-table-column label="操作">
-                            <template slot-scope="scope">
-                                <el-button type="primary" @click="storeDetail(scope.row.strStoreId)" size="small">详情</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-tab-pane>
-            </el-tabs>
-        </div>
+        <el-tabs type="border-card">
+            <el-tab-pane label="账号详情">
+                <el-form label-width="150px">
+                    <el-alert title="基本信息" type="info" :closable="false"></el-alert><br>
+                    <el-form-item label="用户ID：">
+                        <span>{{ruleForm.baseinfo.strUserId}}</span>
+                    </el-form-item>
+                    <el-form-item label="用户姓名：">
+                        <span>{{ruleForm.baseinfo.strUserName}}</span>
+                    </el-form-item>
+                    <el-form-item label="手机号：">
+                        <span>{{ruleForm.baseinfo.strPhoneNum}}</span>
+                    </el-form-item>
+                    <el-form-item label="身份证号：">
+                        <span>{{ruleForm.baseinfo.strCardNum}}</span>
+                    </el-form-item>
+                    <el-form-item label="身份证照片正面：" class='pic'>
+                        <img v-if="ruleForm.baseinfo.strCardPicFront" :src=" _Config.API + '/static/upload/' + ruleForm.baseinfo.strCardPicFront">
+                        <img v-else src="../../assets/images/no_img.png">
+                    </el-form-item>
+                    <el-form-item label="身份证照片背面：" class='pic'>
+                        <img v-if="ruleForm.baseinfo.strCardPicBack"  :src=" _Config.API+'/static/upload/' + ruleForm.baseinfo.strCardPicBack">
+                        <img v-else src="../../assets/images/no_img.png">
+                    </el-form-item>
+                    <el-form-item label="头像照片：" class='pic'>
+                        <img v-if="ruleForm.baseinfo.strHeadPic"  :src=" _Config.API+ '/static/upload/' + ruleForm.baseinfo.strHeadPic">
+                        <img v-else src="../../assets/images/no_img.png">
+                    </el-form-item>
+                    <el-alert title="数据范围" type="info" :closable="false"></el-alert><br>
+                    <el-form-item >
+                        <el-table :data="ruleForm.identityList" border style="width: 800px">
+                            <el-table-column prop="strLevelName" label="组织身份"></el-table-column>
+                            <el-table-column prop="strLevelName" label="对应上级">
+                                <template slot-scope="scope">
+                                    {{scope.row.strUserName + ' / ' + scope.row.strPhoneNum }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="strAreaList" label="销售区域"></el-table-column>
+                        </el-table>
+                    </el-form-item>
+                    <el-alert title="收款信息" type="info" :closable="false"></el-alert><br>
+                    <el-form-item label="微信昵称：">
+                        <span v-if="ruleForm.accountInfo.strWechatName">{{ruleForm.accountInfo.strWechatName}}</span>
+                        <span v-else>暂无</span>
+                    </el-form-item>
+                    <el-form-item label="微信openid：">
+                        <span v-if="ruleForm.accountInfo.strWechatOpenId">{{ruleForm.accountInfo.strWechatOpenId}}</span>
+                        <span v-else>暂无</span>
+                    </el-form-item>
+                    <el-form-item label="微信头像：" class="pic">
+                        <img v-if="ruleForm.accountInfo.strWechatHeadPic"  :src="ruleForm.accountInfo.strWechatHeadPic">
+                        <img v-else src="../../assets/images/no_img.png">
+                    </el-form-item>
+                    <el-alert title="合作状态" type="info" :closable="false"></el-alert><br>
+                    <el-form-item label="状态：">
+                        <span>{{ruleForm.baseinfo.strStatusName}}</span>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="负责门店">
+                <el-table :data="dataList" border style="width: 100% ; min-height:300px">
+                    <el-table-column prop="strStoreId" label="门店ID" ></el-table-column>
+                    <el-table-column prop="strStoreName" label="门店名称" ></el-table-column>
+                    <el-table-column prop="strChannelName" label="商户" ></el-table-column>
+                    <el-table-column  label="合作状态" >
+                        <template slot-scope="scope">
+                            <span v-for="item in statusList" v-if="scope.row.strStatus == item.id">{{item.name}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column  label="关联状态" >
+                        <template slot-scope="scope">
+                            <span v-for = "item in relatedStatusList" v-if="scope.row.strRelatedStatus == item.id">{{item.name}}</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 <script type="text/javascript">
 import api from '../../api/api'
+import { mapGetters } from 'vuex'
 import util from '../../common/util'
 export default {
     data() {
@@ -124,6 +112,12 @@ export default {
                 identityList: []
             },
         }
+    },
+    computed:{
+        ...mapGetters({
+            statusList : 'store/status',
+            relatedStatusList : 'store/relatedStatus',
+        })
     },
     mounted() {
         this.getId()
@@ -160,10 +154,6 @@ export default {
                 }
                 res.baseinfo.strUserId = this.addPrefix(res.baseinfo.strUserId)
                 this.ruleForm = res
-                this.ruleForm.saleareaList = util.unique(this.ruleForm.saleareaList
-                    .map(function(item) {
-                        return item.strProvinceName + item.strCityName + item.strAreaName
-                    }))
             })
         },
         getDStoreList: function(strUserId) {
