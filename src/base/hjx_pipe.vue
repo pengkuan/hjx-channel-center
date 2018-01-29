@@ -1,5 +1,5 @@
 <template>
-    <div class="label clear">
+    <div class="label">
         <span class="hjx-fl">【{{strF1}}】{{strF2}}</span>
         <span class="hjx-fr"><slot></slot></span>
     </div>
@@ -20,7 +20,7 @@ export default {
 <style type="text/css" scoped="scoped">
 	.label{
 		margin: 8px auto;
-        height: 20px;
+        overflow: hidden;
         line-height: 20px;
         border-bottom: 1px dashed #eee;
         color: #878d99;
