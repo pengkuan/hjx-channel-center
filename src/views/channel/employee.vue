@@ -39,7 +39,7 @@
 	    <el-table-column prop="strCardNum" label="身份证号码"></el-table-column>
 	    <el-table-column prop="strPhoneNum" label="手机号" ></el-table-column>
 	    <el-table-column prop="strChannelName" label="所属商家" ></el-table-column>
-	    <el-table-column prop="strStoreName" label="S2所属门店" ></el-table-column>
+	    <el-table-column prop="strStoreName" label="S1所属门店" ></el-table-column>
 	    <el-table-column prop="strChannelRole" label="组织身份" ></el-table-column>
 	    <el-table-column  label="状态" >
 	    	<template slot-scope="scope">

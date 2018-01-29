@@ -119,7 +119,7 @@
 <script type="text/javascript">
 	import api from '../../api/api'
 	import util from '../../common/util'
-    import commonData from '../../common/data'
+    import { mapGetters , mapActions} from 'vuex'
 	export default {
 		data() {
             var validateName = (rule, value, callback) => {
@@ -164,12 +164,12 @@
                 imageUrl1: '',//三证照片
                 imageUrl2: '',
                 dealer:{
-                    provinces:commonData.addrList,
+                    provinces:'',
                     citys:'',
                     areas:''
                 },
                 bankAddr:{
-                    provinces:commonData.addrList,
+                    provinces:'',
                     citys:'',
                     areas:'',
                 },
@@ -270,6 +270,9 @@
             this.loadInfo()
 		},
 		methods:{
+            ...mapActions({
+                getAddress: 'commonData/getAdds' 
+            }),
             handleAvatarSuccess1(res, file) {
                 this.ruleForm.dealer.strLicensePic = file.response.fileName
                 this.imageUrl1 = URL.createObjectURL(file.raw);
@@ -293,7 +296,7 @@
                 }
                 return flags && isLt1M
             },
-            loadInfo: function() {
+            async loadInfo() {
                 api.getBank({}).then(res => {
                     if (res.ret != '0') {
                         this.$message(res.retinfo)
@@ -301,17 +304,9 @@
                     }
                     this.bankList = res.data.bankList
                 })
-                if(commonData.addrList.length == 0){
-                    api.getAddress({}).then(res => {
-                        if (res.ret != '0') {
-                            this.$alert(res.retinfo,"提示")
-                            return
-                        }
-                        commonData.addrList = res.data.address
-                        this.dealer.provinces = res.data.address
-                        this.bankAddr.provinces = res.data.address
-                    })
-                }
+                await this.getAddress()
+                this.dealer.provinces = this.$store.getters['commonData/adds']
+                this.bankAddr.provinces = this.$store.getters['commonData/adds']
             },
 			//取消
             cancelnow: function() {
@@ -354,7 +349,6 @@
                                 this.bankAddr.citys = []
                                 this.bankAddr.areas = []
                             }
-
                         })
                     } else {
                         console.log('error submit!!');

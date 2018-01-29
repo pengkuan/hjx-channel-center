@@ -138,7 +138,7 @@
 <script type="text/javascript">
 	import api from '../../api/api'
 	import util from '../../common/util'
-    import commonData from '../../common/data'
+    import { mapGetters , mapActions} from 'vuex'
 	export default {
 		data() {
 		    return {
@@ -196,7 +196,7 @@
                 },
                 replaceNodeList:[],
                 replaceNodeAddr:{
-                    provinces:commonData.addrList,
+                    provinces:[],
                     citys:[],
                     areas:[]
                 },
@@ -218,7 +218,7 @@
                 },
                 AddNextList:[],
                 AddNextSaleAddr:{
-                    provinces:commonData.addrList,
+                    provinces:[],
                     citys:[],
                     areas:[]
                 },
@@ -258,22 +258,17 @@
             }
         },
 		mounted()  {
-            this.index()
+            this.init()
             this.getBD4List()
 		},
 		methods:{
-            index:function(){
-                if(commonData.addrList.length == 0){
-                    api.getAddress({}).then(res => {
-                        if (res.ret != '0') {
-                            this.$alert(res.retinfo,"提示")
-                            return
-                        }
-                        commonData.addrList = res.data.address
-                        this.AddNextSaleAddr.provinces = res.data.address
-                        this.replaceNodeAddr.provinces = res.data.address
-                    })
-                }
+            ...mapActions({
+                getAddress: 'commonData/getAdds' 
+            }),
+            async init(){
+                await this.getAddress()
+                this.AddNextSaleAddr.provinces = this.$store.getters['commonData/adds']
+                this.replaceNodeAddr.provinces = this.$store.getters['commonData/adds']
             },
             //刷新BD4List
             getBD4List(){

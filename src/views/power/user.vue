@@ -42,7 +42,7 @@
 	        	<div v-if="scope.row.Fstatus == 1">
 		        	<el-button class='indexFunBtn' type="text" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
 		        	<el-button class='indexFunBtn' type="text" @click="setPower(scope.row.Frole_id)"  size="small">设置权限</el-button>
-		        	<el-button class='indexFunBtn' type="text" @click="setStatusConfirm(scope.row.Frole_id , scope.row.Fstatus)"  size="small">禁用</el-button>
+		        	<el-button class='indexFunBtn hjx-danger' type="text" @click="setStatusConfirm(scope.row.Frole_id , scope.row.Fstatus)"  size="small">禁用</el-button>
 	        	</div>
 	        	<div v-else>
 	        		<el-button  type="text" @click="setStatusConfirm(scope.row.Frole_id , scope.row.Fstatus)" :disabled="scope.row.upStatus" size="small">启用</el-button>

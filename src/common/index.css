@@ -78,3 +78,14 @@ button.indexFunBtn{margin: 8px 8px 8px 0 !important}
 /*警告条*/
 .hjx-alert{width: 100%;padding: 8px 16px;font-size: 13px;line-height: 18px;margin: 0;box-sizing: border-box;border-radius: 4px;position: relative;background-color: #fff;overflow: hidden;color: #fff;opacity: 1;display: table;transition: opacity .2s;}
 .hjx-alert-warning {background-color: oldlace}
+
+/*左侧配置*/
+.el-menu-item, .el-submenu__title {color: #fff;}
+.el-submenu .el-menu-item {background-color: #333744}
+.el-submenu .el-menu-item:hover {background-color: #4A5064}
+.el-submenu .el-menu-item.is-active,
+.el-menu-item.is-active,
+.el-submenu .el-menu-item.is-active:hover,
+.el-menu .iconfont {vertical-align: baseline;margin-right: 6px;}
+.warp-breadcrum {padding: 10px 0px;border-bottom: 1px solid #efefef;}
+.warp-main {padding-top: 20px;}

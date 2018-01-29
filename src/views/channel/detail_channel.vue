@@ -60,10 +60,10 @@
                 <!-- 操作流水 -->
                 <br>
                 <el-alert title="操作流水" type="info" :closable="false"></el-alert><br>
-                <hjx-pipe v-for="item in pipeList" :strF1="item.strF1" :strF2="item.strF2">{{item.strF3+' '+item.strF4}}</hjx-pipe>
+                <hjx-pipe v-for="(item,index) in pipeList" :key="index" :strF1="item.strF1" :strF2="item.strF2">{{item.strF3+' '+item.strF4}}</hjx-pipe>
                 <br>
-                <div class="comment"><el-input  v-model="comment" placeholder="在此输入备注内容"></el-input></div>
-                <el-button  @click="setComment">确认备注</el-button><br><br>
+                <div class="comment"><el-input  v-model="comment" :maxlength="400" placeholder="在此输入备注内容（最多400字）"></el-input></div>
+                <el-button  @click="setComment" :disabled="comment?false:true">确认备注</el-button><br><br>
             </el-tab-pane>
             <el-tab-pane label="门店列表">
                 <div class="hjx-overflow">
@@ -75,6 +75,13 @@
                             <el-select v-model="filters.strStatus" placeholder="请选择合作状态">
                                 <el-option label="全部" value=""></el-option>
                                 <el-option  v-for="item in statusList"  :label="item.name" :value="item.id" :key="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item prop="strStoreRelateStatus" label="关联状态：">
+                            <el-select v-model="filters.strStoreRelateStatus" placeholder="请选择关联状态">
+                                <el-option label="全部" value=""></el-option>
+                                <el-option  v-for="item in relatedStatusList"  :label="item.name" :value="item.id" :key="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -103,6 +110,7 @@
                     <el-table-column  label="关联状态" >
                         <template slot-scope="scope">
                             <span v-for = "item in relatedStatusList" v-if="scope.row.strRelatedStatus == item.id">{{item.name}}</span>
+                            <p v-if="scope.row.strRelatedStatus == '0' " class="unUseStatus">{{scope.row.strRelatedStatusTips}}</p>
                         </template>
                     </el-table-column>
                     <el-table-column  label="操作">
@@ -193,7 +201,8 @@ export default {
                 'strStoreId':'',
                 'strStoreName':'',
                 'strChannelKey':'',
-                'strStatus': ''
+                'strStatus': '',
+                'strStoreRelateStatus':''
             }
         }
     },

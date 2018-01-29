@@ -17,12 +17,16 @@
         </el-form-item>
         <el-form-item  prop="scoreId" label="商户等级：">
             <el-select v-model="filters.scoreId" placeholder="请选择商户等级">
+                <el-option label="全部" value=""></el-option>
                 <el-option  v-for="item in scoreList"  :label="item.name" :value="item.id" :key="item.id">
                 </el-option>
             </el-select>
         </el-form-item>
         <el-form-item prop="searchkey" label="商户ID、名称：">
             <el-input v-model="filters.searchkey" @keyup.13.native="search($event)" placeholder="按商户ID、名称搜索" ></el-input>
+        </el-form-item>
+        <el-form-item prop="strParterName" label="合作方：">
+            <el-input v-model="filters.strParterName" @keyup.13.native="search($event)" placeholder="请输入合作方名称" ></el-input>
         </el-form-item>
         <el-form-item label="handle" class="hjx-search-handle">
             <el-button type="primary" @click="search">查询</el-button>
@@ -97,7 +101,8 @@ export default {
             filters:{
                 searchkey:'',
                 scoreId:'',
-                strStatus:''
+                strStatus:'',
+                strParterName:''
             }
         }
     },
@@ -129,11 +134,10 @@ export default {
             let data ={
                 pageIndex:String(this.pageIndex),
                 pageSize:this.pageSize,
-                
                 strKey:this.filters.searchkey,
-                //
                 strStatus:this.filters.strStatus,
                 strChannelScore:this.filters.scoreId,
+                strParterName:this.filters.strParterName,
                 strProvinceId:strProvinceId,
                 strCityId:strCityId,
                 strAreaId:strAreaId

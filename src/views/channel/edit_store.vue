@@ -72,14 +72,6 @@
                     </div>
                 </div>
             </el-form-item>
-
-            <el-form-item label="渠道经理：" style='display:none'>
-                <el-select v-model="strChannelManagerId" filterable placeholder="请选择渠道经理">
-                    <el-option  v-for="item in ChannelManager"  :label="item.strChannelManagerName"  :value="item.strChannelManagerId" :key="item.strChannelManagerId">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-
             <el-form-item  label="合作状态" >
                 <el-select v-model="strStatus"  placeholder="请选择合作状态">
                     <el-option  v-for="item in statusList"  :label="item.name"  :value="item.id" :key="item.id">
@@ -246,34 +238,21 @@ export default {
             getChannel: 'commonData/getChannel' ,
             getAddress: 'commonData/getAdds' 
         }),
-        getStoreId:function(){
+        getStoreId(){
             this.id= this.$route.query.id
         },
-		loadInfo: function() {
+		async loadInfo() {
             //获取一级商户
             var loading = this.$loading({
-                text:'正在获取信息',
+                text:'正在获取商户信息',
                 target:'#Edit-store'
             })
-            this.getChannel().then( ()=>{
-                loading.close()
-            })
+            await this.getChannel()
+            setTimeout(()=>{loading.close()},100)
             if(!this.structAChange) this.structAid = this.defaultDate.relationUp[0].strRelationId + ',' + this.defaultDate.relationUp[0].strLevelId + ',0'
-            /*
-            //获取渠道经理 
-            api.getChannelManager({}).then(res => {
-                if (res.ret != '0') {
-                    this.$message(res.retinfo)
-                    return
-                }
-				this.ChannelManager = res.data.managers;
-                this.strChannelManagerId = this.defaultDate.storeInfo.strChannelManagerId
-			})
-            */
-            this.getAddress().then(()=>{
-                this.strProvinceId = this.defaultDate.storeInfo.strProvinceId
-                this.saleAdds.provinces = this.$store.getters['commonData/adds']
-            })
+            await this.getAddress()
+            this.strProvinceId = this.defaultDate.storeInfo.strProvinceId
+            this.saleAdds.provinces = this.$store.getters['commonData/adds']
         },
         // 获取默认数据
         getDefaultDate : function(strStoreId){
@@ -282,7 +261,9 @@ export default {
                     this.$alert(res.retinfo,"提示")
                     return
                 }
+
                 this.defaultDate = res.data
+                this.defaultDate.relationUp = res.data.relationUp.filter(item =>item.strLevelCode != 'REL001') //过滤掉上级中的合作方
                 this.strAddress = this.defaultDate.storeInfo.strAddress
                 this.strStoreName = this.defaultDate.storeInfo.strStoreName
                 this.strStatus = this.defaultDate.storeInfo.strStatus

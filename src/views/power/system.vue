@@ -20,7 +20,7 @@
             <template slot-scope="scope" >
                 <div v-if="scope.row.status == 1">
                     <el-button class='indexFunBtn' type="text" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
-                    <el-button class='indexFunBtn' type="text" @click="setStatusConfirm(scope.row.system_id , scope.row.status)"  size="small">禁用</el-button>
+                    <el-button class='indexFunBtn' type="text hjx-danger" @click="setStatusConfirm(scope.row.system_id , scope.row.status)"  size="small">禁用</el-button>
                 </div>
                 <div v-else>
                     <el-button class='indexFunBtn'  type="text" @click="setStatusConfirm(scope.row.system_id , scope.row.status)"  size="small">启用</el-button>

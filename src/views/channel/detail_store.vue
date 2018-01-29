@@ -32,10 +32,10 @@
                 <!-- 操作流水 -->
                 <br>
                 <el-alert title="操作流水" type="info" :closable="false"></el-alert><br>
-                <hjx-pipe v-for="item in pipeList" :strF1="item.strF1" :strF2="item.strF2">{{item.strF3+' '+item.strF4}}</hjx-pipe>
+                <hjx-pipe v-for="(item,index) in pipeList" :key="index"  :strF1="item.strF1" :strF2="item.strF2">{{item.strF3+' '+item.strF4}}</hjx-pipe>
                 <br>
-                <div class="comment"><el-input  v-model="comment" placeholder="在此输入备注内容"></el-input></div>
-                <el-button  @click="setComment">确认备注</el-button><br><br>
+                <div class="comment"><el-input  v-model="comment" :maxlength="400" placeholder="在此输入备注内容（最多400字）"></el-input></div>
+                <el-button  @click="setComment" :disabled="comment?false:true">确认备注</el-button><br><br>
             </el-tab-pane>
 
             <el-tab-pane label="S1列表">
@@ -267,18 +267,17 @@ export default {
             getChannel: 'commonData/getChannel' ,
             getAddress: 'commonData/getAdds' 
         }),
-        getStoreId:function(){
+        getStoreId(){
             this.id= this.$route.query.id
         },
-		loadInfo: function() {
+		async loadInfo() {
             //获取一级商户
             var loading = this.$loading({
-                text:'正在获取信息',
+                text:'正在获取商户信息',
                 target:'#Edit-store'
             })
-            this.getChannel().then( ()=>{
-                loading.close()
-            })
+            await this.getChannel()
+            setTimeout(()=>{loading.close()},100)
             if(!this.structAChange) this.structAid = this.defaultDate.relationUp[0].strRelationId + ',' + this.defaultDate.relationUp[0].strLevelId + ',0'
 
             this.getAddress().then(()=>{
@@ -289,13 +288,14 @@ export default {
             this.getPipeline()
         },
         // 获取默认数据
-        getDefaultDate : function(strStoreId){
+        getDefaultDate(strStoreId){
             api.getStoreInfo({strStoreId:strStoreId}).then(res => {
                 if (res.ret != '0') {
                     this.$alert(res.retinfo,"提示")
                     return
                 }
                 this.defaultDate = res.data
+                this.defaultDate.relationUp = res.data.relationUp.filter(item =>item.strLevelCode != 'REL001') //过滤掉上级中的合作方
                 this.strAddress = this.defaultDate.storeInfo.strAddress
                 this.strStoreName = this.defaultDate.storeInfo.strStoreName
                 this.strStatusName = this.defaultDate.storeInfo.strStatusName
@@ -325,7 +325,7 @@ export default {
             })
         },
         
-        getNextList: function(val, strIndex , setAddDefault) {
+        getNextList(val, strIndex , setAddDefault) {
             var strIndex = strIndex +1
             var valList = val.split(',') 
             this.strRelationId = valList[0]
@@ -344,7 +344,7 @@ export default {
                     return
                 }
                 if(res.data) {
-                    var obj = res.data
+                    var obj = res.data 
                     obj.upStrRelationId = this.strRelationId
                     obj.upStrLevelId = this.strLevelId
                     this.tempList.push(obj)
@@ -587,7 +587,10 @@ export default {
                 return true
             }).then((res) => {
                 // 重新生成已关联S1
-                if(res) this.getS1()
+                if(res) {
+                    this.getS1()
+                    this.getRelationData("S2",this.s2Info ,'s2list')
+                }
                 this.SList.showS1 = false
             })
         },

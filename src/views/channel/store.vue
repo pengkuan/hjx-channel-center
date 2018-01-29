@@ -15,6 +15,13 @@
                 </el-option>
             </el-select>
         </el-form-item>
+        <el-form-item prop="strStoreRelateStatus" label="关联状态：">
+            <el-select v-model="filters.strStoreRelateStatus" placeholder="请选择关联状态">
+                <el-option label="全部" value=""></el-option>
+                <el-option  v-for="item in relatedStatusList"  :label="item.name" :value="item.id" :key="item.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
         <el-form-item label="门店ID：" prop="strStoreId">
           <el-input v-model="filters.strStoreId" @keyup.13.native="search($event)" placeholder="请输入门店ID" ></el-input>
         </el-form-item>
@@ -57,6 +64,7 @@
 	    <el-table-column  label="关联状态" >
 	    	<template slot-scope="scope">
 	            <span v-for = "item in relatedStatusList" v-if="scope.row.strRelatedStatus == item.id">{{item.name}}</span>
+	            <p v-if="scope.row.strRelatedStatus == '0' " class="unUseStatus">{{scope.row.strRelatedStatusTips}}</p>
 	        </template>
 	    </el-table-column>
 	    <el-table-column  label="操作">
@@ -96,7 +104,8 @@ export default {
         		'strStoreId':'',
         		'strStoreName':'',
         		'strChannelKey':'',
-        		'strStatus': ''
+        		'strStatus': '',
+        		'strStoreRelateStatus':''
         	}
 	    }
 	},

@@ -68,10 +68,10 @@
                 <!-- 操作流水 -->
                 <br>
                 <el-alert title="操作流水" type="info" :closable="false"></el-alert><br>
-                <hjx-pipe v-for="item in pipeList" :strF1="item.strF1" :strF2="item.strF2">{{item.strF3+' '+item.strF4}}</hjx-pipe>
+                <hjx-pipe v-for="(item,index) in pipeList" :key="index"  :strF1="item.strF1" :strF2="item.strF2">{{item.strF3+' '+item.strF4}}</hjx-pipe>
                 <br>
-                <div class="comment"><el-input  v-model="comment" placeholder="在此输入备注内容"></el-input></div>
-                <el-button  @click="setComment">确认备注</el-button><br><br>
+                <div class="comment"><el-input  v-model="comment" :maxlength="400" placeholder="在此输入备注内容（最多400字）"></el-input></div>
+                <el-button  @click="setComment" :disabled="comment?false:true">确认备注</el-button><br><br>
             </el-tab-pane>
             <el-tab-pane label="负责门店">
                 <el-table :data="dataList" border style="width: 100% ; min-height:300px">

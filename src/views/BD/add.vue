@@ -35,48 +35,16 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
         </el-form-item>
-
         <el-form-item class="textRight">
             <el-button type="primary" @click="submitnow('ruleForm')">确认创建</el-button>
             <el-button @click="submitnow('ruleForm',true)">确认并继续创建</el-button>
             <el-button @click="cancelnow">取消</el-button>
             <el-checkbox v-model="setIdentity">【确认创建】后，去设置该用户的组织身份</el-checkbox>
         </el-form-item>
-        
     </el-form>
-    
 </div>
-
 </div>	
 </template>
-
-<style type="text/css">
-  .content-container{width: 600px}
-  .avatar-uploader .el-upload {
-    border: 1px dashed #bfcbd9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #20a0ff;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 128px;
-    height: 128px;
-    line-height: 128px;
-    text-align: center;
-  }
-  .avatar {
-    width: 128px;
-    height: 128px;
-    display: block;
-  }
-</style>
-
 <script type="text/javascript">
 	import api from '../../api/api'
 	import util from '../../common/util'
@@ -212,3 +180,29 @@
 		}
 	}
 </script>
+<style type="text/css" scoped>
+  .content-container{width: 600px}
+  .avatar-uploader .el-upload {
+    border: 1px dashed #bfcbd9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #20a0ff;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 128px;
+    height: 128px;
+    line-height: 128px;
+    text-align: center;
+  }
+  .avatar {
+    width: 128px;
+    height: 128px;
+    display: block;
+  }
+</style>

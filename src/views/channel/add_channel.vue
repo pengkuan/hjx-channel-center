@@ -303,10 +303,8 @@ export default {
                 }
             })
         },
-        loadInfo: function() {
-            this.getAddress().then(()=>{
-                this.saleAdds.provinces = this.$store.getters['commonData/adds']
-            })
+        async loadInfo() {
+            
 			api.getChannelTemplate({}).then(res => {
                 if (res.ret != '0') {
                     this.$alert(res.retinfo,"提示")
@@ -328,6 +326,9 @@ export default {
                 }
 				this.channelUserList = res.data
 			})
+            
+            await this.getAddress()
+            this.saleAdds.provinces = this.$store.getters['commonData/adds']
 			
 		},
         // 获取当前对应城市

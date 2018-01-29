@@ -181,6 +181,3 @@ export default {
 	}
 }
 </script>
-<style type="text/css">
-	.pagination{text-align: right;margin: 20px 0}
-</style>

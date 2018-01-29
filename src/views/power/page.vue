@@ -5,51 +5,34 @@
     	<el-button type="primary" size="small" @click="Add">新增页面</el-button>
 	</hjx-header>
 	<!--工具条-->
-	<div style='overflow:hidden'>
-		<el-row :gutter="20">
-    		<el-col :span="4">
-				<div class="searchItem">
-					<p class="searchTitle">所属系统：</p>
-					<el-select v-model="searchkeys.s_system_id" placeholder="请选择">
-		                <el-option label="全部" value=""></el-option>
-		                <el-option v-for="item in systemList" :label="item.name" :value="item.system_id" :key="item.system_id"></el-option>
-		            </el-select>
-				</div>
-			</el-col>
-			<el-col :span="4">
-				<div class="searchItem">
-					<p class="searchTitle">所属模块：</p>
-					<el-select v-model="searchkeys.s_module_id" placeholder="请选择">
-		                <el-option label="全部" value=""></el-option>
-		                <el-option v-for="item in moduleList.Search" :label="item.Fname" :value="item.Fauthority_id" :key="item.Fauthority_id"></el-option>
-		            </el-select>
-				</div>
-			</el-col>
-			<el-col :span="4">
-				<div class="searchItem">
-					<p class="searchTitle">权限标识码：</p>
-					<el-select v-model="searchkeys.s_is_flags" placeholder="请选择">
-		                <el-option label="全部" value=""></el-option>
-		                <el-option label="为空" value="1"></el-option>
-		                <el-option label="不为空" value="2"></el-option>
-		            </el-select>
-				</div>
-			</el-col>
-			<el-col :span="4">
-				<div class="searchItem">
-					<p class="searchTitle">页面名称：</p>
-					<el-input v-model="searchkeys.s_page_name" @keyup.13.native="search($event)" :maxlength="40" placeholder="请输入页面名称"></el-input>
-				</div>
-			</el-col>
-			<el-col :span="8">
-				<p class='searchTitle'>&nbsp;</p>
-				<div class="goSearch ">
-					<el-button @click="search">搜索</el-button>
-		      		<el-button @click="clearForm('searchkeys')">清空</el-button>
-				</div>
-			</el-col>
-    	</el-row>
-	</div><br>
+	<el-form :inline="true" :model="searchkeys" ref="searchkeys" label-position="top">
+        <el-form-item prop="s_system_id" label="所属系统：">
+            <el-select v-model="searchkeys.s_system_id" placeholder="请选择">
+                <el-option label="全部" value=""></el-option>
+                <el-option v-for="item in systemList" :label="item.name" :value="item.system_id" :key="item.system_id"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item prop="s_module_id" label="所属模块：">
+            <el-select v-model="searchkeys.s_module_id" placeholder="请选择">
+                <el-option label="全部" value=""></el-option>
+                <el-option v-for="item in moduleList.Search" :label="item.Fname" :value="item.Fauthority_id" :key="item.Fauthority_id"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item prop='s_is_flags' label="权限标识码：">
+          	<el-select v-model="searchkeys.s_is_flags" placeholder="请选择">
+                <el-option label="全部" value=""></el-option>
+                <el-option label="为空" value="1"></el-option>
+                <el-option label="不为空" value="2"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item prop='s_page_name' label="页面名称：">
+          	<el-input v-model="searchkeys.s_page_name" @keyup.13.native="search($event)" :maxlength="40" placeholder="请输入页面名称"></el-input>
+        </el-form-item>
+        <el-form-item label="handle" class="hjx-search-handle">
+            <el-button type="primary" @click="search">查询</el-button>
+            <el-button @click="clearForm('searchkeys')">清空</el-button>
+        </el-form-item>
+    </el-form>
 
     <table class="el-table el-table--border border-RB-none" cellspacing="0" cellpadding="0" border="0">
     <tr>
@@ -77,7 +60,7 @@
 	    <td>
 	    	<div class="cell" v-if="item.Fstatus == 1">
 	        	<el-button class='indexFunBtn' type="text" @click="getEditData(index)"  size="small">编辑</el-button>
-	        	<el-button class='indexFunBtn' type="text" @click="setStatusConfirm(item.Fauthority_id , item.Fstatus)"  size="small">禁用</el-button>
+	        	<el-button class='indexFunBtn' type="text hjx-danger" @click="setStatusConfirm(item.Fauthority_id , item.Fstatus)"  size="small">禁用</el-button>
         	</div>
         	<div class="cell" v-else>
         		<el-button  type="text" @click="setStatusConfirm(item.Fauthority_id , item.Fstatus)" :disabled="item.upStatus" size="small">启用</el-button>
@@ -86,38 +69,6 @@
 	    
 	</tr>
     </table>
-    <!-- <br><br><br> -->
-
-	<!-- <el-table
-	    :data="dataList"
-	    border
-	    style="width: 100% ; min-height:300px">
-	    
-	    <el-table-column prop="Fname" label="页面名称" ></el-table-column>
-	    <el-table-column prop="Fdesc" label="描述"></el-table-column>
-	    <el-table-column prop="Fmodule_name" label="所属模块"></el-table-column>
-	    <el-table-column prop="Fsystem_name" label="所属系统"></el-table-column>
-	    <el-table-column prop="Faccess_flags" label="查看权限标识码"></el-table-column>
-	    <el-table-column  label="状态" >
-	    	<template scope="scope">
-	    		<span v-if="scope.row.upStatus">上级被禁用，当前无法操作</span>
-	    		<span v-else-if="scope.row.Fstatus == '1' ">启用</span>
-	    		<span v-else>禁用</span>
-	        </template>
-	    </el-table-column>
-	    <el-table-column label="操作" >
-	        <template scope="scope" >
-	        	<div v-if="scope.row.Fstatus == 1">
-		        	<el-button class='indexFunBtn' type="primary" @click="getEditData(scope.$index)"  size="small">编辑</el-button>
-		        	<el-button class='indexFunBtn' type="danger" @click="setStatusConfirm(scope.row.Fauthority_id , scope.row.Fstatus)"  size="small">禁用</el-button>
-	        	</div>
-	        	<div v-else>
-	        		<el-button  type="primary" @click="setStatusConfirm(scope.row.Fauthority_id , scope.row.Fstatus)" :disabled="scope.row.upStatus" size="small">启用</el-button>
-	        	</div>
-	        </template>
-	    </el-table-column>
-	</el-table> -->
-
 	<div class="pagination">
 	    <el-pagination
 	      @size-change="handleSizeChange"
@@ -438,10 +389,7 @@ export default {
 			this.showList()
 		},
 		clearForm(){
-			this.searchkeys.s_system_id = ''
-			this.searchkeys.s_module_id = ''
-			this.searchkeys.s_page_name = ''
-			this.searchkeys.s_is_flags = ''
+			this.$refs['searchkeys'].resetFields()
 			this.showList()
 		},
 		/*****  新增/编辑  *****/ 

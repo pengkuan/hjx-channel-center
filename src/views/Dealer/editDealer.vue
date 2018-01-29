@@ -128,7 +128,7 @@
 <script type="text/javascript">
 	import api from '../../api/api'
 	import util from '../../common/util'
-    import commonData from '../../common/data'
+    import { mapGetters , mapActions} from 'vuex'
 	export default {
 		data() {
             var validateName = (rule, value, callback) => {
@@ -173,14 +173,14 @@
                 dealer:{
                 	provinceChange : false,
                 	cityChange : false,
-                    provinces:commonData.addrList,
+                    provinces:'',
                     citys:'',
                     areas:''
                 },
                 bankAddr:{
                 	provinceChange : false,
                 	cityChange : false,
-                    provinces:commonData.addrList,
+                    provinces:'',
                     citys:[],
                     areas:[],
                 },
@@ -287,10 +287,13 @@
             this.getdefaultData()
 		},
 		methods:{
+            ...mapActions({
+                getAddress: 'commonData/getAdds' 
+            }),
 			getId:function(){
 	            this.ruleForm.dealer.dealerid= this.$route.query.id
 	        },
-            loadInfo: function() {
+            async loadInfo() {
                 api.getDStatus({'who':'dealer'}).then(res =>{
                     if (res.ret != '0') {
                         this.$message(res.retinfo)
@@ -305,23 +308,11 @@
                     }
                     this.bankList = res.data.bankList
                 })
-                if(commonData.addrList.length == 0){
-                    api.getAddress({}).then(res => {
-                        if (res.ret != '0') {
-                            this.$alert(res.retinfo,"提示")
-                            return
-                        }
-                        commonData.addrList = res.data.address
-                        this.dealer.provinces = res.data.address
-                        this.bankAddr.provinces = res.data.address
-
-                        this.ruleForm.dealer.strAddrProvinceId = this.defaultData.strAddrProvinceId
-                        this.ruleForm.dealer.account_bank.strAddrProvinceId = this.defaultData.account_bank.strAddrProvinceId
-                    })
-                }else{
-                    this.ruleForm.dealer.strAddrProvinceId = this.defaultData.strAddrProvinceId
-                    this.ruleForm.dealer.account_bank.strAddrProvinceId = this.defaultData.account_bank.strAddrProvinceId
-                }
+                await this.getAddress()
+                this.dealer.provinces = this.$store.getters['commonData/adds']
+                this.bankAddr.provinces = this.$store.getters['commonData/adds']
+                this.ruleForm.dealer.strAddrProvinceId = this.defaultData.strAddrProvinceId
+                this.ruleForm.dealer.account_bank.strAddrProvinceId = this.defaultData.account_bank.strAddrProvinceId
             },
             getdefaultData : function(strStoreId){
             	api.getDealerInfo({dealerid:this.ruleForm.dealer.dealerid}).then(res => {

@@ -88,14 +88,6 @@
                     </div>
                 </div>
             </el-form-item>
-
-            <el-form-item label="渠道经理：" style='display:none'>
-                <el-select v-model="strChannelManagerId" filterable placeholder="请选择渠道经理">
-                    <el-option  v-for="item in ChannelManager"  :label="item.strChannelManagerName"  :value="item.strChannelManagerId" :key="item.strChannelManagerId">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-
             <el-form-item class='submitRight'>
                 <el-button type="primary" @click="submitnow('ruleForm')">立即创建</el-button>
                 <el-button @click="cancelnow">取消</el-button>
@@ -120,14 +112,13 @@
 <script>
 import api from '../../api/api'
 import util from '../../common/util'
-import commonData from '../../common/data'
+import { mapGetters, mapActions } from 'vuex'
 export default {
 	data() {
 	    return {
             dialogFormVisible:false,
             ruleForm:{},
             channelorgs: [],
-            provinces: commonData.addrList,
             citys: [],
             areas: [],
             ChannelManager: [],
@@ -141,7 +132,7 @@ export default {
                 model_5:''
             },
             saleAdds:{
-                provinces : commonData.addrList,
+                provinces : '',
                 citys : '',
                 areas : ''
             },
@@ -154,7 +145,6 @@ export default {
             },
             // 
             structAid: '',
-            structA: commonData.channelList,
             ifValidateNext:false,//是否验证次级渠道
             // 新增次级组名
             getGroupRelationId : '',
@@ -202,6 +192,13 @@ export default {
             }
         }
 	},
+    computed:{
+        ...mapGetters({
+            provinces : 'commonData/adds',
+            structA : 'commonData/channel',
+            statusList : 'store/status'
+        })
+    },
 	watch: {
             
         // 省市区
@@ -249,43 +246,20 @@ export default {
         }
     },
 	methods:{
-		loadInfo: function() {
+        ...mapActions({
+            getChannel: 'commonData/getChannel' ,
+            getAddress: 'commonData/getAdds' 
+        }),
+		async loadInfo() {
             //获取一级商户
-            if(commonData.channelList.length == 0){
-                var loading = this.$loading({
-                    text:'获取商户列表',
-                    target:'#Add-store'
-                })
-                api.getAllChannels({}).then(res => {
-                    loading.close()
-                    if (res.ret != '0') {
-                        this.$message(res.retinfo)
-                        return
-                    }
-                    commonData.channelList = res.data.Relations
-                    this.structA = res.data.Relations
-                })
-            }
-            // 获取渠道经理 
-            api.getChannelManager({}).then(res => {
-                if (res.ret != '0') {
-                    this.$alert(res.retinfo,"提示")
-                    return
-                }
-				this.ChannelManager = res.data.managers;
-			})
-            // 地址
-            if(commonData.addrList.length == 0){
-                api.getAddress({}).then(res => {
-                    if (res.ret != '0') {
-                        this.$alert(res.retinfo,"提示")
-                        return
-                    }
-                    commonData.addrList = res.data.address
-                    this.provinces = res.data.address
-                    this.saleAdds.provinces = res.data.address
-                })
-            }
+            var loading = this.$loading({
+                text:'正在获取商户信息',
+                target:'#Add-store'
+            })
+            await this.getChannel()
+            setTimeout(()=>{loading.close()},100)
+            await this.getAddress()
+            this.saleAdds.provinces = this.$store.getters['commonData/adds']
         },
         // 新增
         addGroup: function(upStrRelationId , upStrLevelId , strIndex) {

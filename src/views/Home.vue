@@ -236,24 +236,6 @@ export default {
     }
 }
 </script>
-<style>
-.el-menu-item, .el-submenu__title {color: #fff;}
-.el-submenu__title:hover {background-color: #00C1DE;}
-.el-submenu .el-menu-item {background-color: #333744}
-.el-submenu .el-menu-item:hover {background-color: #4A5064}
-.el-submenu .el-menu-item.is-active,
-.el-menu-item.is-active,
-.el-submenu .el-menu-item.is-active:hover,
-.el-menu-item.is-active:hover {background-color: #00C1DE;color: #fff;}
-.el-submenu .el-menu-item.is-active-add,
-.el-menu-item.is-active-add,
-.el-submenu .el-menu-item.is-active-add:hover,
-.el-menu-item.is-active-add:hover {background-color: #00C1DE;color: #fff;}
-.el-menu .iconfont {vertical-align: baseline;margin-right: 6px;}
-.warp-breadcrum {padding: 10px 0px;border-bottom: 1px solid #efefef;}
-.warp-main {padding-top: 20px;}
-
-</style>
 <style scoped lang="scss">
 .icon-down {font-size: 12px}
 .gohome {font-size: 14px;cursor: pointer;}

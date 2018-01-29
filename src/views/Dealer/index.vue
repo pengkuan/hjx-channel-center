@@ -29,20 +29,14 @@
             <el-button @click="clearForm('searchkeys')">清空</el-button>
         </el-form-item>
     </el-form>
-	<el-table
-	    :data="dataList"
-	    border
-	    style="width: 100% ; min-height:300px">
-	    <el-table-column prop="strDealerId" label="ID" >
-	    	
-	    </el-table-column>
+	<el-table :data="dataList" border style="width: 100% ; min-height:300px">
+	    <el-table-column prop="strDealerId" label="ID" ></el-table-column>
 	    <el-table-column prop="strDealerName" label="公司全称" ></el-table-column>
 	    <el-table-column prop="strDealerName" label="地区" >
 	    	<template slot-scope="scope">
 	            {{scope.row.strProvinceName + scope.row.strCityName + scope.row.strAreaName }}
 	        </template>
 	    </el-table-column>
-	   
 	    <el-table-column prop="strUserName" label="D4"></el-table-column>
 	    <el-table-column prop="strContractEndTime" label="合同结束时间"></el-table-column>
 	    <el-table-column  label="状态" >
@@ -53,14 +47,11 @@
 	    		<span v-else-if="scope.row.strStatus == '4' ">暂停合作</span>
 	    	</template>
 	    </el-table-column>
-	    <el-table-column
-	        label="操作"
-	        >
+	    <el-table-column label="操作">
 	        <template slot-scope="scope">
-	        	<el-button class = 'indexFunBtn' type="primary" @click="detailDealer(scope.row.strDealerId)"  size="small">详情</el-button>
-	        	<el-button class = 'indexFunBtn' type="primary" @click="editDealer(scope.row.strDealerId)"  size="small">编辑</el-button>
-	        	<el-button class = 'indexFunBtn' type="primary" @click="relateD4(scope.row.strDealerId , scope.row.strUserName)"  size="small">关联D4</el-button>
-	        	
+	        	<el-button class = 'indexFunBtn' type="text" @click="detailDealer(scope.row.strDealerId)"  size="small">详情</el-button>
+	        	<el-button class = 'indexFunBtn' type="text" @click="editDealer(scope.row.strDealerId)"  size="small">编辑</el-button>
+	        	<el-button class = 'indexFunBtn' type="text" @click="relateD4(scope.row.strDealerId , scope.row.strUserName)"  size="small">关联D4</el-button>
 	        </template>
 	    </el-table-column>
 	</el-table>
@@ -162,23 +153,21 @@ export default {
 			})
 		},
 		//跳至编辑页面
-		editDealer:function(strDealerId){
+		editDealer(strDealerId){
 			this.$router.push({
 				name:'editDealer',
 				query:{id:strDealerId}
 			})
 		},
 		//跳至添加下级页面
-		relateD4:function(strDealerId , strUserName){
+		relateD4(strDealerId , strUserName){
 			var ifD4 = strUserName?true:false
 			this.$router.push({
 				name:'relateD4',
 				query:{id:strDealerId , ifD4:ifD4}
 			})
 		},
-		
-		//search
-		search:function(){
+		search(){
 			this.currentPage = 1
             this.pageIndex = '0'
 			this.showList()
@@ -189,8 +178,5 @@ export default {
 			this.showList()
 		}
 	}
-	
-
-
 }
 </script>
