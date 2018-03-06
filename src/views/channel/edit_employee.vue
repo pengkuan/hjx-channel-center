@@ -19,7 +19,7 @@
 	            </el-form-item>
 		        <el-form-item label="状态：">
 				    <el-select v-model="ruleForm.strStatus" placeholder="请选择状态">
-				      	<el-option  v-for="item in statusList"  :label="item.statusName"  :value="item.statusId" :key="item.statusId" >
+				      	<el-option  v-for="item in statusList"  :label="item.name"  :value="item.id" :key="item.id" >
 		                </el-option>
 				    </el-select>
 				</el-form-item>
@@ -49,14 +49,11 @@
 <script type="text/javascript">
 	import api from '../../api/api'
 	import util from '../../common/util'
+	import {mapGetters} from 'vuex'
 	export default {
 		data() {
 		    return {
 		    	id:'',
-	            statusList:[
-	                {statusName : '正常' , statusId : '1'},
-	                {statusName : '停用' , statusId : '0'}
-	            ],
 	            strUserNum:'',//工号
 	            strIdentityList:'',
 	            S4_list:'',//商户
@@ -86,6 +83,11 @@
                     ]
                 }
 		    }
+		},
+		computed:{
+			...mapGetters({
+				'statusList':'employee/status'
+			})
 		},
 		mounted()  {
 			this.getEmployeeId(),

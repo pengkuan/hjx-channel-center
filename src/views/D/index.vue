@@ -93,6 +93,7 @@ export default {
 	    }
 	},
 	mounted()  {
+		console.log(this.$route,555555555)
 		this.showList()
 		this.loadInfo()
 	},

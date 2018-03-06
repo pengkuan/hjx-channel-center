@@ -23,8 +23,8 @@ module.exports = {
     },
     build: {
         env: require('./prod.env'),
-        index: path.resolve(__dirname, '../static/index.html'),
-        assetsRoot: path.resolve(__dirname, '../static'),
+        index: path.resolve(__dirname, '../dist/index.html'),
+        assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: 'other/channelCenter',
         assetsPublicPath: '/static/',
         productionSourceMap: false,
