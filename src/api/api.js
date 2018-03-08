@@ -190,6 +190,7 @@ export default {
     getPipelineList(params) { return fetch('get_pipeline_list', params) }, // 获取操作流水记录
     setComment(params) { return fetch('set_comment', params) }, // 添加备注
     getAllChannels(params) { return fetch('get_allChannels', params) }, // 获取商户
+    getAllChannelsByContion(params) { return fetch('get_allChannelsByContion', params) }, // 获取商户
     getChannelsChild(params) { return fetch('get_Orgs', params) }, // 获取商户下级
     getChannelManager(params) { return fetch('get_channelManager', params) }, // 获取渠道经理
 
@@ -224,6 +225,8 @@ export default {
 
     getStoreS(params) { return fetch('get_store_s', params) }, // 获取该门店关联S
     getAllS4(params) { return fetch('get_can_relate_s4_list', params) }, // 获取S4列表
+    getAllS4ByContion(params) { return fetch('get_can_relate_s4_listby_contion', params) }, // 根据姓名或手机号搜索S4
+
     addStoreS1(params) { return fetch('add_store_s', params) }, // 门店添加S1
 
     getStoreDS(params) { return fetch('get_related_people_list', params) }, // 获取该门店关联D或S

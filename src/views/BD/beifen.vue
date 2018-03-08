@@ -7,9 +7,14 @@
 
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
             <el-form-item label="商户：" prop='structAid'>
-                <el-select
-                    v-model="ruleForm.structAid" clearable filterable remote reserve-keyword placeholder="请输入商户名称搜索" :remote-method="getSearchChannel" :loading="loading">
+                <!-- <el-select v-model="ruleForm.structAid" filterable placeholder="请输入商户名称" >
                     <el-option  v-for="item in structA"  :label="item.strRelationName"  :value="item.strRelationId+','+item.strLevelId + ',0'" :key="item.strRelationId">
+                    </el-option>
+                </el-select> -->
+
+                <el-select
+                    v-model="ruleForm.structAid" multiple filterable remote reserve-keyword placeholder="请输入商户名称搜索" :remote-method="getSearchChannel" :loading="loading">
+                    <el-option v-for="item in structA" :label="item.strRelationName" :value="item.strRelationId+','+item.strLevelId + ',0'" :key="item.strRelationId">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -117,11 +122,11 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
 	data() {
 	    return {
+            //渠道相关
             timer:null,
             loading: false,
             structA:[],
-
-
+            
             dialogFormVisible:false,
             ruleForm:{},
             channelorgs: [],
@@ -201,7 +206,7 @@ export default {
     computed:{
         ...mapGetters({
             provinces : 'commonData/adds',
-            // structA : 'commonData/channel',
+            structA : 'commonData/channel',
             statusList : 'store/status'
         })
     },
@@ -227,10 +232,8 @@ export default {
         },
         // 渠道
         'ruleForm.structAid': function(val, oldVal) {
-            if(val){
-                this.getNextList(val)
-                this.ifValidateNext = false
-            }
+            this.getNextList(val)
+            this.ifValidateNext = false
         },
         'modelList.model_1' : function(val, oldVal) {
             if(val) this.getNextList(val)
@@ -253,11 +256,20 @@ export default {
             this.ifValidateNext = false
         }
     },
+
 	methods:{
         ...mapActions({
+            getChannel: 'commonData/getChannel' ,
             getAddress: 'commonData/getAdds' 
         }),
 		async loadInfo() {
+            //获取一级商户
+            var loading = this.$loading({
+                text:'正在获取商户信息',
+                target:'#Add-store'
+            })
+            await this.getChannel()
+            setTimeout(()=>{loading.close()},100)
             await this.getAddress()
             this.saleAdds.provinces = this.$store.getters['commonData/adds']
         },
@@ -266,19 +278,12 @@ export default {
                 if(this.timer) clearTimeout(this.timer)
                 this.loading = true;
                 this.timer = setTimeout(() => {
-                    //获取搜索结果
-                    api.getAllChannelsByContion({'strKeyName':query}).then(res => {
-                        if (res.ret != '0') {
-                            this.$alert(res.retinfo,"提示")
-                            return
-                        }
-                        this.loading = false;
-                        this.structA = res.data.Relations
-                    })
+                    console.log(555)
+                    this.loading = false;
                 
-                }, 800)
+                }, 2000)
             } else {
-                this.structA = []
+              this.options4 = [];
             }
         },
         // 新增

@@ -90,7 +90,8 @@
             <el-input v-model="form.strPrefix_str" placeholder='2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)'></el-input>
         </el-form-item>
         <el-form-item label="商户负责S4：" prop='strConnection_info'>
-            <el-select v-model="form.strConnection_info" filterable placeholder="请选择">
+            <el-select
+                v-model="form.strConnection_info" clearable filterable remote reserve-keyword  placeholder="请输入名称或手机号搜索" :remote-method="getSearchS4" :loading="loading">
                 <el-option  v-for="item in channelUserList"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserId" :key="item.strUserId">
                 </el-option>
             </el-select>
@@ -168,6 +169,10 @@
             callback()
         }
         return {
+            timer:null,
+            loading: false,
+            initS4Id:true,//给S4赋默认值时使用
+            channelUserList:[],
             //渠道信息
             addS4Item:{},
             provinceChange : false ,
@@ -216,7 +221,6 @@
                 areas:[]
             },
             addSaleList :[],
-            channelUserList :[],
             defaultDate:'',//初始默认数据
             rules:{
                 'strLevelId': [
@@ -297,6 +301,34 @@
         getChannelId:function(){
             this.form.strChannelId= this.$route.query.id
         },
+        getSearchS4(query) {
+            if (query !== '') {
+                if(this.timer) clearTimeout(this.timer);
+                //限制手机号输入三位以上才调用搜索
+                if (!isNaN(Number(query)) && query.length<3) return;
+
+                this.loading = true;
+                this.timer = setTimeout(() => {
+                    //获取搜索结果
+                    api.getAllS4ByContion({'strNameOrPhone':query}).then(res => {
+                        if (res.ret != '0') {
+                            this.$alert(res.retinfo,"提示")
+                            return
+                        }
+                        this.loading = false;
+                        this.channelUserList = res.data
+                        if(this.initS4Id) {
+                            this.channelUserList.push(this.addS4Item) //因为是从无身份S中搜索，而自身已为S4，所以将自己加入列表
+                            this.form.strConnection_info = this.defaultDate.strS4Id
+                            this.initS4Id = false
+                        }
+                    })
+                
+                }, 800)
+            } else {
+                this.channelUserList = []
+            }
+        },
         submitnow(formName) {
             var self = this
             for(var i in this.form.selfFunction){
@@ -346,18 +378,8 @@
                 this.form.strPartner_id = this.defaultDate.strPartnerId == '0'?'':this.defaultDate.strPartnerId
 
             })
-            api.getAllS4({'strChannelId':this.form.strChannelId }).then(res => {
-                if (res.ret != '0') {
-                    this.$alert(res.retinfo,"提示")
-                    return
-                }
-                this.channelUserList = res.data
-                if(this.addS4Item.strUserId) { //因为获取的列表是不包含当前自己，所以将自己加入列表
-                    this.channelUserList.push(this.addS4Item)
-                    this.form.strConnection_info =  this.addS4Item.strUserId
-                }
-                this.form.strConnection_info = this.defaultDate.strS4Id
-            })
+            //获取默认值后根据 S4名称搜索S4
+            this.getSearchS4(this.defaultDate.strS4Name)
         },
         // 获取初始默认数据
         getDefaultDate : function(channelId){

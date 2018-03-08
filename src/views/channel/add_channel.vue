@@ -90,10 +90,11 @@
             <el-input v-model="form.strPrefix_str" placeholder='2位或4位字母(渠道拼音首字母)+4位数字(渠道省份区号)'></el-input>
         </el-form-item>
         <el-form-item label="商户负责S4：" prop="strConnection_info">
-		    <el-select v-model="form.strConnection_info" filterable placeholder="请选择">
-		      	<el-option  v-for="item in channelUserList"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserId" :key="item.strUserId">
+            <el-select
+                v-model="form.strConnection_info" clearable filterable remote reserve-keyword  placeholder="请输入名称或手机号搜索" :remote-method="getSearchS4" :loading="loading">
+                <el-option  v-for="item in channelUserList"  :label="item.strUserName + '/' + item.strUserTel"  :value="item.strUserId" :key="item.strUserId">
                 </el-option>
-		    </el-select>
+            </el-select>
 		</el-form-item>
         <el-form-item label="月手机销量：">
             <el-input v-model="form.strMonth_sales"></el-input>
@@ -159,6 +160,9 @@ export default {
             callback()
         }
 	    return {
+            timer:null,
+            loading: false,
+            channelUserList:[],
 	        form: {
 	          strLevelId: '',
 	          strFullName: '',
@@ -201,7 +205,7 @@ export default {
 	        	areas:[]
 	        },
 	        addSaleList :[],
-	        channelUserList :[],
+	        // channelUserList :[],
             rules:{
                 'strLevelId': [
                     {  required: true, message: '请选择O关系模型', trigger: 'change' }
@@ -275,6 +279,26 @@ export default {
         ...mapActions({
             getAddress: 'commonData/getAdds' 
         }),
+        getSearchS4(query) {
+            if (query !== '') {
+                if(this.timer) clearTimeout(this.timer)
+                this.loading = true;
+                this.timer = setTimeout(() => {
+                    //获取搜索结果
+                    api.getAllS4ByContion({'strNameOrPhone':query}).then(res => {
+                        if (res.ret != '0') {
+                            this.$alert(res.retinfo,"提示")
+                            return
+                        }
+                        this.loading = false;
+                        this.channelUserList = res.data
+                    })
+                
+                }, 800)
+            } else {
+                this.channelUserList = []
+            }
+        },
         submitnow(formName) {
             let self = this
         	for(var i in this.form.selfFunction){
@@ -319,13 +343,13 @@ export default {
                 }
 				this.partnerList = res.data.partnerList
 			})
-			api.getAllS4({'strChannelId':''}).then(res => {
-                if (res.ret != '0') {
-                    this.$alert(res.retinfo,"提示")
-                    return
-                }
-				this.channelUserList = res.data
-			})
+			// api.getAllS4({'strChannelId':''}).then(res => {
+   //              if (res.ret != '0') {
+   //                  this.$alert(res.retinfo,"提示")
+   //                  return
+   //              }
+			// 	this.channelUserList = res.data
+			// })
             
             await this.getAddress()
             this.saleAdds.provinces = this.$store.getters['commonData/adds']

@@ -6,7 +6,8 @@
     <div id="Edit-store">
         <el-form label-width="100px">
             <el-form-item label="商户：" class="mustStar">
-                <el-select v-model="structAid" filterable placeholder="请输入商户名称">
+                <el-select
+                    v-model="structAid" clearable filterable remote reserve-keyword placeholder="请输入商户名称搜索" :remote-method="getSearchChannel" :loading="loading">
                     <el-option  v-for="item in structA"  :label="item.strRelationName"  :value="item.strRelationId+','+item.strLevelId + ',0'" :key="item.strRelationId">
                     </el-option>
                 </el-select>
@@ -101,8 +102,12 @@ import api from '../../api/api'
 import util from '../../common/util'
 import { mapGetters, mapActions } from 'vuex'
 export default {
-	data() {
-	    return {
+    data() {
+        return {
+            timer:null,
+            loading: false,
+            structA:[],
+
             dialogFormVisible:false,
             form:{},
             id:'',
@@ -171,15 +176,14 @@ export default {
             strRelationId:"", //最末层关系节点Id(门店的上一级)
             strLevelId:""//最末层关系节点层级id(门店的上一级)
         }
-	},
+    },
     computed:{
         ...mapGetters({
             provinces : 'commonData/adds',
-            structA : 'commonData/channel',
             statusList : 'store/status'
         })
     },
-	watch: {
+    watch: {
             
         // 省市区
         strProvinceId : function (val, oldVal) {
@@ -203,9 +207,12 @@ export default {
         },
         // 渠道
         structAid: function(val, oldVal) {
-            this.getNextList(val , 0)
-            this.structAChange = true
-            this.ifValidateNext = false
+            console.log(val)
+            if(val){
+                this.getNextList(val , 0)
+                this.structAChange = true
+                this.ifValidateNext = false
+            }
         },
         'modelList.model_1' : function(val, oldVal) {
             if(val) this.getNextList(val , 1) , this.changeList['change_1'] = true
@@ -233,26 +240,45 @@ export default {
         this.getDefaultDate(this.id)
     },
 
-	methods:{
+    methods:{
         ...mapActions({
-            getChannel: 'commonData/getChannel' ,
             getAddress: 'commonData/getAdds' 
         }),
         getStoreId(){
             this.id= this.$route.query.id
         },
-		async loadInfo() {
-            //获取一级商户
-            var loading = this.$loading({
-                text:'正在获取商户信息',
-                target:'#Edit-store'
-            })
-            await this.getChannel()
-            setTimeout(()=>{loading.close()},100)
-            if(!this.structAChange) this.structAid = this.defaultDate.relationUp[0].strRelationId + ',' + this.defaultDate.relationUp[0].strLevelId + ',0'
+        async loadInfo() {
+            if(!this.structAChange) {
+                this.getSearchChannel(this.defaultDate.relationUp[0].strRelationName)
+            }
+
             await this.getAddress()
             this.strProvinceId = this.defaultDate.storeInfo.strProvinceId
             this.saleAdds.provinces = this.$store.getters['commonData/adds']
+        },
+        getSearchChannel(query) {
+            if (query !== '') {
+                if(this.timer) clearTimeout(this.timer)
+                this.loading = true;
+                this.timer = setTimeout(() => {
+                    //获取搜索结果
+                    api.getAllChannelsByContion({'strKeyName':query}).then(res => {
+                        if (res.ret != '0') {
+                            this.$alert(res.retinfo,"提示")
+                            return
+                        }
+                        this.loading = false;
+                        this.structA = res.data.Relations
+                        if(!this.structAChange){
+                            //此处设置值后 该组件依然会触发一次query 为this.defaultDate.relationUp[0].strRelationName 的搜索
+                            this.structAid = this.defaultDate.relationUp[0].strRelationId + ',' + this.defaultDate.relationUp[0].strLevelId + ',0' ;
+                        }
+                    })
+                
+                }, 800)
+            } else {
+                this.structA = []
+            }
         },
         // 获取默认数据
         getDefaultDate : function(strStoreId){
@@ -301,7 +327,7 @@ export default {
 
             // 获取商户下级
             api.getChannelsChild({ 'strRelationId': valList[0] }).then(res => {
-				if (res.ret != '0') {
+                if (res.ret != '0') {
                     this.$alert(res.retinfo,"提示")
                     return
                 }
@@ -319,7 +345,7 @@ export default {
                         this.modelList['model_'+(strIndex)] = setAddDefault.val
                     }
                 }
-			})
+            })
         },
         // 新增
         addGroup: function(upStrRelationId , upStrLevelId , strIndex) {
@@ -438,7 +464,7 @@ export default {
         //确定
         submitnow: function() {
             var self = this
-        	var saleList = []
+            var saleList = []
             for(var i in this.addSaleList){
                 saleList.push(this.addSaleList[i].saleId)
             }
@@ -465,18 +491,18 @@ export default {
             if(this.ifValidateNext) _validateList.splice(1,0,{ val: this.structBid, msg: "请选择门店组" })
 
             if (this.Validate(_validateList)) {
-            	// 地址
-	            api.editStoreLogic(msgData).then(res => {
-					if (res.ret != '0') {
+                // 地址
+                api.editStoreLogic(msgData).then(res => {
+                    if (res.ret != '0') {
                         this.$message(res.retinfo)
                         return
                     }
                     this.$message("成功！")
                     self.$router.push({ path: '/channel/store' })
-				})
+                })
             }
         }
-	}
+    }
 }
 </script>
 <style type="text/css" scoped>

@@ -10,12 +10,13 @@
             <el-tab-pane label="POS信息">
                 <el-alert title="基本信息" type="info" :closable="false"></el-alert><br>
                 <el-form label-width="100px">
-                    <el-form-item label="商户：">
-                        <span v-for="item in structA" v-if="structAid == item.strRelationId+','+item.strLevelId + ',0' ">{{item.strRelationName}}</span>
+                    <el-form-item :label="(this.defaultDate.relationUp?this.defaultDate.relationUp[0].strLevelName:'')+'：'">
+                        <span>{{this.defaultDate.relationUp?this.defaultDate.relationUp[0].strRelationName:''}}</span>
                     </el-form-item>
-                    <el-form-item v-for = "(option,index) in tempList" :label="option.RelationName+'：' " :key="index" >
-                        <span v-for="item in option.Relations" v-if="modelList['model_'+(index+1)] == item.strRelationId+','+item.strLevelId+','+(index+1)  ">{{item.strRelationName}}</span>
+                    <el-form-item v-for = "option in REL003_list" :label="option.strLevelName+'：' " :key="option.strRelationId" >
+                        <span>{{option.strRelationName}}</span>
                     </el-form-item>
+
                     <el-form-item label="门店名称：" >{{strStoreName}}</el-form-item>
                     <el-form-item label="门店地址：">
                         <span v-for="item in provinces" v-if="strProvinceId == item.strProvinceId">{{item.strProvinceName}}</span>
@@ -58,7 +59,12 @@
                     <el-button size="small" @click="s2Info.toChoose = true"> 替换</el-button>
                 </div>
                 <div v-else  >
-                    <el-select v-model="s2Info.toChooseId" filterable placeholder="请选择S2">
+                    <!-- <el-select v-model="s2Info.toChooseId" filterable placeholder="请选择S2">
+                        <el-option  v-for="item in s2Info.preChooseList"  :label="item.strUserName + ' / ' + item.strPhoneNum"  :value="item.strUserId" :key="item.strUserId">
+                        </el-option>
+                    </el-select> -->
+                    <el-select
+                        v-model="s2Info.toChooseId" clearable filterable remote reserve-keyword placeholder="请输入S2姓名或手机号搜索" :remote-method="getSearchS2" :loading="loading">
                         <el-option  v-for="item in s2Info.preChooseList"  :label="item.strUserName + ' / ' + item.strPhoneNum"  :value="item.strUserId" :key="item.strUserId">
                         </el-option>
                     </el-select>
@@ -98,12 +104,13 @@
         <el-dialog title="关联S1" :visible.sync="SList.showS1">
             <div class="content">
                 <template>
-                  <el-select v-model="choose_s1_id" filterable placeholder="请选择S1">
-                    <el-option  v-for="item in choose_s1_list"  :label="item.strUserName + '/' + item.strPhoneNum"  :value="item.strUserName + '/' + item.strPhoneNum+ ','+item.strUserId" :key="item.strUserId">
-                    </el-option>
-                  </el-select>
+                    <el-select
+                        v-model="choose_s1_id" clearable filterable remote reserve-keyword placeholder="请输入S1姓名或手机号搜索" :remote-method="getSearchS1" :loading="loading">
+                        <el-option  v-for="item in choose_s1_list"  :label="item.strUserName + '/' + item.strPhoneNum"  :value="item.strUserName + '/' + item.strPhoneNum+ ','+item.strUserId" :key="item.strUserId">
+                        </el-option>
+                    </el-select>
                 </template>
-                <el-button type="primary" icon="plus" size="small" v-on:click = "add_s1_list()">添加</el-button>
+                <el-button type="primary" icon="plus" size="small" @click = "add_s1_list">添加</el-button>
                 <p v-show = "addS1List.length == 0" class="vue-remind">请点击上方按钮添加预关联S1</p>
                 <div class="people-container">
                     <p   v-for = "(item , index) in addS1List">
@@ -145,8 +152,6 @@
             </div>
         </el-dialog>
     </div>
-   
-    
 </div>
 </template>
 
@@ -159,39 +164,23 @@ export default {
     components:{hjxPipe},
     data() {
 	    return {
+            timer:null,
+            loading: false,
+
             comment:'', //备注
             pipeList:[],//操作流水
             id:'',
             citys:[],
             areas:[],
             strStatusName:'',
-            defaultDate:'',//初始默认数据
-            structAChange : false,
-            tempList:[],
-            modelList:{
-                model_1:'',
-                model_2:'',
-                model_3:'',
-                model_4:'',
-                model_5:''
-            },
+            defaultDate:{},//初始默认数据
             addSaleList :[],
-            changeList:{
-                change_1:false,
-                change_2:false,
-                change_3:false,
-                change_4:false,
-                change_5:false
-            },
             setTrue : 10 ,// 顶层
-            structAid:'',
             strAddress:'',
             strProvinceId:'',
             strCityId:'',
             strAreaId:'',
             strStoreName:'',
-            strRelationId:"", //最末层关系节点Id(门店的上一级)
-            strLevelId:"",//最末层关系节点层级id(门店的上一级)
             /****** S2 / BD1 /S1 /D1 *******/
             s2Info:{
                 preChooseList:[], //可选or可替换
@@ -227,30 +216,14 @@ export default {
     computed:{
         ...mapGetters({
             provinces : 'commonData/adds',
-            structA : 'commonData/channel',
             'pipeType':'commonData/pipeType'
-        })
-    },
-	watch: {
-        // 渠道
-        structAid: function(val, oldVal) {
-            this.getNextList(val , 0)
-            this.structAChange = true
-        },
-        'modelList.model_1' : function(val, oldVal) {
-            if(val) this.getNextList(val , 1) , this.changeList['change_1'] = true
-        },
-        'modelList.model_2' : function(val, oldVal) {
-            if(val) this.getNextList(val , 2) , this.changeList['change_2'] = true
-        },
-        'modelList.model_3' : function(val, oldVal) {
-            if(val) this.getNextList(val , 3) , this.changeList['change_3'] = true
-        },
-        'modelList.model_4' : function(val, oldVal) {
-            if(val) this.getNextList(val , 4) , this.changeList['change_4'] = true
-        },
-        'modelList.model_5' : function(val, oldVal) {
-            if(val) this.getNextList(val , 5) , this.changeList['change_5'] = true
+        }),
+        REL003_list(){ // strLevelCode以'REL003_'开头的 为第三层及第三层以后层数
+            let list = []
+            if(this.defaultDate.relationUp){
+                list = this.defaultDate.relationUp.filter(item=>item.strLevelCode.search('REL003') != '-1')
+            }
+            return list
         }
     },
     mounted()  {
@@ -264,21 +237,12 @@ export default {
 
 	methods:{
         ...mapActions({
-            getChannel: 'commonData/getChannel' ,
             getAddress: 'commonData/getAdds' 
         }),
         getStoreId(){
             this.id= this.$route.query.id
         },
 		async loadInfo() {
-            //获取一级商户
-            var loading = this.$loading({
-                text:'正在获取商户信息',
-                target:'#Edit-store'
-            })
-            await this.getChannel()
-            setTimeout(()=>{loading.close()},100)
-            if(!this.structAChange) this.structAid = this.defaultDate.relationUp[0].strRelationId + ',' + this.defaultDate.relationUp[0].strLevelId + ',0'
 
             this.getAddress().then(()=>{
                 this.getCitys(this.strProvinceId)
@@ -324,44 +288,9 @@ export default {
                 if(res) this.loadInfo()
             })
         },
-        
-        getNextList(val, strIndex , setAddDefault) {
-            var strIndex = strIndex +1
-            var valList = val.split(',') 
-            this.strRelationId = valList[0]
-            this.strLevelId = valList[1]
-            // 删除该change选项 对应tempList后面的数组,且清除对于Model值
-            this.tempList = this.tempList.splice(0,valList[2])
-            for(var key in this.modelList){
-                if(key.split('_')[1] >  valList[2]) this.modelList[key] = ''
-                if(key.split('_')[1] >  this.setTrue) this.changeList['change_'+key.split('_')[1]] = true
-            }
 
-            // 获取商户下级
-            api.getChannelsChild({ 'strRelationId': valList[0] }).then(res => {
-				if (res.ret != '0') {
-                    this.$alert(res.retinfo,"提示")
-                    return
-                }
-                if(res.data) {
-                    var obj = res.data 
-                    obj.upStrRelationId = this.strRelationId
-                    obj.upStrLevelId = this.strLevelId
-                    this.tempList.push(obj)
-                    // 设置默认值
-                    if(!this.changeList['change_'+(strIndex)]){
-                        this.modelList['model_'+(strIndex)] = this.defaultDate.relationUp[strIndex].strRelationId + ',' + this.defaultDate.relationUp[strIndex].strLevelId + ','+(strIndex)
-                    }
-                    if(setAddDefault){
-                        this.modelList['model_'+(strIndex)] = setAddDefault.val
-                    }
-                }
-			})
-        },
-        
         // 获取当前对应城市
         getCitys: function(val) {
-            console.log(val)
             for(var index in this.provinces){
                 if(this.provinces[index].strProvinceId == val){
                     this.citys = this.provinces[index].citys
@@ -407,7 +336,7 @@ export default {
             this.comment = ''
         },
         //跳至编辑页面
-        goEdit:function(id){
+        goEdit(id){
             this.$router.push({
                 name:'editStore',
                 query:{id:id}
@@ -440,6 +369,7 @@ export default {
             this.getCanRelationData(strPeopleType,obj,preChooseList)
         },
         async getCanRelationData(strPeopleType,obj,preChooseList){
+            if(strPeopleType == 'S2') return; //S2规则改了，这里去除获取可关联S2的调用
             let res = await api.getAllDS({"strStoreId": this.id, "strPeopleType": strPeopleType, "strLevelCode":strPeopleType})
             if(res.ret != '0'){
                 this.$message(res.retinfo)
@@ -449,7 +379,7 @@ export default {
         },
 
         // 添加S2 
-        submitAddS2:function(handle){ 
+        submitAddS2(handle){ 
             if(!this.s2Info.toChooseId){
                 this.$message('请选择S2')
                 return
@@ -469,8 +399,28 @@ export default {
                 this.s2Info.toChooseId = ''
             })
         },
+        getSearchS2(query) { 
+            if (query !== '') {
+                if(this.timer) clearTimeout(this.timer)
+                this.loading = true;
+                this.timer = setTimeout(() => {
+                    //获取搜索结果
+                    api.getAllDS({'strNameOrPhone':query,"strStoreId": this.id, "strPeopleType": "S2", "strLevelCode":"S2"}).then(res => {
+                        if (res.ret != '0') {
+                            this.$alert(res.retinfo,"提示")
+                            return
+                        }
+                        this.loading = false;
+                        this.s2Info.preChooseList = res.s2list
+                    })
+                
+                }, 800)
+            } else {
+                this.s2Info.preChooseList = []
+            }
+        },
         // 添加BD1 
-        submitAddBD1:function(handle){ 
+        submitAddBD1(handle){ 
             if(!this.bd1Info.toChooseId){
                 this.$message('请选择BD1')
                 return
@@ -492,7 +442,7 @@ export default {
         },
         /************************* 添加S1 **********************/ 
         // 获取门店已关联S1
-        getS1:function(){
+        getS1(){
             let self = this
             var sendData = {
                 strStoreId:this.id,
@@ -514,26 +464,46 @@ export default {
             })
         },
         // 删除已关联S1
-        del_has_s1:function(index){
+        del_has_s1(index){
             this.get_store_s1_list.splice(index,1)
             this.get_store_s1Id_list.splice(index,1)
             this.final_add_S1('del')
         },
         // 获取s1选项列表
-        add_s1_btn:function() {
+        add_s1_btn() {
             this.addS1List = []
             this.SList.showS1 = true
-            api.getAllDS({"strStoreId": this.id, "strPeopleType": "S1", "strLevelCode":"S1"}).then(res => {
-                if(res.ret != '0'){
-                    this.$message(res.retinfo)
-                    return
-                }
-                this.choose_s1_list = res.s1list
-            })
+            // api.getAllDS({"strStoreId": this.id, "strPeopleType": "S1", "strLevelCode":"S1"}).then(res => {
+            //     if(res.ret != '0'){
+            //         this.$message(res.retinfo)
+            //         return
+            //     }
+            //     this.choose_s1_list = res.s1list
+            // })
             
         },
+        getSearchS1(query) { 
+            if (query !== '') {
+                if(this.timer) clearTimeout(this.timer)
+                this.loading = true;
+                this.timer = setTimeout(() => {
+                    //获取搜索结果
+                    api.getAllDS({'strNameOrPhone':query,"strStoreId": this.id, "strPeopleType": "S1", "strLevelCode":"S1"}).then(res => {
+                        if (res.ret != '0') {
+                            this.$alert(res.retinfo,"提示")
+                            return
+                        }
+                        this.loading = false;
+                        this.choose_s1_list = res.s1list
+                    })
+                
+                }, 800)
+            } else {
+                this.choose_s1_list = []
+            }
+        },
         // 添加将要添加S1列表
-        add_s1_list:function(){
+        add_s1_list(){
             if(!this.choose_s1_id) {
                 this.$message('请选择要关联S1')
                 return
@@ -547,6 +517,8 @@ export default {
             if(this.addS1List.length == 0){
                 this.addS1List.push(this.choose_s1_id.split(',')[0])
                 this.addS1Id.push(this.choose_s1_id.split(',')[1])
+                //添加之后将choose_s1_id设为空
+                this.choose_s1_id = ''
             }else{
                 for(var i in this.addS1Id){
                     if(this.choose_s1_id.split(',')[1] == this.addS1Id[i]){
@@ -556,15 +528,17 @@ export default {
                 }
                 this.addS1List.push(this.choose_s1_id.split(',')[0])
                 this.addS1Id.push(this.choose_s1_id.split(',')[1])
+                //添加之后将choose_s1_id设为空
+                this.choose_s1_id = ''
             }
         },
         // 删除将要添加的S1列表
-        del_preChoose_s1:function(index){
+        del_preChoose_s1(index){
             this.addS1Id.splice(index,1)
             this.addS1List.splice(index,1)
         },
         // 提交添加的S1列表
-        final_add_S1:function(handle){
+        final_add_S1(handle){
             if(handle == 'add' && this.addS1Id.length == 0){
                 this.$message('请选择要关联S1')
                 return
@@ -590,15 +564,15 @@ export default {
                 if(res) {
                     this.getS1()
                     this.getRelationData("S2",this.s2Info ,'s2list')
+                    this.SList.showS1 = false
                 }
-                this.SList.showS1 = false
             })
         },
         
         
         /************************* 添加D1 **********************/ 
         // 获取门店已关联d1
-        getD1:function(){
+        getD1(){
             let self = this
             var sendData = {
                 strStoreId:this.id,
@@ -621,13 +595,13 @@ export default {
             
         },
         // 删除已关联d1
-        del_has_d1:function(index){
+        del_has_d1(index){
             this.get_store_d1_list.splice(index,1)
             this.get_store_d1Id_list.splice(index,1)
             this.final_add_D1('del')
         },
         // 获取d1选项列表
-        add_d1_btn:function() {
+        add_d1_btn() {
             this.addD1List = []
             this.SList.showD1 = true
             api.getAllDS({"strStoreId": this.id, "strPeopleType": "D1", "strLevelCode":"D1"}).then(res => {
@@ -639,7 +613,7 @@ export default {
             })
         },
         // 添加将要添加D1列表
-        add_d1_list:function(){
+        add_d1_list(){
             if(!this.choose_d1_id) {
                 this.$message('请选择要关联D1')
                 return
@@ -665,12 +639,12 @@ export default {
             }
         },
         // 删除将要添加的d1列表
-        del_preChoose_d1:function(index){
+        del_preChoose_d1(index){
             this.addD1Id.splice(index,1)
             this.addD1List.splice(index,1)
         },
         // 提交添加的D1列表
-        final_add_D1:function(handle){
+        final_add_D1(handle){
             if(handle == 'add' && this.addD1Id.length == 0){
                 this.$message('请选择要关联D1')
                 return
@@ -693,8 +667,10 @@ export default {
                 return true
             }).then((res) => {
                 // 重新生成已关联D1
-                if(res) this.getD1()
-                this.SList.showD1 = false
+                if(res) {
+                    this.getD1()
+                    this.SList.showD1 = false
+                }
             })
         }
         
@@ -702,10 +678,9 @@ export default {
 }
 </script>
 <style type="text/css" scoped>
-    /*#Edit-store{width: 1000px}*/
     .vue-remind{font-size: 12px;color:#999;margin: 8px 0}
     span{font-size: 13px}
-    .people-container>p{overflow: hidden;}
+    .people-container>p{overflow: hidden;margin:16px 0;}
     .people-container{padding: 10px 0}
     .addr-container>p{overflow: hidden;}
     .add-people-item{overflow: hidden;margin: 6px}
