@@ -257,6 +257,7 @@ export default {
             this.saleAdds.provinces = this.$store.getters['commonData/adds']
         },
         getSearchChannel(query) {
+            query = util.Trim(query)
             if (query !== '') {
                 if(this.timer) clearTimeout(this.timer)
                 this.loading = true;

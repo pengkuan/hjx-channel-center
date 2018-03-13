@@ -280,8 +280,11 @@ export default {
             getAddress: 'commonData/getAdds' 
         }),
         getSearchS4(query) {
+            query = util.Trim(query)
             if (query !== '') {
                 if(this.timer) clearTimeout(this.timer)
+                //限制手机号输入三位以上才调用搜索
+                if (!isNaN(Number(query)) && query.length<3) return;
                 this.loading = true;
                 this.timer = setTimeout(() => {
                     //获取搜索结果

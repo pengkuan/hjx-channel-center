@@ -302,6 +302,7 @@
             this.form.strChannelId= this.$route.query.id
         },
         getSearchS4(query) {
+            query = util.Trim(query)
             if (query !== '') {
                 if(this.timer) clearTimeout(this.timer);
                 //限制手机号输入三位以上才调用搜索
