@@ -228,9 +228,7 @@ export default {
             callback(new Error('请输入4~50个字符'))
         } else if (checkSpecialWord(value)) {
             callback(new Error('不能包含特殊字符'))
-        } else if (checkNumber(value)) {
-            callback(new Error('不能包含数字'))
-        }
+        } 
         callback()
     },
     validateName1: (rule, value, callback) => {
