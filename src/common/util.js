@@ -215,7 +215,7 @@ export default {
     },
     //手机号验证
     validateTel: (rule, value, callback) => {
-        if (!/^1[3|4|5|7|8]\d{9}$/g.test(value)) {
+        if (!/^1\d{10}$/g.test(value)) {
             callback(new Error('请输入正确手机号'))
         }
         callback()
