@@ -22,14 +22,14 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="门店ID：" prop="strStoreId">
+       <!--  <el-form-item label="门店ID：" prop="strStoreId">
           <el-input v-model="filters.strStoreId" @keyup.13.native="search($event)" placeholder="请输入门店ID" ></el-input>
-        </el-form-item>
-        <el-form-item label="门店名称：" prop="strStoreName">
-          <el-input v-model="filters.strStoreName" @keyup.13.native="search($event)" placeholder="请输入门店名称" ></el-input>
+        </el-form-item> -->
+        <el-form-item label="门店名称或ID：" prop="strStoreName">
+          <el-input v-model="filters.strStoreName" @keyup.13.native="search($event)" placeholder="请输入门店名称或ID" ></el-input>
         </el-form-item>
         <el-form-item label="所属商户：" prop="strChannelKey">
-          <el-input v-model="filters.strChannelKey" @keyup.13.native="search($event)" placeholder="请输入商户名或id" ></el-input>
+          <el-input v-model="filters.strChannelKey" @keyup.13.native="search($event)" placeholder="请输入商户名或ID" ></el-input>
         </el-form-item>
         <el-form-item label="handle" class="hjx-search-handle">
           <el-button type="primary" @click="search">查询</el-button>
@@ -163,14 +163,15 @@ export default {
 			})
 		},
 		search(){
-			this.filters.strStoreId = util.Trim(this.filters.strStoreId)
 			this.filters.strStoreName = util.Trim(this.filters.strStoreName)
+			this.filters.strStoreId = this.filters.strStoreName //现将门店名称和ID合并为一个搜索框
 			this.currentPage = 1
             this.pageIndex = '0'
 			this.showList()
 		},
 		clearForm(formName){
 			this.$refs[formName].resetFields()
+			this.filters.strStoreId = ''
 			this.addrIds= []
 			this.showList()
 		},

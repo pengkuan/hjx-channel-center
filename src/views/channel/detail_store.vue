@@ -45,24 +45,17 @@
                 <br><br>
                 <p v-show = "get_store_s1_list.length == 0" class="vue-remind">未关联S1，请点击上方按钮添加S1</p>
                 <p class='add-people-item' v-for = "(item , index) in get_store_s1_list">
-                    <el-col :span="18">
-                        <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strPhoneNum }}</span>
-                    </el-col>
-                    <el-col :span="6" class = 'submitRightNoM'>
-                        <el-button size="mini" type="primary" v-on:click="del_has_s1(index)"> 删除此项</el-button>
-                    </el-col>
+                    <el-button size="mini" type="text" v-on:click="del_has_s1(index)"> <i class="iconfont icon-delete"></i></el-button>
+                    <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strPhoneNum }}</span>
                 </p>
             </el-tab-pane>
             <el-tab-pane label="S2列表">
                 <div v-if="!s2Info.toChoose">
                     <span class='sale_addr_name'>{{s2Info.choosed}}</span>&nbsp;&nbsp;&nbsp;
                     <el-button size="small" @click="s2Info.toChoose = true"> 替换</el-button>
+                    <el-button size="small" @click="delS2"> 删除</el-button>
                 </div>
                 <div v-else  >
-                    <!-- <el-select v-model="s2Info.toChooseId" filterable placeholder="请选择S2">
-                        <el-option  v-for="item in s2Info.preChooseList"  :label="item.strUserName + ' / ' + item.strPhoneNum"  :value="item.strUserId" :key="item.strUserId">
-                        </el-option>
-                    </el-select> -->
                     <el-select
                         v-model="s2Info.toChooseId" clearable filterable remote reserve-keyword placeholder="请输入S2姓名或手机号搜索" :remote-method="getSearchS2" :loading="loading">
                         <el-option  v-for="item in s2Info.preChooseList"  :label="item.strUserName + ' / ' + item.strPhoneNum"  :value="item.strUserId" :key="item.strUserId">
@@ -78,18 +71,15 @@
                 <br><br>
                 <p v-show = "get_store_d1_list.length == 0" class="vue-remind">未关联D1，请点击上方按钮添加D1</p>
                 <p class='add-people-item' v-for = "(item , index) in get_store_d1_list">
-                    <el-col :span="18">
-                        <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strPhoneNum }}</span>
-                    </el-col>
-                    <el-col :span="6" class = 'submitRightNoM'>
-                        <el-button size="mini" type="primary" v-on:click="del_has_d1(index)"> 删除此项</el-button>
-                    </el-col>
+                    <el-button size="mini" type="text" v-on:click="del_has_d1(index)"> <i class="iconfont icon-delete"></i></el-button>
+                    <span class='sale_addr_name'>{{ item.strUserName + ' / '+ item.strPhoneNum }}</span>
                 </p>
             </el-tab-pane>
             <el-tab-pane label="BD1列表">
                 <div v-if="!bd1Info.toChoose">
                     <span class='sale_addr_name'>{{bd1Info.choosed}}</span>&nbsp;&nbsp;&nbsp;
                     <el-button size="small" @click="bd1Info.toChoose = true"> 替换</el-button>
+                    <el-button size="small" @click="delBD1"> 删除</el-button>
                 </div>
                 <div v-else  >
                     <el-select v-model="bd1Info.toChooseId" filterable placeholder="请选择BD1">
@@ -114,12 +104,8 @@
                 <p v-show = "addS1List.length == 0" class="vue-remind">请点击上方按钮添加预关联S1</p>
                 <div class="people-container">
                     <p   v-for = "(item , index) in addS1List">
-                        <el-col :span="18">
-                            <span class='sale_addr_name'>{{ item }}</span>
-                        </el-col>
-                        <el-col :span="6" class = 'submitRightNoM'>
-                            <el-button size="mini" v-on:click="del_preChoose_s1(index)"> 删除此项</el-button>
-                        </el-col>
+                        <el-button size="mini" type="text" v-on:click="del_preChoose_s1(index)"> <i class="iconfont icon-delete"></i></el-button>
+                        <span class='sale_addr_name'>{{ item }}</span>
                     </p>
                 </div>
                 <el-button type="primary" size="small" v-on:click = "final_add_S1('add')">提交</el-button>
@@ -139,12 +125,8 @@
                 <p v-show = "addD1List.length == 0" class="vue-remind">请点击上方按钮添加预关联D1</p>
                 <div class="people-container">
                     <p class="haveRelated"  v-for = "(item , index) in addD1List">
-                        <el-col :span="18">
+                        <el-button size="mini" type="text" v-on:click="del_preChoose_d1(index)"> <i class="iconfont icon-delete"></i></el-button>
                         <span class='sale_addr_name'>{{ item }}</span>
-                        </el-col>
-                        <el-col :span="6" class = 'submitRightNoM'>
-                            <el-button size="mini" v-on:click="del_preChoose_d1(index)"> 删除此项</el-button>
-                        </el-col>
                     </p>
                 </div>
                 <el-button type="primary" size="small" v-on:click = "final_add_D1('add')">提交</el-button>
@@ -399,6 +381,22 @@ export default {
                 this.s2Info.toChooseId = ''
             })
         },
+        delS2(){ 
+            var sendData = {
+                strPeopleType : 'S2',
+                strStoreId:this.id,
+                strPeopleIdList : [],
+            }
+            api.addStoreDS(sendData).then(res => {
+                if(res.ret != '0'){
+                    this.$message(res.retinfo)
+                    return false
+                }
+                this.s2Info.choosed = false
+                this.getRelationData("S2",this.s2Info ,'s2list')
+                this.s2Info.toChooseId = ''
+            })
+        },
         getSearchS2(query) { 
             query = util.Trim(query)
             if (query !== '') {
@@ -423,7 +421,7 @@ export default {
             }
         },
         // 添加BD1 
-        submitAddBD1(handle){ 
+        submitAddBD1(){  //添加可删除功能(del为true时)
             if(!this.bd1Info.toChooseId){
                 this.$message('请选择BD1')
                 return
@@ -439,6 +437,23 @@ export default {
                     return false
                 }
                 this.bd1Info.toChoose = false
+                this.getRelationData("BD1",this.bd1Info ,'bdxlist')
+                this.bd1Info.toChooseId = ''
+            })
+        },
+        //删除BD1
+        delBD1(){
+            var sendData = {
+                strPeopleType : 'BD1',
+                strStoreId:this.id,
+                strPeopleIdList : [],
+            }
+            api.addStoreDS(sendData).then(res => {
+                if(res.ret != '0'){
+                    this.$message(res.retinfo)
+                    return false
+                }
+                this.bd1Info.choosed = false
                 this.getRelationData("BD1",this.bd1Info ,'bdxlist')
                 this.bd1Info.toChooseId = ''
             })

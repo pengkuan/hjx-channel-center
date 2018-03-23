@@ -15,7 +15,7 @@
 			</el-form-item>
 			<el-form-item label="所属商户：">{{S4_list}}</el-form-item>
 	        <el-form-item label="二级子公司：">{{S3_list}}</el-form-item>
-	        <el-form-item label="所在门店：">{{S2_list}}</el-form-item>
+	        <el-form-item label="所在门店："><router-link :to="`/channel/detail_store?id=${storeInfo.id}`">{{storeInfo.name}}</router-link></el-form-item>
 	        <el-form-item label="门店工号：">{{strUserNum}}</el-form-item>
 	        <el-form-item label="组织身份：">{{strIdentityList}}</el-form-item>
 	    </el-form>
@@ -43,7 +43,7 @@
 	            strIdentityList:'',
 	            S4_list:'',//商户
 	            S3_list:'',//二级渠道
-	            S2_list:'',//门店
+	            storeInfo:'',//门店
 		        relationInfo:[],
 	            ruleForm:{
 	            	strUserId:'',
@@ -106,14 +106,17 @@
                 this.ruleForm.strEmail = msg.strEmail
                 this.relationInfo = msg.relationInfo
                 for(var i in this.relationInfo){
-                    if(this.relationInfo[i].strRelationCode == 'REL002'){
+                    if(this.relationInfo[i].strRelationCode == 'REL002'){ //商户
                         this.S4_list +=this.relationInfo[i].strRelationNmae+'    '
                     }
-                    if(this.relationInfo[i].strRelationCode == 'REL003'){
+                    if(this.relationInfo[i].strRelationCode == 'REL003'){ //门店组
                         this.S3_list +=this.relationInfo[i].strRelationNmae+'    '
                     }
-                    if(this.relationInfo[i].strRelationCode == 'REL004'){
-                        this.S2_list +=this.relationInfo[i].strRelationNmae+'    '
+                    if(this.relationInfo[i].strRelationCode == 'REL004'){ //门店 只对S1、S2身份才展示门店，S1、S2在同一个门店
+                        this.storeInfo = {
+                        	name:this.relationInfo[i].strRelationNmae,
+                        	id:this.relationInfo[i].strRelationId
+                        }
                     }
                 }
 				//获取操作流水
