@@ -5,8 +5,8 @@
     </hjx-header>
 	<!--工具条-->
 	<el-form :inline="true" :model="searchkeys" ref="searchkeys" label-position="top">
-        <el-form-item label="地址：">
-            <el-cascader :options="addrList" :props="selectAddrSetting" placeholder="请选择地址" v-model="addrIds" change-on-select></el-cascader>
+        <el-form-item label="区域：">
+            <el-cascader :options="addrList" :props="selectAddrSetting" placeholder="请选择区域" v-model="addrIds" change-on-select></el-cascader>
         </el-form-item>
         <el-form-item prop="strStatus" label="状态：">
             <el-select v-model="searchkeys.strStatus" placeholder="请选择">

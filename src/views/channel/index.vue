@@ -5,8 +5,8 @@
     </hjx-header>
     <!--工具条-->
     <el-form :inline="true" :model="filters" ref="filters" label-position="top">
-        <el-form-item label="地址：">
-            <el-cascader :options="addrList" :props="selectAddrSetting" placeholder="请选择地址" v-model="addrIds" change-on-select></el-cascader>
+        <el-form-item label="区域：">
+            <el-cascader :options="addrList" :props="selectAddrSetting" placeholder="请选择区域" v-model="addrIds" change-on-select></el-cascader>
         </el-form-item>
         <el-form-item prop="strStatus" label="合作状态：">
             <el-select v-model="filters.strStatus" placeholder="请选择合作状态">
@@ -22,8 +22,8 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item prop="searchkey" label="商户ID/名称：">
-            <el-input v-model="filters.searchkey" @keyup.13.native="search($event)" placeholder="按商户ID/名称搜索" ></el-input>
+        <el-form-item prop="searchkey" label="商户名称/ID：">
+            <el-input v-model="filters.searchkey" @keyup.13.native="search($event)" placeholder="请输入商户名称/ID" ></el-input>
         </el-form-item>
         <el-form-item prop="strParterName" label="合作方：">
             <el-input v-model="filters.strParterName" @keyup.13.native="search($event)" placeholder="请输入合作方名称" ></el-input>

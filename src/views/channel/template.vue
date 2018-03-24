@@ -6,7 +6,7 @@
         <!--工具条-->
         <el-form :inline="true" :model="filters">
             <el-form-item>
-                <el-input v-model="filters.searchkey" @keyup.13.native="search($event)" placeholder="按ID/名称搜索" style="min-width: 240px;"></el-input>
+                <el-input v-model="filters.searchkey" @keyup.13.native="search($event)" placeholder="请输入模板名称/ID" style="min-width: 240px;"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="search">查询</el-button>

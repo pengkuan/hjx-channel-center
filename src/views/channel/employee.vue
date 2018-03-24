@@ -18,8 +18,8 @@
                 <el-option v-for="item in statusList" :label="item.name" :value="item.id" :key="item.id"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item prop='strName' label="姓名/ID：">
-          	<el-input v-model="searchkeys.strName" @keyup.13.native="search($event)" placeholder="请输入姓名/ID"></el-input>
+        <el-form-item prop='strName' label="S姓名/ID：">
+          	<el-input v-model="searchkeys.strName" @keyup.13.native="search($event)" placeholder="请输入S姓名/ID"></el-input>
         </el-form-item>
         <el-form-item prop='strPhone' label="手机号：">
           	<el-input v-model="searchkeys.strPhone" @keyup.13.native="search($event)" placeholder="请输入手机号"></el-input>
