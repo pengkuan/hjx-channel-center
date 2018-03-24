@@ -239,6 +239,7 @@ export default {
     getEmployeeList(params) { return fetch('get_channel_user_list', params) }, // 获取工号列表
     setEmployee(params) { return fetch('set_jobStatus', params) }, // 禁用 启用 工号
     addEmployeeLogic(params) { return fetch('add_jobnumber', params) }, // 新增工号
+    cancelAddEmployeeLogic(params) { return fetch('cancelCommit', params) }, // 记录取消工号添加
     /*编辑工号*/
     getEmployeeInfo(params) { return fetch('get_jobnumber_info', params) }, // 获取工号信息
     addEmployeeLogic(params) { return fetch('add_jobnumber', params) }, // 新增工号

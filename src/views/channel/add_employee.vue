@@ -64,11 +64,10 @@
 
 		},
 		methods:{
-			//取消
             cancelnow: function() {
                 this.$router.push({ path: '/channel/employee' });
+                api.cancelAddEmployeeLogic(this.ruleForm) //记录取消操作
             },
-
             //确定
             submitnow: function(formName) {
                 let self = this
@@ -90,6 +89,7 @@
                 })
 
             }
+
 		}
 	}
 </script>

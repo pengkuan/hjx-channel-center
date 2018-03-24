@@ -25,11 +25,11 @@
        <!--  <el-form-item label="门店ID：" prop="strStoreId">
           <el-input v-model="filters.strStoreId" @keyup.13.native="search($event)" placeholder="请输入门店ID" ></el-input>
         </el-form-item> -->
-        <el-form-item label="门店名称或ID：" prop="strStoreName">
-          <el-input v-model="filters.strStoreName" @keyup.13.native="search($event)" placeholder="请输入门店名称或ID" ></el-input>
+        <el-form-item label="门店名称/ID：" prop="strStoreName">
+          <el-input v-model="filters.strStoreName" @keyup.13.native="search($event)" placeholder="请输入门店名称/ID" ></el-input>
         </el-form-item>
         <el-form-item label="所属商户：" prop="strChannelKey">
-          <el-input v-model="filters.strChannelKey" @keyup.13.native="search($event)" placeholder="请输入商户名或ID" ></el-input>
+          <el-input v-model="filters.strChannelKey" @keyup.13.native="search($event)" placeholder="请输入商户名/ID" ></el-input>
         </el-form-item>
         <el-form-item label="handle" class="hjx-search-handle">
           <el-button type="primary" @click="search">查询</el-button>

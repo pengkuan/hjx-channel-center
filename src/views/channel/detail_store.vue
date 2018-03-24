@@ -1,7 +1,7 @@
 <template>
 <div class="hjx-show-detail">
     <hjx-header label="门店 / 详情">
-        <router-link to="store"><el-button size="small">返回门店列表</el-button></router-link>
+        <el-button size="small" @click="$router.history.go(-1)">返回</el-button>
         <el-button type="primary" size="small" @click="goEdit(id)">编辑</el-button>
     </hjx-header>
     <div id="Edit-store">
@@ -53,7 +53,7 @@
                 <div v-if="!s2Info.toChoose">
                     <span class='sale_addr_name'>{{s2Info.choosed}}</span>&nbsp;&nbsp;&nbsp;
                     <el-button size="small" @click="s2Info.toChoose = true"> 替换</el-button>
-                    <el-button size="small" @click="delS2"> 删除</el-button>
+                    <el-button size="small" @click="delS2"> 取消关联</el-button>
                 </div>
                 <div v-else  >
                     <el-select
@@ -79,7 +79,7 @@
                 <div v-if="!bd1Info.toChoose">
                     <span class='sale_addr_name'>{{bd1Info.choosed}}</span>&nbsp;&nbsp;&nbsp;
                     <el-button size="small" @click="bd1Info.toChoose = true"> 替换</el-button>
-                    <el-button size="small" @click="delBD1"> 删除</el-button>
+                    <el-button size="small" @click="delBD1"> 取消关联</el-button>
                 </div>
                 <div v-else  >
                     <el-select v-model="bd1Info.toChooseId" filterable placeholder="请选择BD1">

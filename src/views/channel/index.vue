@@ -22,8 +22,8 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item prop="searchkey" label="商户ID、名称：">
-            <el-input v-model="filters.searchkey" @keyup.13.native="search($event)" placeholder="按商户ID、名称搜索" ></el-input>
+        <el-form-item prop="searchkey" label="商户ID/名称：">
+            <el-input v-model="filters.searchkey" @keyup.13.native="search($event)" placeholder="按商户ID/名称搜索" ></el-input>
         </el-form-item>
         <el-form-item prop="strParterName" label="合作方：">
             <el-input v-model="filters.strParterName" @keyup.13.native="search($event)" placeholder="请输入合作方名称" ></el-input>
