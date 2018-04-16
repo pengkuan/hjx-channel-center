@@ -49,6 +49,8 @@ module.exports = {
         proxyTable: {
             '/pengkuan': {
                 target: 'http://119.29.141.207:9999', // 你接口的域名 周浩
+                // target: 'https://mba.huanjixia.com', 
+                // target: '119.29.141.207', 
                 pathRewrite: {
                     '^/pengkuan': ''
                 },

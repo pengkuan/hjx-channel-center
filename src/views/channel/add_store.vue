@@ -56,46 +56,11 @@
             <el-form-item  prop='strAddress'>
                 <el-input v-model="ruleForm.strAddress" placeholder="请输入详细地址"></el-input>
             </el-form-item>
-
-            <el-form-item label="销售区域：" class = 'mustStar'>
-                <el-select v-model="saleAddsId.strSaleProvinceId" filterable placeholder="请选择省份">
-                    <el-option label="全部" value="" ></el-option>
-                    <el-option  v-for="item in saleAdds.provinces"  :label="item.strProvinceName"  :value="item.strProvinceId +','+ item.strProvinceName"  :key="item.strProvinceId">
-                    </el-option>
-                </el-select>
-                <el-select v-model="saleAddsId.strSaleCityId" filterable placeholder="请选择城市">
-                    <el-option label="全部" value="" ></el-option>
-                    <el-option  v-for="item in saleAdds.citys"  :label="item.strCityName"  :value="item.strCityId +','+ item.strCityName" :key="item.strCityId">
-                    </el-option>
-                </el-select>
-                <el-select v-model="saleAddsId.strSaleAreaId" filterable placeholder="请选择区县">
-                    <el-option label="全部" value="" ></el-option>
-                    <el-option  v-for="item in saleAdds.areas"  :label="item.strAreaName"  :value="item.strAreaId +','+ item.strAreaName" :key="item.strAreaId">
-                    </el-option>
-                </el-select>
-                <el-button type="primary" icon="plus"  v-on:click = "addSaleAddr()">添加</el-button>
-                <div >
-                    <p class="add-addr-title">已添加地址：</p>
-                    <div class="addr-remind" v-show = 'addSaleList.length == 0'>当前未添加地址，请点击上方按钮添加！</div>
-                    <div class="addr-container">
-                        <p class='add-addr-item' v-for = "(item , index) in addSaleList" v:key="index">
-                            <el-col :span="18">
-                                <span >{{ item.saleName }}</span>
-                            </el-col>
-                            <el-col :span="6" class = 'submitRightNoM'>
-                                <el-button size="mini" v-on:click="delSaleAddr(index)"> 删除此行</el-button>
-                            </el-col>
-                        </p>
-                    </div>
-                </div>
-            </el-form-item>
             <el-form-item class='submitRight'>
                 <el-button type="primary" @click="submitnow('ruleForm')">立即创建</el-button>
                 <el-button @click="cancelnow">取消</el-button>
             </el-form-item>
-
         </el-form>
-		
 	</div>
 
     <el-dialog title="新增" :visible.sync="dialogFormVisible">
@@ -120,8 +85,6 @@ export default {
             timer:null,
             loading: false,
             structA:[],
-
-
             dialogFormVisible:false,
             ruleForm:{},
             channelorgs: [],
@@ -129,7 +92,6 @@ export default {
             areas: [],
             ChannelManager: [],
             tempList:[],
-            // 
             modelList:{
                 model_1:'',
                 model_2:'',
@@ -137,19 +99,6 @@ export default {
                 model_4:'',
                 model_5:''
             },
-            saleAdds:{
-                provinces : '',
-                citys : '',
-                areas : ''
-            },
-            
-            addSaleList :[],
-            saleAddsId:{
-                strSaleProvinceId : '',
-                strSaleCityId : '',
-                strSaleAreaId : ''
-            },
-            // 
             structAid: '',
             ifValidateNext:false,//是否验证次级渠道
             // 新增次级组名
@@ -201,12 +150,10 @@ export default {
     computed:{
         ...mapGetters({
             provinces : 'commonData/adds',
-            // structA : 'commonData/channel',
             statusList : 'store/status'
         })
     },
 	watch: {
-            
         // 省市区
         'ruleForm.strProvinceId': function(val, oldVal) {
             this.ruleForm.strCityId = ''
@@ -215,15 +162,6 @@ export default {
         'ruleForm.strCityId': function(val) {
             this.ruleForm.strAreaId = ''
             this.getAreas(val)
-        },
-        // 销售区域
-        'saleAddsId.strSaleProvinceId': function(val, oldVal) {
-            this.saleAddsId.strSaleCityId = ''
-            this.getCitys(val.split(',')[0] , 'sale')
-        },
-        'saleAddsId.strSaleCityId': function(val) {
-            this.saleAddsId.strSaleAreaId = ''
-            this.getAreas(val.split(',')[0] , 'sale')
         },
         // 渠道
         'ruleForm.structAid': function(val, oldVal) {
@@ -259,7 +197,6 @@ export default {
         }),
 		async loadInfo() {
             await this.getAddress()
-            this.saleAdds.provinces = this.$store.getters['commonData/adds']
         },
         getSearchChannel(query) {
             query = util.Trim(query)
@@ -382,48 +319,11 @@ export default {
                 }
             }
         },
-        //添加销售区域
-        addSaleAddr: function(){
-            let provinceName = this.saleAddsId.strSaleProvinceId.split(',')[1] ? this.saleAddsId.strSaleProvinceId.split(',')[1] :'全部'
-            let cityName = this.saleAddsId.strSaleCityId.split(',')[1] ? this.saleAddsId.strSaleCityId.split(',')[1] :'全部'
-            let areaName = this.saleAddsId.strSaleAreaId.split(',')[1] ? this.saleAddsId.strSaleAreaId.split(',')[1] :'全部'
-            var willAddSale = {
-                'saleName':provinceName+'  '+cityName+'  '+areaName ,
-                'saleId':{
-                    'addr_province_id' : this.saleAddsId.strSaleProvinceId.split(',')[0] ,
-                    'addr_city_id' : this.saleAddsId.strSaleCityId.split(',')[0] ,
-                    'addr_area_id' : this.saleAddsId.strSaleAreaId.split(',')[0] 
-                }
-            }
-            // 判断是否重复添加
-            for(var i in this.addSaleList){
-                if(this.addSaleList[i].saleId.addr_province_id == willAddSale.saleId.addr_province_id
-                    && this.addSaleList[i].saleId.addr_city_id == willAddSale.saleId.addr_city_id
-                    && this.addSaleList[i].saleId.addr_area_id == willAddSale.saleId.addr_area_id
-                    ){
-                        this.$alert('该地址已添加！','提示')
-                        return
-                }
-            }
-            this.addSaleList.push(willAddSale)
-        },
-        //删除当前销售区域
-        delSaleAddr: function(index){
-            console.log(index)
-            this.addSaleList.splice(index,1)
-        },
-        //取消
         cancelnow: function() {
             this.$router.push({ path: '/channel/store' })
         },
-        //确定
         submitnow: function(formName) {
         	var self = this
-            // 获取销售范围ID列表
-            var saleList = []
-            for(var i in this.addSaleList){
-                saleList.push(this.addSaleList[i].saleId)
-            }
             var msgData = {
                 strAddress: util.Trim(this.ruleForm.strAddress),
                 strProvinceId: this.ruleForm.strProvinceId,
@@ -433,13 +333,9 @@ export default {
                 strChannelManagerId: this.strChannelManagerId,
                 strRelationId: this.strRelationId,
                 strLevelId: this.strLevelId,
-                saleAddrList  :  JSON.stringify(saleList), 
             }
 
-            var _validateList = [
-                { val: msgData.saleAddrList == '[]' ? false : true , msg: "请添加销售范围" },
-                // { val: msgData.strChannelManagerId, msg: "请选择渠道经理" }
-            ]
+            var _validateList = []
             if(this.ifValidateNext) _validateList.splice(1,0,{ val: this.structBid, msg: "请选择门店组" })
 
             this.$refs[formName].validate((valid) => {

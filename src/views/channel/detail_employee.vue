@@ -9,7 +9,7 @@
 	        <el-form-item label="姓名：" prop='strUserName'>{{ruleForm.strUserName}}</el-form-item>
             <el-form-item label="手机号码："  prop='strUserTel'>{{ruleForm.strUserTel}}</el-form-item>
             <el-form-item label="身份证："  prop='strCardNum'>{{ruleForm.strCardNum}} </el-form-item>
-            <el-form-item label="邮箱："  >{{ruleForm.strEmail}}</el-form-item>
+            <!-- <el-form-item label="邮箱："  >{{ruleForm.strEmail}}</el-form-item> -->
 	        <el-form-item label="状态：">
 			    <span v-for="item in statusList" v-if="ruleForm.strStatus == item.id">{{item.name}}</span>
 			</el-form-item>

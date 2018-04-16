@@ -1,6 +1,7 @@
 <template>
 <div>
     <hjx-header label="门店 / 列表">
+        <router-link to="store_relations"><el-button type="primary" size="small">批量关联</el-button></router-link>
         <router-link to="add_store"><el-button type="primary" size="small">添加</el-button></router-link>
     </hjx-header>
 	<!--工具条-->
@@ -22,9 +23,6 @@
                 </el-option>
             </el-select>
         </el-form-item>
-       <!--  <el-form-item label="门店ID：" prop="strStoreId">
-          <el-input v-model="filters.strStoreId" @keyup.13.native="search($event)" placeholder="请输入门店ID" ></el-input>
-        </el-form-item> -->
         <el-form-item label="门店名称/ID：" prop="strStoreName">
           <el-input v-model="filters.strStoreName" @keyup.13.native="search($event)" placeholder="请输入门店名称/ID" ></el-input>
         </el-form-item>

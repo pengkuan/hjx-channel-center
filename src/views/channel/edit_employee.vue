@@ -14,9 +14,9 @@
 	            <el-form-item label="身份证："  prop='strCardNum'>
 	                <el-input v-model="ruleForm.strCardNum" disabled  placeholder='请输入18位身份证号'></el-input>
 	            </el-form-item>
-	            <el-form-item label="邮箱："  >
+	            <!-- <el-form-item label="邮箱："  >
 	                <el-input v-model="ruleForm.strEmail" placeholder='请输入邮箱'></el-input>
-	            </el-form-item>
+	            </el-form-item> -->
 		        <el-form-item label="状态：">
 				    <el-select v-model="ruleForm.strStatus" placeholder="请选择状态">
 				      	<el-option  v-for="item in statusList"  :label="item.name"  :value="item.id" :key="item.id" >

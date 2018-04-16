@@ -8,6 +8,7 @@ import addChannel from '@/views/channel/add_channel'
 import editChannel from '@/views/channel/edit_channel'
 import detailChannel from '@/views/channel/detail_channel'
 import channelStore from '@/views/channel/store'
+import channelStoreRelations from '@/views/channel/store_relations'
 import channelAddStore from '@/views/channel/add_store'
 import channelEditStore from '@/views/channel/edit_store'
 import channelDetailStore from '@/views/channel/detail_store'
@@ -97,6 +98,7 @@ let router = new Router({
 
                 {path: '/channel/store', component: channelStore, name: '门店管理', menuShow: true},
                 {path: '/channel/add_store', component: channelAddStore},
+                {path: '/channel/store_relations', component: channelStoreRelations},
                 {path: '/channel/edit_store', component: channelEditStore , name:'editStore'},
                 {path: '/channel/detail_store', component: channelDetailStore , name:'detailStore'},
                 

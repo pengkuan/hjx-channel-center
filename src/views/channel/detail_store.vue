@@ -24,10 +24,6 @@
                         <span v-for="item in areas" v-if="strAreaId == item.strAreaId">{{item.strAreaName}}</span>
                         <span>{{strAddress}}</span>
                     </el-form-item>
-
-                    <el-form-item label="销售区域：">
-                        <p class='hjx-overflow' v-for = "(item , index) in addSaleList" v:key="index">{{ item.saleName }}</p>
-                    </el-form-item>
                     <el-form-item label="合作状态：" >{{strStatusName}}</el-form-item>
                 </el-form>
                 <!-- 操作流水 -->
@@ -156,7 +152,6 @@ export default {
             areas:[],
             strStatusName:'',
             defaultDate:{},//初始默认数据
-            addSaleList :[],
             setTrue : 10 ,// 顶层
             strAddress:'',
             strProvinceId:'',
@@ -263,7 +258,6 @@ export default {
                         addr_city_id : saleAdds[i].strCityId ,
                         addr_area_id : saleAdds[i].strAreaId 
                     }
-                    this.addSaleList.push({saleName:saleName , saleId:saleId})
                 }
                 return true
             }).then((res) =>{
@@ -491,14 +485,6 @@ export default {
         add_s1_btn() {
             this.addS1List = []
             this.SList.showS1 = true
-            // api.getAllDS({"strStoreId": this.id, "strPeopleType": "S1", "strLevelCode":"S1"}).then(res => {
-            //     if(res.ret != '0'){
-            //         this.$message(res.retinfo)
-            //         return
-            //     }
-            //     this.choose_s1_list = res.s1list
-            // })
-            
         },
         getSearchS1(query) { 
             query = util.Trim(query)

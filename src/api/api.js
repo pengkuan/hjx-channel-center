@@ -220,6 +220,7 @@ export default {
     enableStore(params) { return fetch('up_store', params) }, // 启用门店
     addStoreLogic(params) { return fetch('add_storeLogic', params) }, // 新增门店
     addOrgLogic(params) { return fetch('add_orgLogic', params) }, // 新增次级渠道
+    bindO1Excel(params) { return fetch('bind_o1_excel', params) }, // 批量关联S1/BD1
     /*编辑门店*/
     getStoreInfo(params) { return fetch('getStoreInfo', params) }, // 获取门店信息
 
@@ -274,7 +275,7 @@ export default {
     getBDStoreList(params) { return fetch('get_bd_store_list', params) }, // BD负责门店列表
     editBDLogic(params) { return fetch('edit_bd_user', params) }, // 编辑BD
     checkBdExcel(params) { return fetch('check_bd_excel', params) }, // 批量验证BD
-    createBdExcel(params) { return fetch('create_bd_excel', params) }, // 批量验证BD
+    createBdExcel(params) { return fetch('create_bd_excel', params) }, // 批量创建BD
 
 
     /*BD tree*/

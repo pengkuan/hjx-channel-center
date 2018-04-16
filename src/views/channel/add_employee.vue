@@ -14,11 +14,12 @@
             <el-form-item label="身份证："  prop='strCardNum'>
                 <el-input v-model="ruleForm.strCardNum" :maxlength='18'  placeholder='请输入18位身份证号'></el-input>
             </el-form-item>
-            <el-form-item label="邮箱：" >
+            <!-- <el-form-item label="邮箱：" >
                 <el-input v-model="ruleForm.strEmail" placeholder='请输入邮箱'></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" @click="submitnow('ruleForm')">立即创建</el-button>
+                <el-button type="primary" @click="submitnow('ruleForm',true)">确认并继续创建</el-button>
                 <el-button @click="cancelnow">取消</el-button>
             </el-form-item>
         </el-form>
@@ -69,7 +70,8 @@
                 api.cancelAddEmployeeLogic(this.ruleForm) //记录取消操作
             },
             //确定
-            submitnow: function(formName) {
+            submitnow: function(formName,bool) {
+                
                 let self = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -79,7 +81,11 @@
                                 return
                             }
                             this.$message("成功！")
-                            self.$router.push({ path: '/channel/employee' });
+                            if(bool){
+                                this.$refs[formName].resetFields()
+                            }else{
+                                self.$router.push({ path: '/channel/employee' });
+                            }
 
                         })
                     } else {
