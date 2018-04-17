@@ -1,5 +1,5 @@
 <template>
-    <div id="bd-adds">
+    <div id="store-relations">
         <hjx-header :label=" '门店管理 > 批量关联 '+pageDescribe">
             <router-link to="index" v-if="steps.step_1"><el-button size="small">返回门店列表</el-button></router-link>
             <el-button size="small" v-else @click="reChooseFile">返回批量管理S1</el-button>
@@ -151,18 +151,14 @@ export default {
             }
         },
         verification(file, fileList) {
-            console.log(963)
-
             let getFileNameInfo = file.name.split('.')
 
             if (getFileNameInfo[0] != this.expectExcelName) {
                 this.upload__tip = `选择文件失败，请确认文件名为“${this.expectExcelName}”`
                 this.iconClass = "iconfont icon-gantanhao hjx-danger"
-                console.log(12)
                 this.$refs.upload.clearFiles()
                 return
             } else if ( (getFileNameInfo[1] != 'xls' && getFileNameInfo[1] != 'xlsx') || file.size / 1024 / 1024 > 1 ) {
-                console.log(34)
                 this.$refs.upload.clearFiles()
                 this.upload__tip = ' 选择文件失败，请确认文件格式为xls、xlsx，1M以内'
                 this.iconClass = "iconfont icon-gantanhao hjx-danger"
@@ -208,7 +204,12 @@ export default {
             }
         },
         confirmSubmit() {
+            var loading = this.$loading({
+                text:'正在关联',
+                target:'#store-relations'
+            })
             api.bindO1Excel({ 'excelName': this.excelname ,bindType:this.relationType}).then(res => {
+                loading.close()
                 if (res.ret != '0') {
                     this.$message(res.retinfo)
                     return
@@ -224,7 +225,7 @@ export default {
 
 </script>
 <style type="text/css">
-    #bd-adds .el-upload-list.el-upload-list--text{width:53%;}
+    #store-relations .el-upload-list.el-upload-list--text{width:53%;}
 </style>
 <style scoped lang="scss">
     .instructions {
