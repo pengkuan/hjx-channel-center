@@ -84,7 +84,7 @@
             <div v-else>
                 <div class="hjx-alert hjx-alert-warning" >
                     <span class="hjx-info">共提交{{step2Data.totalRow}}条数据，</span>
-                    <span class="hjx-blue">{{step2Data.successRow}}条创建成功。</span>
+                    <span class="hjx-blue">{{step2Data.successRow}}条关联成功。</span>
                     <span class="hjx-danger">另发现{{step2Data.failedRow}}条关联失败</span>
                     <span class="hjx-danger" v-if="step2Data.totalNum>150">（第152行及之后的数据未做校验） </span>
                 </div>
@@ -153,11 +153,11 @@ export default {
         verification(file, fileList) {
             let getFileNameInfo = file.name.split('.')
 
-            if (getFileNameInfo[0] != this.expectExcelName) {
-                this.upload__tip = `选择文件失败，请确认文件名为“${this.expectExcelName}”`
-                this.iconClass = "iconfont icon-gantanhao hjx-danger"
-                this.$refs.upload.clearFiles()
-                return
+            if (getFileNameInfo[0] != this.expectExcelName) {  //取消名字校验
+                // this.upload__tip = `选择文件失败，请确认文件名为“${this.expectExcelName}”`
+                // this.iconClass = "iconfont icon-gantanhao hjx-danger"
+                // this.$refs.upload.clearFiles()
+                // return
             } else if ( (getFileNameInfo[1] != 'xls' && getFileNameInfo[1] != 'xlsx') || file.size / 1024 / 1024 > 1 ) {
                 this.$refs.upload.clearFiles()
                 this.upload__tip = ' 选择文件失败，请确认文件格式为xls、xlsx，1M以内'

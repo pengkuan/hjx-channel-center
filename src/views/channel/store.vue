@@ -1,7 +1,7 @@
 <template>
 <div>
     <hjx-header label="门店 / 列表">
-        <router-link to="store_relations"><el-button type="primary" size="small">批量关联</el-button></router-link>
+        <router-link to="store_relations"><el-button size="small">批量关联</el-button></router-link>
         <router-link to="add_store"><el-button type="primary" size="small">添加</el-button></router-link>
     </hjx-header>
 	<!--工具条-->
